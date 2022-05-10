@@ -1876,6 +1876,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         popupMenu.Check(popid_hide_tooltipMarkerForThisMessage,
                         m_configuration->HideMarkerForThisMessage(toolTip));
       }
+      if (GetActiveCell()->GetSelectionStyle() == TS_CODE_VARIABLE)
+        std::cerr<<"Debug\n";
     }
   }
 
