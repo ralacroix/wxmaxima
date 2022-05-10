@@ -910,15 +910,12 @@ public:
     popid_suggestion10,
     popid_hide_tooltipMarker,
     popid_hide_tooltipMarkerForThisMessage,
-    popid_property_positive,
-    popid_property_negative,
-    popid_property_positiveOrZero,
-    popid_property_negativeOrZero,
     popid_property_real,
     popid_property_imaginary,
     popid_property_complex,
     popid_property_additive,
     popid_property_alphabetic,
+    popid_property_bindtest,
     popid_property_antisymmetric,
     popid_property_commutative,
     popid_property_symmetric,
@@ -947,7 +944,8 @@ public:
     popid_property_rational,
     popid_property_irrational,
     popid_property_greaterThan,
-    popid_property_smallerThan
+    popid_property_evfun,
+    popid_property_evflag
   };
 
   //! The constructor
