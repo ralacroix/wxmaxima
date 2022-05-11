@@ -1221,6 +1221,42 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   Connect(SYMBOLADDEVENT, wxCommandEventHandler(wxMaxima::OnSymbolAdd), NULL, this);
   Connect(Worksheet::popid_suggestion1,Worksheet::popid_suggestion10, wxEVT_MENU,
           wxCommandEventHandler(wxMaxima::ReplaceSuggestion), NULL, this);
+  Connect(Worksheet::popid_property_real, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_imaginary, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_complex, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_additive, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_alphabetic, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_bindtest, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_antisymmetric, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_commutative, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_symmetric, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_constant, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_even, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_odd, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_evenfun, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_oddfun, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_increasing, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_decreasing, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_integer, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_noninteger, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_integervalued, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_lassociative, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_rassociative, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_linear, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_mainvar, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_multiplicative, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_nary, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_nonarray, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_nonscalar, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_scalar, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_noun, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_outative, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_posfun, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_rational, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_irrational, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_greaterThan, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_evfun, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
+  Connect(Worksheet::popid_property_evflag, wxCommandEventHandler(wxMaxima::PropertiesMenu), NULL, this);
   m_worksheet->SetFocus();
   StartAutoSaveTimer();
 }
@@ -6207,6 +6243,10 @@ void wxMaxima::OnSymbolAdd(wxCommandEvent &event)
     m_worksheet->m_configuration->SymbolPaneAdditionalChars() +
     wxString(wxChar(event.GetId())));
   m_symbolsPane->UpdateUserSymbols();
+}
+
+void wxMaxima::PropertiesMenu(wxCommandEvent &event)
+{
 }
 
 void wxMaxima::MaximaMenu(wxCommandEvent &event)
