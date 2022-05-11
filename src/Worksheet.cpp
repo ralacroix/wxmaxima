@@ -1898,7 +1898,6 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           facts_sub->Append(popid_property_noninteger, _("Is no integer variable"));
           facts_sub->Append(popid_property_rational, _("A rational variable"));
           facts_sub->Append(popid_property_irrational, _("A irrational variable"));
-          facts_sub->AppendSeparator();
           facts_sub->Append(popid_property_greaterThan, _("Greater or less than a value"),
                           _("Calls assume() in order to tell maxima about the variable's range"));
           facts_sub->AppendSeparator();
@@ -1906,7 +1905,6 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           facts_sub->Append(popid_property_nonarray, _("No Array"));
           facts_sub->Append(popid_property_scalar, _("A Scalar"));
           facts_sub->Append(popid_property_nonscalar, _("No Scalar"));
-          facts_sub->AppendSeparator();
           facts_sub->Append(popid_property_mainvar, _("Likely to be the main variable"));
           facts_sub->AppendSeparator();
           facts_sub->Append(popid_property_bindtest, _("Don't use if unassigned"),
@@ -1939,7 +1937,6 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
                             _("f(x) stays f(x) even if the value of f(x) is computable"));
           facts_sub->Append(popid_property_evfun, _("ev() shall evaluate this automatically"), _("Make an eventual ev() evaluate this"));
           facts_sub->Append(popid_property_evflag, _("Suitable as flag for ev()"), _("Can be specified as flag in ev(exp, flag)"));
-          facts_sub->AppendSeparator();
         }
         if (
           (selectionStyle == TS_CODE_VARIABLE) ||
