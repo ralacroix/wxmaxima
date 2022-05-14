@@ -25,11 +25,8 @@
 
 Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
                  const wxString &label,
-                 const wxString &val,
-                 const wxString &warning,
-                 const wxString &warningToolTip,
-                 const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, style)
+                 const wxString &val) :
+        wxDialog(parent, id, title)
 {
   SetName(title);
   label_2 = new wxStaticText(this, -1, label);
@@ -45,15 +42,6 @@ Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &t
   button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_2 = new wxButton(this, wxID_OK, _("OK"));
 #endif
-
-  if(warning != wxEmptyString)    
-  {
-    m_warningText = warning;
-    m_warning = new wxStaticText(this, -1, wxEmptyString);
-    m_warning->SetToolTip(warningToolTip);
-  }
-  else
-    m_warning = NULL;
 
   set_properties();
   SetName(title);

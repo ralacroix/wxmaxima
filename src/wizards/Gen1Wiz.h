@@ -36,11 +36,7 @@ public:
           Configuration *cfg,
           const wxString &title,
           const wxString &label,
-          const wxString &val = wxEmptyString,
-          const wxString &warning = wxEmptyString,
-          const wxString &warningToolTip = wxEmptyString,
-          const wxPoint &pos = wxDefaultPosition,
-          const wxSize &size = wxDefaultSize, long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN);
+          const wxString &val = wxEmptyString);
 
   wxString GetValue()
   {
