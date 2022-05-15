@@ -26,7 +26,6 @@
 #include "precomp.h"
 #include <wx/wx.h>
 #include <wx/statline.h>
-#include <cstdarg>
 #include <vector>
 #include "BTextCtrl.h"
 #include "WrappingStaticText.h"
@@ -38,16 +37,15 @@ public:
          const wxString &title,
          const wxString &description,
          const wxString &commandRule,
-         int numberOfParameters,
-         ...);
-
-  GenWiz(wxWindow *parent, Configuration *cfg,
-         const wxString &title,
-         const wxString &commandRule,
-         int numberOfParameters,
-         ...) : GenWiz(parent, cfg, title, wxEmptyString, commandRule, numberOfParameters)
-    {
-    }
+         wxString label1, wxString defaultval1,
+         wxString label2 = wxEmptyString, wxString defaultval2 = wxEmptyString,
+         wxString label3 = wxEmptyString, wxString defaultval3 = wxEmptyString,
+         wxString label4 = wxEmptyString, wxString defaultval4 = wxEmptyString,
+         wxString label5 = wxEmptyString, wxString defaultval5 = wxEmptyString,
+         wxString label6 = wxEmptyString, wxString defaultval6 = wxEmptyString,
+         wxString label7 = wxEmptyString, wxString defaultval7 = wxEmptyString,
+         wxString label8 = wxEmptyString, wxString defaultval8 = wxEmptyString,
+         wxString label9 = wxEmptyString, wxString defaultval9 = wxEmptyString);
 
   wxString operator[](int i) const { return m_textctrl[i]->GetValue(); }
 
@@ -57,7 +55,6 @@ protected:
   void UpdateOutput();
   void OnParamChange(wxCommandEvent& event);
 
-  int m_numberOfParams;
   std::vector<BTextCtrl*> m_textctrl;
   std::vector<wxStaticText *> m_label;
   wxButton *button_1;

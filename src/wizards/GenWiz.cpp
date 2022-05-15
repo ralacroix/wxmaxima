@@ -26,10 +26,16 @@
 GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
                const wxString &description,
                const wxString &commandRule,
-               int numberOfParameters,
-               ...) :
+               wxString label1, wxString defaultval1,
+               wxString label2, wxString defaultval2,
+               wxString label3, wxString defaultval3,
+               wxString label4, wxString defaultval4,
+               wxString label5, wxString defaultval5,
+               wxString label6, wxString defaultval6,
+               wxString label7, wxString defaultval7,
+               wxString label8, wxString defaultval8,
+               wxString label9, wxString defaultval9) :
   wxDialog(parent, wxID_ANY, title),
-  m_numberOfParams(numberOfParameters),
   m_commandRule(commandRule)
 {
   SetName(title);
@@ -39,25 +45,67 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
     m_description->Show(false);
   vbox->Add(m_description, wxSizerFlags(1).Border(wxALL, 2*GetContentScaleFactor()));
   
-  wxASSERT(numberOfParameters > 0);
-  // Automatically add parameters for any tuple of "..." args
-  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(2, 5*GetContentScaleFactor(), 5*GetContentScaleFactor());
-  va_list ap;
-  va_start(ap, numberOfParameters);
-  for(int i = 0; i< numberOfParameters; i++)
+  m_label.push_back(new wxStaticText(this, -1, label1));
+  m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval1, wxDefaultPosition,
+                                     wxSize(300*GetContentScaleFactor(), -1)));
+  if(!label2.IsEmpty())
   {
-    wxStaticText *label = new wxStaticText(this, -1, va_arg(ap, char*));
-    grid_sizer->Add(label, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
-    m_label.push_back(label);
-    BTextCtrl *textbox = new BTextCtrl(this, -1, cfg, wxString(va_arg(ap, char*)), wxDefaultPosition,
-                                       wxSize(300, -1));
-    grid_sizer->Add(textbox, wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));
-    m_textctrl.push_back(textbox);
-    textbox->Connect(wxEVT_TEXT,
-                     wxCommandEventHandler(GenWiz::OnParamChange),
-                     NULL, this);
+    m_label.push_back(new wxStaticText(this, -1, label2));
+    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval2, wxDefaultPosition,
+                                       wxSize(300*GetContentScaleFactor(), -1)));
   }
-  va_end(ap);
+  if(!label3.IsEmpty())
+  {
+    m_label.push_back(new wxStaticText(this, -1, label3));
+    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval3, wxDefaultPosition,
+                                       wxSize(300*GetContentScaleFactor(), -1)));
+  }
+  if(!label4.IsEmpty())
+  {
+    m_label.push_back(new wxStaticText(this, -1, label4));
+    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval4, wxDefaultPosition,
+                                       wxSize(300*GetContentScaleFactor(), -1)));
+  }
+  if(!label5.IsEmpty())
+  {
+    m_label.push_back(new wxStaticText(this, -1, label5));
+    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval5, wxDefaultPosition,
+                                       wxSize(300*GetContentScaleFactor(), -1)));
+  }
+  if(!label6.IsEmpty())
+  {
+    m_label.push_back(new wxStaticText(this, -1, label6));
+    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval6, wxDefaultPosition,
+                                       wxSize(300*GetContentScaleFactor(), -1)));
+  }
+  if(!label7.IsEmpty())
+  {
+    m_label.push_back(new wxStaticText(this, -1, label7));
+    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval7, wxDefaultPosition,
+                                       wxSize(300*GetContentScaleFactor(), -1)));
+  }
+  if(!label8.IsEmpty())
+  {
+    m_label.push_back(new wxStaticText(this, -1, label8));
+    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval8, wxDefaultPosition,
+                                       wxSize(300*GetContentScaleFactor(), -1)));
+  }
+  if(!label9.IsEmpty())
+  {
+    m_label.push_back(new wxStaticText(this, -1, label9));
+    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval9, wxDefaultPosition,
+                                       wxSize(300*GetContentScaleFactor(), -1)));
+  }
+    
+  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(2, 5*GetContentScaleFactor(), 5*GetContentScaleFactor());
+  for(int i = 0; i< m_textctrl.size(); i++)
+  {
+    grid_sizer->Add(m_label[i], 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
+    grid_sizer->Add(m_textctrl[i], wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));
+    m_textctrl[i]->Connect(wxEVT_TEXT,
+                           wxCommandEventHandler(GenWiz::OnParamChange),
+                           NULL, this);
+  }
   m_textctrl[0]->SetFocus();
 
 #if defined __WXMSW__
@@ -75,11 +123,13 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
   grid_sizer->Add(new wxStaticLine(this, -1),
                   wxSizerFlags(1).Expand().Border(wxLEFT|wxRIGHT, 2*GetContentScaleFactor()));
 
-  vbox->Add(grid_sizer, wxSizerFlags(1).Border(wxALL, 2*GetContentScaleFactor()));
+  vbox->Add(grid_sizer, wxSizerFlags(1).Border(wxALL, 2*GetContentScaleFactor()).Expand());
 //  if(m_warning != NULL)
 //    grid_sizer->Add(m_warning, 0, wxALL, 5);
-  m_output = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxTE_MULTILINE|wxTE_CHARWRAP);
-  vbox->Add(m_output, wxSizerFlags(1).Border(wxALL, 2*GetContentScaleFactor()).Expand());
+  m_output = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                            wxSize(10*GetContentScaleFactor(),10*GetContentScaleFactor()),
+                            wxTE_READONLY|wxTE_MULTILINE|wxTE_CHARWRAP);
+  vbox->Add(m_output, wxSizerFlags(10).Border(wxALL, 2*GetContentScaleFactor()).Expand());
   if(commandRule.IsEmpty())
     m_output->Show(false);
 
@@ -90,9 +140,8 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
   vbox->Add(buttonSizer, wxSizerFlags(1).Border(wxALL, 2*GetContentScaleFactor()));
   
   SetSizer(vbox);
-  grid_sizer->Fit(this);
-  grid_sizer->SetSizeHints(this);
   
+  UpdateOutput();
   SetAutoLayout(true);
   wxPersistenceManager::Get().RegisterAndRestore(this);
   Layout();
@@ -101,8 +150,8 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
 void GenWiz::UpdateOutput()
 {
   wxString output(m_commandRule);
-  for(int i=0;i<m_numberOfParams;i++)
-    output.Replace(wxString::Format("#%i#",i), m_textctrl[i]->GetValue());
+  for(int i=0;i<m_textctrl.size();i++)
+    output.Replace(wxString::Format("#%i#",i+1), m_textctrl[i]->GetValue());
   m_output->SetValue(output);
   Layout();
 }

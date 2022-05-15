@@ -8757,16 +8757,15 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qag:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+_("(f(x),x,a,b))"),
+                             integralSign+_("(f(x),x,a,b))"), wxEmptyString,
                              _("quad_qag(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             7,
-                             _("f(x)").c_str(),_("%").c_str(),
-                             _("x").c_str(),_("x").c_str(),
-                             _("a").c_str(),_("0").c_str(),
-                             _("b").c_str(),_("10").c_str(),
-                             _("epsrel").c_str(),_("1d-8").c_str(),
-                             _("epsabs").c_str(),_("0").c_str(),
-                             _("limit").c_str(),_("200").c_str());
+                             _("f(x)"),_("%"),
+                             _("x"),_("x"),
+                             _("a"),_("0"),
+                             _("b"),_("10"),
+                             _("epsrel"),_("1d-8"),
+                             _("epsabs"),_("0"),
+                             _("limit"),_("200"));
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
