@@ -29,6 +29,7 @@
 #include <cstdarg>
 #include <vector>
 #include "BTextCtrl.h"
+#include "WrappingStaticText.h"
 
 class GenWiz : public wxDialog
 {
@@ -42,12 +43,20 @@ public:
 
   wxString operator[](int i) const { return m_textctrl[i]->GetValue(); }
 
+  wxString GetOutput() const {return m_output->GetValue();}
+  
 protected:
+  void UpdateOutput();
+  void OnParamChange(wxCommandEvent& event);
+
+  int m_numberOfParams;
   std::vector<BTextCtrl*> m_textctrl;
   std::vector<wxStaticText *> m_label;
   wxButton *button_1;
   wxButton *button_2;
-  wxStaticText *m_description;
+  WrappingStaticText *m_description;
+  wxString m_commandRule;
+  wxTextCtrl *m_output;
 };
 
 #endif // GEN1WIZ_H

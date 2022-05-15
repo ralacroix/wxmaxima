@@ -28,12 +28,18 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
                const wxString &commandRule,
                int numberOfParameters,
                ...) :
-  wxDialog(parent, wxID_ANY, title)
+  wxDialog(parent, wxID_ANY, title),
+  m_numberOfParams(numberOfParameters),
+  m_commandRule(commandRule)
 {
   SetName(title);
-
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  m_description = new WrappingStaticText(this, wxID_ANY, description);
+  if(description.IsEmpty())
+    m_description->Show(false);
+  vbox->Add(m_description, wxSizerFlags(1).Border(wxALL, 2*GetContentScaleFactor()));
+  
   wxASSERT(numberOfParameters > 0);
-
   // Automatically add parameters for any tuple of "..." args
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(2, 5*GetContentScaleFactor(), 5*GetContentScaleFactor());
   va_list ap;
@@ -45,8 +51,11 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
     m_label.push_back(label);
     BTextCtrl *textbox = new BTextCtrl(this, -1, cfg, va_arg(ap, wxString), wxDefaultPosition,
                                        wxSize(300, -1));
-    grid_sizer->Add(textbox, wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));    
+    grid_sizer->Add(textbox, wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));
     m_textctrl.push_back(textbox);
+    textbox->Connect(wxEVT_TEXT,
+                     wxCommandEventHandler(GenWiz::OnParamChange),
+                     NULL, this);
   }
   m_textctrl[0]->SetFocus();
 
@@ -65,19 +74,39 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
   grid_sizer->Add(new wxStaticLine(this, -1),
                   wxSizerFlags(1).Expand().Border(wxLEFT|wxRIGHT, 2*GetContentScaleFactor()));
 
+  vbox->Add(grid_sizer, wxSizerFlags(1).Border(wxALL, 2*GetContentScaleFactor()));
 //  if(m_warning != NULL)
 //    grid_sizer->Add(m_warning, 0, wxALL, 5);
+  m_output = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxTE_MULTILINE|wxTE_CHARWRAP);
+  vbox->Add(m_output, wxSizerFlags(1).Border(wxALL, 2*GetContentScaleFactor()).Expand());
+  if(commandRule.IsEmpty())
+    m_output->Show(false);
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   buttonSizer->Add(button_1, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
   buttonSizer->Add(button_2, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
 
-  grid_sizer->Add(buttonSizer, wxSizerFlags(1).Border(wxALL, 2*GetContentScaleFactor()));
-  SetSizer(grid_sizer);
+  vbox->Add(buttonSizer, wxSizerFlags(1).Border(wxALL, 2*GetContentScaleFactor()));
+  
+  SetSizer(vbox);
   grid_sizer->Fit(this);
   grid_sizer->SetSizeHints(this);
   
   SetAutoLayout(true);
   wxPersistenceManager::Get().RegisterAndRestore(this);
   Layout();
+}
+
+void GenWiz::UpdateOutput()
+{
+  wxString output(m_commandRule);
+  for(int i=0;i<m_numberOfParams;i++)
+    output.Replace(wxString::Format("#%i#",i), m_textctrl[i]->GetValue());
+  m_output->SetValue(output);
+  Layout();
+}
+
+void GenWiz::OnParamChange(wxCommandEvent& event)
+{
+  UpdateOutput();
 }
