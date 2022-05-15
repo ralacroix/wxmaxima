@@ -2219,7 +2219,9 @@ void wxMaximaFrame::SymbolsPane::OnMenu(wxCommandEvent &event)
                                m_configuration,
                                _("Non-builtin symbols"),
                                _("Unicode symbols:"),
-                               m_configuration->SymbolPaneAdditionalChars());
+                               m_configuration->SymbolPaneAdditionalChars(),
+                               _("Allows to specify which not-builtin unicode symbols should be displayed in the symbols sidebar along with the built-in symbols.")
+      );
     //wiz->Centre(wxBOTH);
     wiz->SetLabel1ToolTip(_("Drag-and-drop unicode symbols here"));
     if (wiz->ShowModal() == wxID_OK)
