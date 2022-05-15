@@ -46,10 +46,10 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
   va_start(ap, numberOfParameters);
   for(int i = 0; i< numberOfParameters; i++)
   {
-    wxStaticText *label = new wxStaticText(this, -1, va_arg(ap, wxString));
+    wxStaticText *label = new wxStaticText(this, -1, va_arg(ap, char*));
     grid_sizer->Add(label, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
     m_label.push_back(label);
-    BTextCtrl *textbox = new BTextCtrl(this, -1, cfg, va_arg(ap, wxString), wxDefaultPosition,
+    BTextCtrl *textbox = new BTextCtrl(this, -1, cfg, wxString(va_arg(ap, char*)), wxDefaultPosition,
                                        wxSize(300, -1));
     grid_sizer->Add(textbox, wxSizerFlags(1).Expand().Border(wxALL, 5*GetContentScaleFactor()));
     m_textctrl.push_back(textbox);
@@ -57,6 +57,7 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
                      wxCommandEventHandler(GenWiz::OnParamChange),
                      NULL, this);
   }
+  va_end(ap);
   m_textctrl[0]->SetFocus();
 
 #if defined __WXMSW__

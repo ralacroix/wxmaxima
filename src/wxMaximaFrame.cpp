@@ -1466,8 +1466,8 @@ void wxMaximaFrame::SetupMenu()
   wxString integralSign = wxT("∫");
   if(!m_worksheet->m_configuration->FontRendersChar(wxT('∫'), *wxNORMAL_FONT))
     integralSign = wxT("integrate");
-  quadpack_sub->Append(menu_quad_qag, integralSign+_("(f(x),x,y), strategy of Aind"));
-  quadpack_sub->Append(menu_quad_qags, integralSign+_("(f(x),x,y), Epsilon algorithm"));
+  quadpack_sub->Append(menu_quad_qag, integralSign+_("(f(x),x,a,b), strategy of Aind"));
+  quadpack_sub->Append(menu_quad_qags, integralSign+_("(f(x),x,a,b), Epsilon algorithm"));
   quadpack_sub->Append(menu_quad_qagi, integralSign+_("(f(x)), infinite interval"));
   quadpack_sub->Append(menu_quad_qawc, _("Cauchy principial value, finite interval"));
   quadpack_sub->Append(menu_quad_qawf_sin, integralSign+_("(f(x)*sin(ω·x),x,a,∞)"));

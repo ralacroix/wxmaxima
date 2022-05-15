@@ -43,6 +43,7 @@
 #include "CellList.h"
 #include "ImgCell.h"
 #include "DrawWiz.h"
+#include "GenWiz.h"
 #include "LicenseDialog.h"
 #include "SubstituteWiz.h"
 #include "IntegrateWiz.h"
@@ -8633,6 +8634,10 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
 
   wxString expr = GetDefaultEntry();
   wxString cmd;
+  wxString integralSign = wxT("∫");
+  if(!m_worksheet->m_configuration->FontRendersChar(wxT('∫'), *wxNORMAL_FONT))
+    integralSign = wxT("integrate");
+
   switch (event.GetId())
   {
     case Worksheet::popid_special_constant_percent:
@@ -8749,6 +8754,41 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     }
     wiz->Destroy();
   }
+  case menu_quad_qag:
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             integralSign+_("(f(x),x,a,b))"),
+                             _("quad_qag(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             7,
+                             _("f(x)").c_str(),_("%").c_str(),
+                             _("x").c_str(),_("x").c_str(),
+                             _("a").c_str(),_("0").c_str(),
+                             _("b").c_str(),_("10").c_str(),
+                             _("epsrel").c_str(),_("1d-8").c_str(),
+                             _("epsabs").c_str(),_("0").c_str(),
+                             _("limit").c_str(),_("200").c_str());
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wiz->GetOutput();
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+  }
+    
+    // menu_quad_qags,
+    // menu_quad_qagi,
+    // menu_quad_qawc,
+    // menu_quad_qawf_sin,
+    // menu_quad_qawf_cos,
+    // menu_quad_qawo_sin,
+    // menu_quad_qawo_cos,
+    // menu_quad_qaws1,
+    // menu_quad_qaws2,
+    // menu_quad_qaws3,
+    // menu_quad_qaws4,
+    // menu_quad_qagp,
+
   break;
   default:
     break;

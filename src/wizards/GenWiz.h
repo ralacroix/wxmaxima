@@ -20,8 +20,8 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
-#ifndef GEN1WIZ_H
-#define GEN1WIZ_H
+#ifndef GENWIZ_H
+#define GENWIZ_H
 
 #include "precomp.h"
 #include <wx/wx.h>
@@ -41,6 +41,14 @@ public:
          int numberOfParameters,
          ...);
 
+  GenWiz(wxWindow *parent, Configuration *cfg,
+         const wxString &title,
+         const wxString &commandRule,
+         int numberOfParameters,
+         ...) : GenWiz(parent, cfg, title, wxEmptyString, commandRule, numberOfParameters)
+    {
+    }
+
   wxString operator[](int i) const { return m_textctrl[i]->GetValue(); }
 
   wxString GetOutput() const {return m_output->GetValue();}
@@ -59,4 +67,4 @@ protected:
   wxTextCtrl *m_output;
 };
 
-#endif // GEN1WIZ_H
+#endif // GENWIZ_H
