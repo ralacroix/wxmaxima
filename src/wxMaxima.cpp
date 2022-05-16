@@ -8757,12 +8757,159 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qag:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+_("(f(x),x,a,b))"), wxEmptyString,
-                             _("quad_qag(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             integralSign+_("(f(x),x,a,b)), Strategy of Aind"), wxEmptyString,
+                             _("quad_qag(#1#,#2#,#3#,#4#,#5#,epsrel=#6#,epsabs=#7#,limit=#8#)"),
                              _("f(x)"),_("%"),
                              _("x"),_("x"),
                              _("a"),_("0"),
                              _("b"),_("10"),
+                             _("key"),_("4"),
+                             _("epsrel"),_("1d-8"),
+                             _("epsabs"),_("0"),
+                             _("limit"),_("200"));
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wiz->GetOutput();
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+  }
+  case menu_quad_qags:
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             integralSign+_("(f(x),x,a,b)), Epsilon algorithm"), wxEmptyString,
+                             _("quad_qags(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             _("f(x)"),_("%"),
+                             _("x"),_("x"),
+                             _("a"),_("0"),
+                             _("b"),_("10"),
+                             _("epsrel"),_("1d-8"),
+                             _("epsabs"),_("0"),
+                             _("limit"),_("200"));
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wiz->GetOutput();
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+  }
+  case menu_quad_qagi:
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             integralSign+_("(f(x),x,a,b), infinite interval"), wxEmptyString,
+                             _("quad_qagi(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             _("f(x)"),_("%"),
+                             _("x"),_("x"),
+                             _("a"),_("0"),
+                             _("b"),_("10"),
+                             _("epsrel"),_("1d-8"),
+                             _("epsabs"),_("0"),
+                             _("limit"),_("200"));
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wiz->GetOutput();
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+  }
+  case menu_quad_qawc:
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             _("Cauchy principial value of f(x)/(x-c), finite interval"), wxEmptyString,
+                             _("quad_qawc(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             _("f(x)"),_("%"),
+                             _("x"),_("x"),
+                             _("c"),_("4"),
+                             _("a"),_("0"),
+                             _("b"),_("10"),
+                             _("epsrel"),_("1d-8"),
+                             _("epsabs"),_("0"),
+                             _("limit"),_("200"));
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wiz->GetOutput();
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+  }
+  case menu_quad_qawf_sin:
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             integralSign+wxT("(f(x)*sin(ω·x),x,a,∞)"), wxEmptyString,
+                             _("quad_qawf(#1#,#2#,#3#,sin,epsrel=#4#,epsabs=#5#,limit=#6#)"),
+                             _("f(x)"),_("%"),
+                             _("x"),_("x"),
+                             _("a"),_("a"),
+                             _("ω"),_("2"),
+                             _("key"),_("4"),
+                             _("epsrel"),_("1d-8"),
+                             _("epsabs"),_("0"),
+                             _("limit"),_("200"));
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wiz->GetOutput();
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+  }
+  case menu_quad_qawf_cos:
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             integralSign+wxT("(f(x)*cos(ω·x),x,a,∞)"), wxEmptyString,
+                             _("quad_qawf(#1#,#2#,#3#,cos,epsrel=#4#,epsabs=#5#,limit=#6#)"),
+                             _("f(x)"),_("%"),
+                             _("x"),_("x"),
+                             _("a"),_("a"),
+                             _("ω"),_("2"),
+                             _("key"),_("4"),
+                             _("epsrel"),_("1d-8"),
+                             _("epsabs"),_("0"),
+                             _("limit"),_("200"));
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wiz->GetOutput();
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+  }
+  case menu_quad_qawo_sin:
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             integralSign+wxT("(f(x)*sin(ω·x),x,a,b)"), wxEmptyString,
+                             _("quad_qawo(#1#,#2#,#3#,#4#,sin,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             _("f(x)"),_("%"),
+                             _("x"),_("x"),
+                             _("a"),_("a"),
+                             _("b"),_("a"),
+                             _("ω"),_("2"),
+                             _("key"),_("4"),
+                             _("epsrel"),_("1d-8"),
+                             _("epsabs"),_("0"),
+                             _("limit"),_("200"));
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wiz->GetOutput();
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+  }
+  case menu_quad_qawo_cos:
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             integralSign+wxT("(f(x)*cos(ω·x),x,a,b)"), wxEmptyString,
+                             _("quad_qawo(#1#,#2#,#3#,#4#,cos,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             _("f(x)"),_("%"),
+                             _("x"),_("x"),
+                             _("a"),_("a"),
+                             _("ω"),_("2"),
+                             _("key"),_("4"),
                              _("epsrel"),_("1d-8"),
                              _("epsabs"),_("0"),
                              _("limit"),_("200"));
