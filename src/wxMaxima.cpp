@@ -8753,6 +8753,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
     }
     wiz->Destroy();
+    break;
   }
   case menu_quad_qag:
   {
@@ -8774,6 +8775,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
     }
     wiz->Destroy();
+    break;
   }
   case menu_quad_qags:
   {
@@ -8794,6 +8796,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
     }
     wiz->Destroy();
+    break;
   }
   case menu_quad_qagi:
   {
@@ -8814,6 +8817,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
     }
     wiz->Destroy();
+    break;
   }
   case menu_quad_qawc:
   {
@@ -8835,6 +8839,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
     }
     wiz->Destroy();
+    break;
   }
   case menu_quad_qawf_sin:
   {
@@ -8856,6 +8861,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
     }
     wiz->Destroy();
+    break;
   }
   case menu_quad_qawf_cos:
   {
@@ -8877,6 +8883,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
     }
     wiz->Destroy();
+    break;
   }
   case menu_quad_qawo_sin:
   {
@@ -8899,6 +8906,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
     }
     wiz->Destroy();
+    break;
   }
   case menu_quad_qawo_cos:
   {
@@ -8920,22 +8928,94 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       MenuCommand(cmd);
     }
     wiz->Destroy();
+    break;
   }
     
-    // menu_quad_qags,
-    // menu_quad_qagi,
-    // menu_quad_qawc,
-    // menu_quad_qawf_sin,
-    // menu_quad_qawf_cos,
-    // menu_quad_qawo_sin,
-    // menu_quad_qawo_cos,
-    // menu_quad_qaws1,
-    // menu_quad_qaws2,
-    // menu_quad_qaws3,
-    // menu_quad_qaws4,
+  case menu_quad_qaws1:
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β,x,a,b)"), wxEmptyString,
+                             _("menu_quad_qaws(#1#,#2#,#3#,#4#,1,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             _("f(x)"),_("%"),
+                             _("x"),_("x"),
+                             _("a"),_("1"),
+                             _("b"),_("2"),
+                             _("epsrel"),_("1d-8"),
+                             _("epsabs"),_("0"),
+                             _("limit"),_("200"));
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wiz->GetOutput();
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+    break;
+  }
+  case menu_quad_qaws2:
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"), wxEmptyString,
+                             _("menu_quad_qaws(#1#,#2#,#3#,#4#,2,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             _("f(x)"),_("%"),
+                             _("x"),_("x"),
+                             _("a"),_("1"),
+                             _("b"),_("2"),
+                             _("epsrel"),_("1d-8"),
+                             _("epsabs"),_("0"),
+                             _("limit"),_("200"));
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wiz->GetOutput();
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+    break;
+  }
+  case menu_quad_qaws3:
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"), wxEmptyString,
+                             _("menu_quad_qaws(#1#,#2#,#3#,#4#,3,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             _("f(x)"),_("%"),
+                             _("x"),_("x"),
+                             _("a"),_("1"),
+                             _("b"),_("2"),
+                             _("epsrel"),_("1d-8"),
+                             _("epsabs"),_("0"),
+                             _("limit"),_("200"));
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wiz->GetOutput();
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+    break;
+  }
+  case menu_quad_qaws4:
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"), wxEmptyString,
+                             _("menu_quad_qaws(#1#,#2#,#3#,#4#,4,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             _("f(x)"),_("%"),
+                             _("x"),_("x"),
+                             _("a"),_("1"),
+                             _("b"),_("2"),
+                             _("epsrel"),_("1d-8"),
+                             _("epsabs"),_("0"),
+                             _("limit"),_("200"));
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wiz->GetOutput();
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+    break;
+  }
     // menu_quad_qagp,
-
-  break;
   default:
     break;
   }

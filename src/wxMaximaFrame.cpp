@@ -1470,14 +1470,14 @@ void wxMaximaFrame::SetupMenu()
   quadpack_sub->Append(menu_quad_qags, integralSign+_("(f(x),x,a,b), Epsilon algorithm"));
   quadpack_sub->Append(menu_quad_qagi, integralSign+_("(f(x),x,a,b), infinite interval"));
   quadpack_sub->Append(menu_quad_qawc, _("Cauchy principial value, finite interval"));
-  quadpack_sub->Append(menu_quad_qawf_sin, integralSign+_("(f(x)*sin(ω·x),x,a,∞)"));
-  quadpack_sub->Append(menu_quad_qawf_cos, integralSign+_("(f(x)*cos(ω·x),x,a,∞)"));
-  quadpack_sub->Append(menu_quad_qawo_sin, integralSign+_("(f(x)*sin(ω·x),x,a,b)"));
-  quadpack_sub->Append(menu_quad_qawo_cos, integralSign+_("(f(x)*cos(ω·x),x,a,b)"));
-  quadpack_sub->Append(menu_quad_qaws1, integralSign+_("(f(x)*(x-a)^α(b-x)^β,x,a,b)"));
-  quadpack_sub->Append(menu_quad_qaws2, integralSign+_("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"));
-  quadpack_sub->Append(menu_quad_qaws3, integralSign+_("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"));
-  quadpack_sub->Append(menu_quad_qaws4, integralSign+_("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"));
+  quadpack_sub->Append(menu_quad_qawf_sin, integralSign+wxT("(f(x)*sin(ω·x),x,a,∞)"));
+  quadpack_sub->Append(menu_quad_qawf_cos, integralSign+wxT("(f(x)*cos(ω·x),x,a,∞)"));
+  quadpack_sub->Append(menu_quad_qawo_sin, integralSign+wxT("(f(x)*sin(ω·x),x,a,b)"));
+  quadpack_sub->Append(menu_quad_qawo_cos, integralSign+wxT("(f(x)*cos(ω·x),x,a,b)"));
+  quadpack_sub->Append(menu_quad_qaws1, integralSign+wxT("(f(x)*(x-a)^α(b-x)^β,x,a,b)"));
+  quadpack_sub->Append(menu_quad_qaws2, integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"));
+  quadpack_sub->Append(menu_quad_qaws3, integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"));
+  quadpack_sub->Append(menu_quad_qaws4, integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"));
   quadpack_sub->Append(menu_quad_qagp, integralSign+_("(f(x),x,y) with singularities+discontinuities"));
 
   m_NumericMenu->Append(wxNewId(), _("Integrate numerically"), quadpack_sub);
