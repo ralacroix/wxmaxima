@@ -1052,7 +1052,7 @@ void wxMaximaFrame::SetupMenu()
   m_matrix_menu->Append(wxNewId(), _("Create Matrix"),
                          gen_matrix_menu,
                          _("Methods of generating a matrix"));
-o
+
   wxMenu *fileio_menu = new wxMenu;
   fileio_menu->Append(menu_csv2mat, _("Matrix from csv file"),
                          _("Load a matrix from a csv file"), wxITEM_NORMAL);

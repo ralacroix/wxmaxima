@@ -35,17 +35,17 @@ class GenWiz : public wxDialog
 public:
   GenWiz(wxWindow *parent, Configuration *cfg,
          const wxString &title,
-         const wxString &description,
+         const wxString &description, const wxString &description_tooltip,
          const wxString &commandRule,
-         wxString label1, wxString defaultval1,
-         wxString label2 = wxEmptyString, wxString defaultval2 = wxEmptyString,
-         wxString label3 = wxEmptyString, wxString defaultval3 = wxEmptyString,
-         wxString label4 = wxEmptyString, wxString defaultval4 = wxEmptyString,
-         wxString label5 = wxEmptyString, wxString defaultval5 = wxEmptyString,
-         wxString label6 = wxEmptyString, wxString defaultval6 = wxEmptyString,
-         wxString label7 = wxEmptyString, wxString defaultval7 = wxEmptyString,
-         wxString label8 = wxEmptyString, wxString defaultval8 = wxEmptyString,
-         wxString label9 = wxEmptyString, wxString defaultval9 = wxEmptyString);
+         wxString label1, wxString defaultval1, wxString tooltip1 = {},
+         wxString label2 = {}, wxString defaultval2 = {}, wxString tooltip2 = {},
+         wxString label3 = {}, wxString defaultval3 = {}, wxString tooltip3 = {},
+         wxString label4 = {}, wxString defaultval4 = {}, wxString tooltip4 = {},
+         wxString label5 = {}, wxString defaultval5 = {}, wxString tooltip5 = {},
+         wxString label6 = {}, wxString defaultval6 = {}, wxString tooltip6 = {},
+         wxString label7 = {}, wxString defaultval7 = {}, wxString tooltip7 = {},
+         wxString label8 = {}, wxString defaultval8 = {}, wxString tooltip8 = {},
+         wxString label9 = {}, wxString defaultval9 = {}, wxString tooltip9 = {});
 
   wxString operator[](int i) const { return m_textctrl[i]->GetValue(); }
 

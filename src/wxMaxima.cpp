@@ -8758,16 +8758,17 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qag:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+_("(f(x),x,a,b)), Strategy of Aind"), wxEmptyString,
+                             integralSign+_("(f(x),x,a,b)), Strategy of Aind"),
+                             wxEmptyString,wxEmptyString,
                              _("quad_qag(#1#,#2#,#3#,#4#,#5#,epsrel=#6#,epsabs=#7#,limit=#8#)"),
-                             _("f(x)"),_("%"),
-                             _("x"),_("x"),
-                             _("a"),_("0"),
-                             _("b"),_("10"),
-                             _("key"),_("4"),
-                             _("epsrel"),_("1d-8"),
-                             _("epsabs"),_("0"),
-                             _("limit"),_("200"));
+                             _("f(x)"),_("%"),wxEmptyString,
+                             _("x"),_("x"),wxEmptyString,
+                             _("a"),_("0"),wxEmptyString,
+                             _("b"),_("10"),wxEmptyString,
+                             _("key"),_("4"),wxEmptyString,
+                             _("epsrel"),_("1d-8"),wxEmptyString,
+                             _("epsabs"),_("0"),wxEmptyString,
+                             _("limit"),_("200"),wxEmptyString);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -8780,15 +8781,16 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qags:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+_("(f(x),x,a,b)), Epsilon algorithm"), wxEmptyString,
+                             integralSign+_("(f(x),x,a,b)), Epsilon algorithm"),
+                             wxEmptyString,wxEmptyString,
                              _("quad_qags(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),
-                             _("x"),_("x"),
-                             _("a"),_("0"),
-                             _("b"),_("10"),
-                             _("epsrel"),_("1d-8"),
-                             _("epsabs"),_("0"),
-                             _("limit"),_("200"));
+                             _("f(x)"),_("%"),wxEmptyString,
+                             _("x"),_("x"),wxEmptyString,
+                             _("a"),_("0"),wxEmptyString,
+                             _("b"),_("10"),wxEmptyString,
+                             _("epsrel"),_("1d-8"),wxEmptyString,
+                             _("epsabs"),_("0"),wxEmptyString,
+                             _("limit"),_("200"),wxEmptyString);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -8801,15 +8803,16 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qagi:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+_("(f(x),x,a,b), infinite interval"), wxEmptyString,
+                             integralSign+_("(f(x),x,a,b), infinite interval"),
+                             wxEmptyString,wxEmptyString,
                              _("quad_qagi(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),
-                             _("x"),_("x"),
-                             _("a"),_("0"),
-                             _("b"),_("10"),
-                             _("epsrel"),_("1d-8"),
-                             _("epsabs"),_("0"),
-                             _("limit"),_("200"));
+                             _("f(x)"),_("%"),wxEmptyString,
+                             _("x"),_("x"),wxEmptyString,
+                             _("a"),_("0"),wxEmptyString,
+                             _("b"),_("10"),wxEmptyString,
+                             _("epsrel"),_("1d-8"),wxEmptyString,
+                             _("epsabs"),_("0"),wxEmptyString,
+                             _("limit"),_("200"),wxEmptyString);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -8822,16 +8825,17 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qawc:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             _("Cauchy principial value of f(x)/(x-c), finite interval"), wxEmptyString,
+                             _("Cauchy principial value of f(x)/(x-c), finite interval"),
+                             wxEmptyString,wxEmptyString,
                              _("quad_qawc(#1#,#2#,#3#,#4#,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),
-                             _("x"),_("x"),
-                             _("c"),_("4"),
-                             _("a"),_("0"),
-                             _("b"),_("10"),
-                             _("epsrel"),_("1d-8"),
-                             _("epsabs"),_("0"),
-                             _("limit"),_("200"));
+                             _("f(x)"),_("%"),wxEmptyString,
+                             _("x"),_("x"),wxEmptyString,
+                             _("c"),_("4"),wxEmptyString,
+                             _("a"),_("0"),wxEmptyString,
+                             _("b"),_("10"),wxEmptyString,
+                             _("epsrel"),_("1d-8"),wxEmptyString,
+                             _("epsabs"),_("0"),wxEmptyString,
+                             _("limit"),_("200"),wxEmptyString);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -8844,16 +8848,17 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qawf_sin:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*sin(ω·x),x,a,∞)"), wxEmptyString,
+                             integralSign+wxT("(f(x)*sin(ω·x),x,a,∞)"),
+                             wxEmptyString,wxEmptyString,
                              _("quad_qawf(#1#,#2#,#3#,sin,epsrel=#4#,epsabs=#5#,limit=#6#)"),
-                             _("f(x)"),_("%"),
-                             _("x"),_("x"),
-                             _("a"),_("a"),
-                             _("ω"),_("2"),
-                             _("key"),_("4"),
-                             _("epsrel"),_("1d-8"),
-                             _("epsabs"),_("0"),
-                             _("limit"),_("200"));
+                             _("f(x)"),_("%"),wxEmptyString,
+                             _("x"),_("x"),wxEmptyString,
+                             _("a"),_("a"),wxEmptyString,
+                             _("ω"),_("2"),wxEmptyString,
+                             _("key"),_("4"),wxEmptyString,
+                             _("epsrel"),_("1d-8"),wxEmptyString,
+                             _("epsabs"),_("0"),wxEmptyString,
+                             _("limit"),_("200"),wxEmptyString);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -8866,16 +8871,17 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qawf_cos:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*cos(ω·x),x,a,∞)"), wxEmptyString,
+                             integralSign+wxT("(f(x)*cos(ω·x),x,a,∞)"),
+                             wxEmptyString,wxEmptyString,
                              _("quad_qawf(#1#,#2#,#3#,cos,epsrel=#4#,epsabs=#5#,limit=#6#)"),
-                             _("f(x)"),_("%"),
-                             _("x"),_("x"),
-                             _("a"),_("a"),
-                             _("ω"),_("2"),
-                             _("key"),_("4"),
-                             _("epsrel"),_("1d-8"),
-                             _("epsabs"),_("0"),
-                             _("limit"),_("200"));
+                             _("f(x)"),_("%"),wxEmptyString,
+                             _("x"),_("x"),wxEmptyString,
+                             _("a"),_("a"),wxEmptyString,
+                             _("ω"),_("2"),wxEmptyString,
+                             _("key"),_("4"),wxEmptyString,
+                             _("epsrel"),_("1d-8"),wxEmptyString,
+                             _("epsabs"),_("0"),wxEmptyString,
+                             _("limit"),_("200"),wxEmptyString);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -8888,17 +8894,18 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qawo_sin:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*sin(ω·x),x,a,b)"), wxEmptyString,
+                             integralSign+wxT("(f(x)*sin(ω·x),x,a,b)"),
+                             wxEmptyString,wxEmptyString,
                              _("quad_qawo(#1#,#2#,#3#,#4#,sin,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),
-                             _("x"),_("x"),
-                             _("a"),_("a"),
-                             _("b"),_("a"),
-                             _("ω"),_("2"),
-                             _("key"),_("4"),
-                             _("epsrel"),_("1d-8"),
-                             _("epsabs"),_("0"),
-                             _("limit"),_("200"));
+                             _("f(x)"),_("%"),wxEmptyString,
+                             _("x"),_("x"),wxEmptyString,
+                             _("a"),_("a"),wxEmptyString,
+                             _("b"),_("a"),wxEmptyString,
+                             _("ω"),_("2"),wxEmptyString,
+                             _("key"),_("4"),wxEmptyString,
+                             _("epsrel"),_("1d-8"),wxEmptyString,
+                             _("epsabs"),_("0"),wxEmptyString,
+                             _("limit"),_("200"),wxEmptyString);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -8911,16 +8918,17 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qawo_cos:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*cos(ω·x),x,a,b)"), wxEmptyString,
+                             integralSign+wxT("(f(x)*cos(ω·x),x,a,b)"),
+                             wxEmptyString,wxEmptyString,
                              _("quad_qawo(#1#,#2#,#3#,#4#,cos,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),
-                             _("x"),_("x"),
-                             _("a"),_("a"),
-                             _("ω"),_("2"),
-                             _("key"),_("4"),
-                             _("epsrel"),_("1d-8"),
-                             _("epsabs"),_("0"),
-                             _("limit"),_("200"));
+                             _("f(x)"),_("%"),wxEmptyString,
+                             _("x"),_("x"),wxEmptyString,
+                             _("a"),_("a"),wxEmptyString,
+                             _("ω"),_("2"),wxEmptyString,
+                             _("key"),_("4"),wxEmptyString,
+                             _("epsrel"),_("1d-8"),wxEmptyString,
+                             _("epsabs"),_("0"),wxEmptyString,
+                             _("limit"),_("200"),wxEmptyString);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -8934,15 +8942,16 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qaws1:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β,x,a,b)"), wxEmptyString,
+                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β,x,a,b)"),
+                             wxEmptyString,wxEmptyString,
                              _("quad_qaws(#1#,#2#,#3#,#4#,1,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),
-                             _("x"),_("x"),
-                             _("a"),_("1"),
-                             _("b"),_("2"),
-                             _("epsrel"),_("1d-8"),
-                             _("epsabs"),_("0"),
-                             _("limit"),_("200"));
+                             _("f(x)"),_("%"),wxEmptyString,
+                             _("x"),_("x"),wxEmptyString,
+                             _("a"),_("1"),wxEmptyString,
+                             _("b"),_("2"),wxEmptyString,
+                             _("epsrel"),_("1d-8"),wxEmptyString,
+                             _("epsabs"),_("0"),wxEmptyString,
+                             _("limit"),_("200"),wxEmptyString);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -8955,15 +8964,16 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qaws2:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"), wxEmptyString,
+                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"),
+                             wxEmptyString,wxEmptyString,
                              _("quad_qaws(#1#,#2#,#3#,#4#,2,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),
-                             _("x"),_("x"),
-                             _("a"),_("1"),
-                             _("b"),_("2"),
-                             _("epsrel"),_("1d-8"),
-                             _("epsabs"),_("0"),
-                             _("limit"),_("200"));
+                             _("f(x)"),_("%"),wxEmptyString,
+                             _("x"),_("x"),wxEmptyString,
+                             _("a"),_("1"),wxEmptyString,
+                             _("b"),_("2"),wxEmptyString,
+                             _("epsrel"),_("1d-8"),wxEmptyString,
+                             _("epsabs"),_("0"),wxEmptyString,
+                             _("limit"),_("200"),wxEmptyString);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -8976,15 +8986,16 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qaws3:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"), wxEmptyString,
+                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"),
+                             wxEmptyString,wxEmptyString,
                              _("quad_qaws(#1#,#2#,#3#,#4#,3,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),
-                             _("x"),_("x"),
-                             _("a"),_("1"),
-                             _("b"),_("2"),
-                             _("epsrel"),_("1d-8"),
-                             _("epsabs"),_("0"),
-                             _("limit"),_("200"));
+                             _("f(x)"),_("%"),wxEmptyString,
+                             _("x"),_("x"),wxEmptyString,
+                             _("a"),_("1"),wxEmptyString,
+                             _("b"),_("2"),wxEmptyString,
+                             _("epsrel"),_("1d-8"),wxEmptyString,
+                             _("epsabs"),_("0"),wxEmptyString,
+                             _("limit"),_("200"),wxEmptyString);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -8997,15 +9008,16 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qaws4:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"), wxEmptyString,
+                             integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"),
+                             wxEmptyString,wxEmptyString,
                              _("quad_qaws(#1#,#2#,#3#,#4#,4,epsrel=#5#,epsabs=#6#,limit=#7#)"),
-                             _("f(x)"),_("%"),
-                             _("x"),_("x"),
-                             _("a"),_("1"),
-                             _("b"),_("2"),
-                             _("epsrel"),_("1d-8"),
-                             _("epsabs"),_("0"),
-                             _("limit"),_("200"));
+                             _("f(x)"),_("%"),wxEmptyString,
+                             _("x"),_("x"),wxEmptyString,
+                             _("a"),_("1"),wxEmptyString,
+                             _("b"),_("2"),wxEmptyString,
+                             _("epsrel"),_("1d-8"),wxEmptyString,
+                             _("epsabs"),_("0"),wxEmptyString,
+                             _("limit"),_("200"),wxEmptyString);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -9018,16 +9030,17 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   case menu_quad_qagp:
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
-                             integralSign+_("(f(x),x,y) with singularities+discontinuities"), wxEmptyString,
+                             integralSign+_("(f(x),x,y) with singularities+discontinuities"),
+                             wxEmptyString,wxEmptyString,
                              _("qagp(#1#,#2#,#3#,#4#,[#5#],epsrel=#6#,epsabs=#7#,limit=#8#)"),
-                             _("f(x)"),_("%"),
-                             _("x"),_("x"),
-                             _("a"),_("1"),
-                             _("b"),_("2"),
-                             _("points"),_(".5,.75"),
-                             _("epsrel"),_("1d-8"),
-                             _("epsabs"),_("0"),
-                             _("limit"),_("200"));
+                             _("f(x)"),_("%"),wxEmptyString,
+                             _("x"),_("x"),wxEmptyString,
+                             _("a"),_("1"),wxEmptyString,
+                             _("b"),_("2"),wxEmptyString,
+                             _("points"),_(".5,.75"),wxEmptyString,
+                             _("epsrel"),_("1d-8"),wxEmptyString,
+                             _("epsabs"),_("0"),wxEmptyString,
+                             _("limit"),_("200"),wxEmptyString);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -9037,7 +9050,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
     wiz->Destroy();
     break;
   }
-    // menu_quad_qagp,
+  // menu_quad_qagp,
   default:
     break;
   }

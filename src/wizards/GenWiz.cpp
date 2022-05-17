@@ -24,17 +24,17 @@
 #include <wx/persist/toplevel.h>
 
 GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
-               const wxString &description,
+               const wxString &description, const wxString &description_tooltip,
                const wxString &commandRule,
-               wxString label1, wxString defaultval1,
-               wxString label2, wxString defaultval2,
-               wxString label3, wxString defaultval3,
-               wxString label4, wxString defaultval4,
-               wxString label5, wxString defaultval5,
-               wxString label6, wxString defaultval6,
-               wxString label7, wxString defaultval7,
-               wxString label8, wxString defaultval8,
-               wxString label9, wxString defaultval9) :
+               wxString label1, wxString defaultval1, wxString tooltip1,
+               wxString label2, wxString defaultval2, wxString tooltip2,
+               wxString label3, wxString defaultval3, wxString tooltip3,
+               wxString label4, wxString defaultval4, wxString tooltip4,
+               wxString label5, wxString defaultval5, wxString tooltip5,
+               wxString label6, wxString defaultval6, wxString tooltip6,
+               wxString label7, wxString defaultval7, wxString tooltip7,
+               wxString label8, wxString defaultval8, wxString tooltip8,
+               wxString label9, wxString defaultval9, wxString tooltip9) :
   wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
     wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN),
   m_commandRule(commandRule)
@@ -44,63 +44,80 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
   m_description = new WrappingStaticText(this, wxID_ANY, description);
   if(description.IsEmpty())
     m_description->Show(false);
+  m_description->SetToolTip(description_tooltip);
   vbox->Add(m_description, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
   
-  m_label.push_back(new wxStaticText(this, -1, label1));
-  m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval1, wxDefaultPosition,
-                                     wxSize(300*GetContentScaleFactor(), -1)));
-  if(!label2.IsEmpty())
+  for(int i = 0; i< 9; i++)
   {
-    m_label.push_back(new wxStaticText(this, -1, label2));
-    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval2, wxDefaultPosition,
+    m_label.push_back(new wxStaticText(this, -1, wxEmptyString));
+    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                                        wxSize(300*GetContentScaleFactor(), -1)));
   }
-  if(!label3.IsEmpty())
-  {
-    m_label.push_back(new wxStaticText(this, -1, label3));
-    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval3, wxDefaultPosition,
-                                       wxSize(300*GetContentScaleFactor(), -1)));
-  }
-  if(!label4.IsEmpty())
-  {
-    m_label.push_back(new wxStaticText(this, -1, label4));
-    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval4, wxDefaultPosition,
-                                       wxSize(300*GetContentScaleFactor(), -1)));
-  }
-  if(!label5.IsEmpty())
-  {
-    m_label.push_back(new wxStaticText(this, -1, label5));
-    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval5, wxDefaultPosition,
-                                       wxSize(300*GetContentScaleFactor(), -1)));
-  }
-  if(!label6.IsEmpty())
-  {
-    m_label.push_back(new wxStaticText(this, -1, label6));
-    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval6, wxDefaultPosition,
-                                       wxSize(300*GetContentScaleFactor(), -1)));
-  }
-  if(!label7.IsEmpty())
-  {
-    m_label.push_back(new wxStaticText(this, -1, label7));
-    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval7, wxDefaultPosition,
-                                       wxSize(300*GetContentScaleFactor(), -1)));
-  }
-  if(!label8.IsEmpty())
-  {
-    m_label.push_back(new wxStaticText(this, -1, label8));
-    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval8, wxDefaultPosition,
-                                       wxSize(300*GetContentScaleFactor(), -1)));
-  }
-  if(!label9.IsEmpty())
-  {
-    m_label.push_back(new wxStaticText(this, -1, label9));
-    m_textctrl.push_back(new BTextCtrl(this, -1, cfg, defaultval9, wxDefaultPosition,
-                                       wxSize(300*GetContentScaleFactor(), -1)));
-  }
-  
+
+  m_textctrl[0]->SetValue(defaultval1);
+  m_label[0]->SetLabel(label1);
+  m_label[0]->SetToolTip(tooltip1);
+  m_textctrl[1]->SetToolTip(tooltip1);
+
+  m_textctrl[1]->SetValue(defaultval2);
+  m_label[1]->SetLabel(label2);
+  m_label[1]->Show(!label2.IsEmpty());
+  m_textctrl[1]->Show(!label2.IsEmpty());
+  m_label[1]->SetToolTip(tooltip2);
+  m_textctrl[1]->SetToolTip(tooltip2);
+
+  m_textctrl[2]->SetValue(defaultval3);
+  m_label[2]->SetLabel(label3);
+  m_label[2]->Show(!label3.IsEmpty());
+  m_textctrl[2]->Show(!label3.IsEmpty());
+  m_label[2]->SetToolTip(tooltip3);
+  m_textctrl[2]->SetToolTip(tooltip3);
+
+  m_textctrl[3]->SetValue(defaultval4);
+  m_label[3]->SetLabel(label4);
+  m_label[3]->Show(!label4.IsEmpty());
+  m_textctrl[3]->Show(!label4.IsEmpty());
+  m_label[3]->SetToolTip(tooltip4);
+  m_textctrl[3]->SetToolTip(tooltip4);
+
+  m_label[4]->SetLabel(label5);
+  m_textctrl[4]->SetValue(defaultval5);
+  m_label[4]->Show(!label5.IsEmpty());
+  m_textctrl[4]->Show(!label5.IsEmpty());
+  m_label[4]->SetToolTip(tooltip5);
+  m_textctrl[4]->SetToolTip(tooltip5);
+
+  m_label[5]->SetLabel(label6);
+  m_textctrl[5]->SetValue(defaultval6);
+  m_label[5]->Show(!label6.IsEmpty());
+  m_textctrl[5]->Show(!label6.IsEmpty());
+  m_label[5]->SetToolTip(tooltip6);
+  m_textctrl[5]->SetToolTip(tooltip6);
+
+  m_label[6]->SetLabel(label7);
+  m_textctrl[6]->SetValue(defaultval7);
+  m_label[6]->Show(!label7.IsEmpty());
+  m_textctrl[6]->Show(!label7.IsEmpty());
+  m_label[6]->SetToolTip(tooltip7);
+  m_textctrl[6]->SetToolTip(tooltip7);
+
+  m_label[7]->SetLabel(label8);
+  m_textctrl[7]->SetValue(defaultval8);
+  m_label[7]->Show(!label8.IsEmpty());
+  m_textctrl[7]->Show(!label8.IsEmpty());
+  m_label[7]->SetToolTip(tooltip8);
+  m_textctrl[7]->SetToolTip(tooltip8);
+
+  m_label[8]->SetLabel(label9);
+  m_textctrl[8]->SetValue(defaultval9);
+  m_label[8]->Show(!label9.IsEmpty());
+  m_textctrl[8]->Show(!label9.IsEmpty());
+  m_label[8]->SetToolTip(tooltip9);
+  m_textctrl[8]->SetToolTip(tooltip9);
+    
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(2, 5*GetContentScaleFactor(), 5*GetContentScaleFactor());
   grid_sizer->AddGrowableCol(1);
-  for(int i = 0; i< m_textctrl.size(); i++)
+  for(int i = 0; i< 9; i++)
   {
     grid_sizer->Add(m_label[i], wxSizerFlags(1));
     grid_sizer->Add(m_textctrl[i], wxSizerFlags(1).Expand());
@@ -137,7 +154,7 @@ GenWiz::GenWiz(wxWindow *parent, Configuration *cfg, const wxString &title,
   buttonSizer->Add(button_1, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
   buttonSizer->Add(button_2, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
 
-  vbox->Add(buttonSizer, wxSizerFlags(1).Border(wxALL, 2*GetContentScaleFactor()));
+  vbox->Add(buttonSizer, wxSizerFlags(1).Border(wxALL, 5*GetContentScaleFactor()));
   
   SetAutoLayout(true);
   UpdateOutput();
