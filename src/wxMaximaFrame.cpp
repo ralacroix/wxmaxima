@@ -1052,7 +1052,7 @@ void wxMaximaFrame::SetupMenu()
   m_matrix_menu->Append(wxNewId(), _("Create Matrix"),
                          gen_matrix_menu,
                          _("Methods of generating a matrix"));
-  
+
   wxMenu *fileio_menu = new wxMenu;
   fileio_menu->Append(menu_csv2mat, _("Matrix from csv file"),
                          _("Load a matrix from a csv file"), wxITEM_NORMAL);
@@ -1226,12 +1226,12 @@ void wxMaximaFrame::SetupMenu()
   m_SimplifyMenu->Append(menu_expand, _("&Expand Expression"),
                          _("Expand an expression"), wxITEM_NORMAL);
   m_logexpand_Sub = new wxMenu;
-  m_logexpand_Sub->Append(menu_logexpand, _("Expand log in current expression"),
-                        _("\u26A0 No test if the argument of the log is complex, positive or negative"),
+  m_logexpand_Sub->Append(menu_logexpand, _("Expand log in previous expression"),
+                        _("Warning: No test if the argument of the log is complex, positive or negative"),
                         wxITEM_NORMAL);
   m_logexpand_Sub->AppendSeparator();
-  m_logexpand_Sub->AppendRadioItem(menu_logexpand_false, _("No"));
-  m_logexpand_Sub->AppendRadioItem(menu_logexpand_true, _("log(a^b)=b*log(a) \u26A0 Bad, if a is complex"));
+  m_logexpand_Sub->AppendRadioItem(menu_logexpand_false, _("No"), _("Switch off simplifications of log()."));
+  m_logexpand_Sub->AppendRadioItem(menu_logexpand_true, _("log(a^b)=b*log(a) Warning: Bad, if a is complex"));
   m_logexpand_Sub->AppendRadioItem(menu_logexpand_all, _("Additionally: log(a*b)=log(a)+log(b)"));
   m_logexpand_Sub->AppendRadioItem(menu_logexpand_super, _("Additionally: log(a/b)=log(a)-log(b)"));
   m_SimplifyMenu->Append(wxNewId(), _("Simplify Logarithms"),
@@ -1482,6 +1482,7 @@ void wxMaximaFrame::SetupMenu()
 
   m_NumericMenu->Append(wxNewId(), _("Integrate numerically"), quadpack_sub);
   m_MenuBar->Append(m_NumericMenu, _("&Numeric"));
+
 
   // Help menu
   m_HelpMenu = new wxMenu;
