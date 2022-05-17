@@ -8935,7 +8935,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
                              integralSign+wxT("(f(x)*(x-a)^α(b-x)^β,x,a,b)"), wxEmptyString,
-                             _("menu_quad_qaws(#1#,#2#,#3#,#4#,1,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             _("quad_qaws(#1#,#2#,#3#,#4#,1,epsrel=#5#,epsabs=#6#,limit=#7#)"),
                              _("f(x)"),_("%"),
                              _("x"),_("x"),
                              _("a"),_("1"),
@@ -8956,7 +8956,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
                              integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a),x,a,b)"), wxEmptyString,
-                             _("menu_quad_qaws(#1#,#2#,#3#,#4#,2,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             _("quad_qaws(#1#,#2#,#3#,#4#,2,epsrel=#5#,epsabs=#6#,limit=#7#)"),
                              _("f(x)"),_("%"),
                              _("x"),_("x"),
                              _("a"),_("1"),
@@ -8977,7 +8977,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
                              integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(b-x),x,a,b)"), wxEmptyString,
-                             _("menu_quad_qaws(#1#,#2#,#3#,#4#,3,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             _("quad_qaws(#1#,#2#,#3#,#4#,3,epsrel=#5#,epsabs=#6#,limit=#7#)"),
                              _("f(x)"),_("%"),
                              _("x"),_("x"),
                              _("a"),_("1"),
@@ -8998,11 +8998,33 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   {
     GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
                              integralSign+wxT("(f(x)*(x-a)^α(b-x)^β·log(x-a)·log(b-x),x,a,b)"), wxEmptyString,
-                             _("menu_quad_qaws(#1#,#2#,#3#,#4#,4,epsrel=#5#,epsabs=#6#,limit=#7#)"),
+                             _("quad_qaws(#1#,#2#,#3#,#4#,4,epsrel=#5#,epsabs=#6#,limit=#7#)"),
                              _("f(x)"),_("%"),
                              _("x"),_("x"),
                              _("a"),_("1"),
                              _("b"),_("2"),
+                             _("epsrel"),_("1d-8"),
+                             _("epsabs"),_("0"),
+                             _("limit"),_("200"));
+    //wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wiz->GetOutput();
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+    break;
+  }
+  case menu_quad_qagp:
+  {
+    GenWiz *wiz = new GenWiz(this, m_worksheet->m_configuration,
+                             integralSign+_("(f(x),x,y) with singularities+discontinuities"), wxEmptyString,
+                             _("qagp(#1#,#2#,#3#,#4#,[#5#],epsrel=#6#,epsabs=#7#,limit=#8#)"),
+                             _("f(x)"),_("%"),
+                             _("x"),_("x"),
+                             _("a"),_("1"),
+                             _("b"),_("2"),
+                             _("points"),_(".5,.75"),
                              _("epsrel"),_("1d-8"),
                              _("epsabs"),_("0"),
                              _("limit"),_("200"));
