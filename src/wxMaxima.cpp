@@ -308,6 +308,13 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     wxEVT_TIMER,
     wxTimerEventHandler(wxMaxima::OnTimerEvent), NULL, this);
 
+  m_wizard->GetOKButton()->Connect(
+    wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardOK), NULL, this);
+  m_wizard->GetAbortButton()->Connect(
+    wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardAbort), NULL, this);
+  m_wizard->GetInsertButton()->Connect(
+    wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardInsert), NULL, this);
+  
 #ifdef wxHAS_POWER_EVENTS 
   Connect(
     wxEVT_POWER_SUSPENDED,
@@ -8457,6 +8464,24 @@ void wxMaxima::CommandWiz(const wxString &title,
     wiz->Destroy();
   }
 }
+
+void wxMaxima::OnWizardAbort(wxCommandEvent &WXUNUSED(event))
+{
+  m_manager.GetPane("wizard").Show(false);
+  m_manager.Update();
+}
+
+void wxMaxima::OnWizardOK(wxCommandEvent &event)
+{
+  OnWizardInsert(event);
+  OnWizardAbort(event);
+}
+
+void wxMaxima::OnWizardInsert(wxCommandEvent &event)
+{
+  MenuCommand(m_wizard->GetOutput());
+}
+
 
 void wxMaxima::HelpMenu(wxCommandEvent &event)
 {
