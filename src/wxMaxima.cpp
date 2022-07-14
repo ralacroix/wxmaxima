@@ -4743,7 +4743,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 
   wxBusyCursor crs;
   m_worksheet->CompileHelpFileAnchors();
-  keyword = m_worksheet->m_helpFileAnchors[keyword];
+  keyword = m_worksheet->GetHelpfileAnchor(keyword);
   if(keyword.IsEmpty())
     keyword = "Function-and-Variable-Index";
   if(!MaximaHelpFile.IsEmpty())

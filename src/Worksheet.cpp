@@ -1415,7 +1415,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
             m_helpfileanchorsThread->join();
           m_helpfileanchorsThread.reset();
         }
-        if(m_helpFileAnchors.find(wordUnderCursor) != m_helpFileAnchors.end())
+        if(m_helpFileAnchors_singlePage.find(wordUnderCursor) != m_helpFileAnchors_singlePage.end())
         {
           popupMenu.Append(wxID_HELP, wxString::Format(_("Help on \"%s\""), wordUnderCursor));
           popupMenu.AppendSeparator();
@@ -1767,12 +1767,12 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
               m_helpfileanchorsThread.reset();
             }
 
-            if((m_helpFileAnchors.find(wordUnderCursor) != m_helpFileAnchors.end()))
+            if((m_helpFileAnchors_singlePage.find(wordUnderCursor) != m_helpFileAnchors_singlePage.end()))
               popupMenu.Append(wxID_HELP, wxString::Format(_("Help on \"%s\""),
                                                            wordUnderCursor));
 
             HelpFileAnchors::const_iterator it;
-            for (it = m_helpFileAnchors.begin(); it != m_helpFileAnchors.end(); ++it)
+            for (it = m_helpFileAnchors_singlePage.begin(); it != m_helpFileAnchors_singlePage.end(); ++it)
             {
               wxString cmdName = it->first;
               if(cmdName.EndsWith("_"))
@@ -2015,6 +2015,15 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
   }
 }
 
+
+wxString Worksheet::GetHelpfileAnchor(wxString keyword)
+{
+  auto anchor = m_helpFileAnchors_singlePage.find(keyword);
+  if(anchor == m_helpFileAnchors_singlePage.end())
+    return wxEmptyString;
+  else
+    return anchor->second;
+}
 
 /***
  * We have a mouse click to the left of a GroupCel.
@@ -5963,7 +5972,7 @@ void Worksheet::LoadHelpFileAnchors()
     m_helpfileanchorsThread->join();
     m_helpfileanchorsThread.reset();
   }
-  if(m_helpFileAnchors.empty())
+  if(m_helpFileAnchors_singlePage.empty())
   {
     if(!LoadManualAnchorsFromCache())
     {
@@ -6028,7 +6037,7 @@ bool Worksheet::LoadManualAnchorsFromCache()
     wxLogMessage(wxString::Format(_("Read the entries the maxima manual offers from %s"), Dirstructure::Get()->AnchorsCacheFile().utf8_str()));
     return true;
   }
-  return !m_helpFileAnchors.empty();
+  return !m_helpFileAnchors_singlePage.empty();
 }
 
 
@@ -6038,21 +6047,21 @@ void Worksheet::CompileHelpFileAnchors()
 
   wxString MaximaHelpFile = GetMaximaHelpFile();
 
-  if(m_helpFileAnchors.empty() && (!(MaximaHelpFile.IsEmpty())))
+  if(m_helpFileAnchors_singlePage.empty() && (!(MaximaHelpFile.IsEmpty())))
   {
-    m_helpFileAnchors["wxbarsplot"] = "barsplot";
-    m_helpFileAnchors["wxboxplot"] = "boxplot";
-    m_helpFileAnchors["wxhistogram"] = "histogram";
-    m_helpFileAnchors["wxpiechart"] = "piechart";
-    m_helpFileAnchors["wxscatterplot"] = "scatterplot";
-    m_helpFileAnchors["wxstarplot"] = "starplot";
-    m_helpFileAnchors["wxdrawdf"] = "drawdf";
-    m_helpFileAnchors["wxdraw"] = "draw";
-    m_helpFileAnchors["wxdraw2d"] = "draw2d";
-    m_helpFileAnchors["wxdraw3d"] = "draw3d";
-    m_helpFileAnchors["with_slider_draw"] = "draw";
-    m_helpFileAnchors["with_slider_draw2d"] = "draw2d";
-    m_helpFileAnchors["with_slider_draw3d"] = "draw3d";
+    m_helpFileAnchors_singlePage["wxbarsplot"] = "barsplot";
+    m_helpFileAnchors_singlePage["wxboxplot"] = "boxplot";
+    m_helpFileAnchors_singlePage["wxhistogram"] = "histogram";
+    m_helpFileAnchors_singlePage["wxpiechart"] = "piechart";
+    m_helpFileAnchors_singlePage["wxscatterplot"] = "scatterplot";
+    m_helpFileAnchors_singlePage["wxstarplot"] = "starplot";
+    m_helpFileAnchors_singlePage["wxdrawdf"] = "drawdf";
+    m_helpFileAnchors_singlePage["wxdraw"] = "draw";
+    m_helpFileAnchors_singlePage["wxdraw2d"] = "draw2d";
+    m_helpFileAnchors_singlePage["wxdraw3d"] = "draw3d";
+    m_helpFileAnchors_singlePage["with_slider_draw"] = "draw";
+    m_helpFileAnchors_singlePage["with_slider_draw2d"] = "draw2d";
+    m_helpFileAnchors_singlePage["with_slider_draw3d"] = "draw3d";
 
     int foundAnchors = 0;
     wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
@@ -6100,7 +6109,7 @@ void Worksheet::CompileHelpFileAnchors()
                 token = token.Right(token.Length()-3);
               //! Tokens that end with "-1" aren't too useful, normally.
               if((!token.EndsWith("-1")) && (!token.Contains(" ")))              {
-                m_helpFileAnchors[token] = id;
+                m_helpFileAnchors_singlePage[token] = id;
                 foundAnchors++;
               }
             }
@@ -6108,12 +6117,12 @@ void Worksheet::CompileHelpFileAnchors()
         }
       }
     }
-    if(m_helpFileAnchors["%solve"].IsEmpty())
-      m_helpFileAnchors["%solve"] = m_helpFileAnchors["to_poly_solve"];
+    if(m_helpFileAnchors_singlePage["%solve"].IsEmpty())
+      m_helpFileAnchors_singlePage["%solve"] = m_helpFileAnchors_singlePage["to_poly_solve"];
 
-    if((m_helpFileAnchors.find("find_root_error") == m_helpFileAnchors.end()) &&
-       (m_helpFileAnchors.find("find_root") != m_helpFileAnchors.end()))
-      m_helpFileAnchors["find_root_error"] = m_helpFileAnchors["find_root"];
+    if((m_helpFileAnchors_singlePage.find("find_root_error") == m_helpFileAnchors_singlePage.end()) &&
+       (m_helpFileAnchors_singlePage.find("find_root") != m_helpFileAnchors_singlePage.end()))
+      m_helpFileAnchors_singlePage["find_root_error"] = m_helpFileAnchors_singlePage["find_root"];
 
     wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
     if(foundAnchors > 50)
@@ -6125,7 +6134,7 @@ void Worksheet::CompileHelpFileAnchors()
 
 void Worksheet::SaveManualAnchorsToCache()
 {
-  long num = m_helpFileAnchors.size();
+  long num = m_helpFileAnchors_singlePage.size();
   if(num <= 50)
   {
     wxLogMessage(
@@ -6150,8 +6159,8 @@ void Worksheet::SaveManualAnchorsToCache()
     );
 
   Worksheet::HelpFileAnchors::const_iterator it;
-  for (it = m_helpFileAnchors.begin();
-       it != m_helpFileAnchors.end();
+  for (it = m_helpFileAnchors_singlePage.begin();
+       it != m_helpFileAnchors_singlePage.end();
        ++it)
   {
     wxXmlNode *manualEntry =
@@ -6239,11 +6248,11 @@ bool Worksheet::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool checkMa
         node = node->GetNext();
       }
       if((!key.IsEmpty()) && (!anchor.IsEmpty()))
-        m_helpFileAnchors[key] = anchor;
+        m_helpFileAnchors_singlePage[key] = anchor;
     }
     entry = entry->GetNext();
   }
-  return !m_helpFileAnchors.empty();
+  return !m_helpFileAnchors_singlePage.empty();
 }
 
 wxString Worksheet::GetMaximaHelpFile()

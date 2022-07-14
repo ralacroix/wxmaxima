@@ -1634,8 +1634,11 @@ public:
   //! Returns the index in (%i...) or (%o...)
   int GetCellIndex(Cell *cell) const;
 
+  wxString GetHelpfileAnchor(wxString keyword);
   //! All anchors for keywords maxima's helpfile contains
-  HelpFileAnchors m_helpFileAnchors;
+  HelpFileAnchors m_helpFileAnchors_singlePage;
+  //! All anchors for keywords maxima's helpfile contains
+  HelpFileAnchors m_helpFileAnchors_shortFiles;
   //! Suggestions for how the word that was right-clicked on could continue
   wxArrayString m_replacementsForCurrentWord;
   //Simple iterator over a Maxima input string, skipping comments and strings
