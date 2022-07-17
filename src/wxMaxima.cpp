@@ -3237,7 +3237,7 @@ void wxMaxima::VariableActionMaximaInfodir(const wxString &value)
   wxString dir_canonical = dir.GetPath();
   m_worksheet->SetMaximaDocDir(dir_canonical);
   wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),dir_canonical.utf8_str()));
-  m_worksheet->LoadHelpFileAnchors(dir_canonical);
+  m_worksheet->LoadHelpFileAnchors(dir_canonical, m_worksheet->GetMaximaVersion());
 }
 
 void wxMaxima::VariableActionMaximaHtmldir(const wxString &value)
@@ -4725,24 +4725,17 @@ void wxMaxima::ShowHelp(const wxString &keyword)
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
 {
-  if(m_worksheet->m_helpfileanchorsThread)
-  {
-    m_worksheet->m_helpfileanchorsThread->join();
-    m_worksheet->m_helpfileanchorsThread.reset();
-  }
-
   if(keyword.StartsWith("(%i"))
     keyword = "inchar";
   if(keyword.StartsWith("(%o"))
     keyword = "outchar";
-  wxString MaximaHelpFile = m_worksheet->GetMaximaHelpFile();
+  wxString MaximaHelpFile = m_worksheet->GetHelpfileAnchor(keyword);
 #ifdef __WINDOWS__
   // replace \ with / as directory separator
   MaximaHelpFile.Replace("\\", "/", true);
 #endif
 
   wxBusyCursor crs;
-  m_worksheet->CompileHelpFileAnchors();
   keyword = m_worksheet->GetHelpfileAnchor(keyword);
   if(keyword.IsEmpty())
     keyword = "Function-and-Variable-Index";

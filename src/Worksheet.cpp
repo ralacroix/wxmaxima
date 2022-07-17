@@ -86,6 +86,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, Worksheet* &observer, Configurati
   m_dc(this),
   m_configuration(config),
   m_autocomplete(config),
+  m_maximaManual(m_configuration),
   m_observer(observer)
 {
   m_dontSkipScrollEvent = false;
@@ -1758,9 +1759,9 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
                                                            wordUnderCursor));
 
             MaximaManual::HelpFileAnchors::const_iterator it;
-            MaximaManual::HelpFileAnchors helpFileAnchors = m_maximaManual.GetHelpfileAnchors;
+            MaximaManual::HelpFileAnchors helpFileAnchors = m_maximaManual.GetHelpfileAnchors();
             
-            for (it = helpFileAnchors_singlePage.begin(); it !=_helpFileAnchors_singlePage.end(); ++it)
+            for (it = helpFileAnchors.begin(); it !=helpFileAnchors.end(); ++it)
             {
               wxString cmdName = it->first;
               if(cmdName.EndsWith("_"))

@@ -33,6 +33,7 @@
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include <wx/tokenzr.h>
+#include <wx/txtstrm.h>
 
 MaximaManual::MaximaManual(Configuration *configuration)
 {
@@ -138,31 +139,35 @@ void MaximaManual::CompileHelpFileAnchors()
 {
   SuppressErrorDialogs suppressor;
 
+  int foundAnchors = 0;
   if(m_helpFileAnchors_singlePage.empty() && (!(m_maximaHtmlDir.IsEmpty())))
   {
-    m_helpFileAnchors_singlePage["wxbarsplot"] = "barsplot";
-    m_helpFileAnchors_singlePage["wxboxplot"] = "boxplot";
-    m_helpFileAnchors_singlePage["wxhistogram"] = "histogram";
-    m_helpFileAnchors_singlePage["wxpiechart"] = "piechart";
-    m_helpFileAnchors_singlePage["wxscatterplot"] = "scatterplot";
-    m_helpFileAnchors_singlePage["wxstarplot"] = "starplot";
-    m_helpFileAnchors_singlePage["wxdrawdf"] = "drawdf";
-    m_helpFileAnchors_singlePage["wxdraw"] = "draw";
-    m_helpFileAnchors_singlePage["wxdraw2d"] = "draw2d";
-    m_helpFileAnchors_singlePage["wxdraw3d"] = "draw3d";
-    m_helpFileAnchors_singlePage["with_slider_draw"] = "draw";
-    m_helpFileAnchors_singlePage["with_slider_draw2d"] = "draw2d";
-    m_helpFileAnchors_singlePage["with_slider_draw3d"] = "draw3d";
+    wxArrayString helpFiles;
+    GetHTMLFiles htmlFiles(helpFiles, m_maximaHtmlDir);
 
-    int foundAnchors = 0;
-    wxLogMessage(_("Compiling the list of anchors the maxima manual provides"));
-    wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
-    wxRegEx idExtractor2("<dt id=\\\"(index-[a-zAZ0-9_-]*)\\\"");
-    wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
-    wxString escapeChars = "<=>[]`%?;\\$%&+-*/.!\'@#:^_";
-    if(wxFileExists(MaximaHelpFile))
+    for (auto file: helpFiles)
     {
-      wxFileInputStream input(MaximaHelpFile);
+      wxLogMessage(wxString::Format(_("Scanning help file %s for anchors"),
+                                    file.c_str()));
+      m_helpFileAnchors_singlePage["wxbarsplot"] = "barsplot";
+      m_helpFileAnchors_singlePage["wxboxplot"] = "boxplot";
+      m_helpFileAnchors_singlePage["wxhistogram"] = "histogram";
+      m_helpFileAnchors_singlePage["wxpiechart"] = "piechart";
+      m_helpFileAnchors_singlePage["wxscatterplot"] = "scatterplot";
+      m_helpFileAnchors_singlePage["wxstarplot"] = "starplot";
+      m_helpFileAnchors_singlePage["wxdrawdf"] = "drawdf";
+      m_helpFileAnchors_singlePage["wxdraw"] = "draw";
+      m_helpFileAnchors_singlePage["wxdraw2d"] = "draw2d";
+      m_helpFileAnchors_singlePage["wxdraw3d"] = "draw3d";
+      m_helpFileAnchors_singlePage["with_slider_draw"] = "draw";
+      m_helpFileAnchors_singlePage["with_slider_draw2d"] = "draw2d";
+      m_helpFileAnchors_singlePage["with_slider_draw3d"] = "draw3d";
+      
+      wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
+      wxRegEx idExtractor2("<dt id=\\\"(index-[a-zAZ0-9_-]*)\\\"");
+      wxRegEx idExtractor_oldManual(".*<a name=\\\"([a-zAZ0-9_-]*)\\\"");
+      wxString escapeChars = "<=>[]`%?;\\$%&+-*/.!\'@#:^_";
+      wxFileInputStream input(file);
       if(input.IsOk())
       {
         wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
@@ -207,15 +212,15 @@ void MaximaManual::CompileHelpFileAnchors()
           }
         }
       }
+      if(m_helpFileAnchors_singlePage["%solve"].IsEmpty())
+        m_helpFileAnchors_singlePage["%solve"] = m_helpFileAnchors_singlePage["to_poly_solve"];
+      
+      if((m_helpFileAnchors_singlePage.find("find_root_error") == m_helpFileAnchors_singlePage.end()) &&
+         (m_helpFileAnchors_singlePage.find("find_root") != m_helpFileAnchors_singlePage.end()))
+        m_helpFileAnchors_singlePage["find_root_error"] = m_helpFileAnchors_singlePage["find_root"];
+      
+      wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
     }
-    if(m_helpFileAnchors_singlePage["%solve"].IsEmpty())
-      m_helpFileAnchors_singlePage["%solve"] = m_helpFileAnchors_singlePage["to_poly_solve"];
-
-    if((m_helpFileAnchors_singlePage.find("find_root_error") == m_helpFileAnchors_singlePage.end()) &&
-       (m_helpFileAnchors_singlePage.find("find_root") != m_helpFileAnchors_singlePage.end()))
-      m_helpFileAnchors_singlePage["find_root_error"] = m_helpFileAnchors_singlePage["find_root"];
-
-    wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
     if(foundAnchors > 50)
       SaveManualAnchorsToCache();
     else
@@ -355,7 +360,7 @@ void MaximaManual::FindMaximaHtmlDir(wxString docDir)
   wxConfig::Get()->Read(wxT("helpFile"), &headerFile);
   if (headerFile.Length() && wxFileExists(headerFile)) {
     wxLogMessage(_("Using Maxima help file from wxMaxima configuration file (helpFile=...))"));
-    return headerFile;
+    return;
   }
 #ifdef __CYGWIN__
   // Cygwin uses /c/something instead of c:/something and passes this path to the
@@ -368,11 +373,11 @@ void MaximaManual::FindMaximaHtmlDir(wxString docDir)
   }
 #endif // __CYGWIN__
   wxPathList helpfilepaths;
-  helpfilepaths.Add(m_maximaDocDir);
-  helpfilepaths.Add(m_maximaDocDir+"/info");
-  helpfilepaths.Add(m_maximaDocDir+"/info/html");
-  helpfilepaths.Add(m_maximaDocDir+"/html");
-  helpfilepaths.Add(m_maximaDocDir+"/../html");
+  helpfilepaths.Add(m_maximaHtmlDir);
+  helpfilepaths.Add(m_maximaHtmlDir+"/info");
+  helpfilepaths.Add(m_maximaHtmlDir+"/info/html");
+  helpfilepaths.Add(m_maximaHtmlDir+"/html");
+  helpfilepaths.Add(m_maximaHtmlDir+"/../html");
   helpfilepaths.Add(m_configuration->MaximaShareDir() + "/../doc/html");
   helpfilepaths.Add(m_configuration->MaximaShareDir() + "/doc/html");
   wxString helpfile_location = helpfilepaths.FindAbsoluteValidPath("maxima_singlepage.html");
@@ -393,8 +398,10 @@ void MaximaManual::FindMaximaHtmlDir(wxString docDir)
   }
 }
 
-void MaximaManual::LoadHelpFileAnchors(wxString docdir)
+void MaximaManual::LoadHelpFileAnchors(wxString docdir, wxString maximaVersion)
 {
+  FindMaximaHtmlDir(docdir);
+  m_maximaVersion = maximaVersion;
   if(m_helpfileanchorsThread)
   {
     m_helpfileanchorsThread->join();
@@ -404,7 +411,7 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir)
   {
     if(!LoadManualAnchorsFromCache())
     {
-      if(wxFileExists(GetMaximaHelpFile(docdir)))
+      if(!m_maximaHtmlDir.IsEmpty())
       {
         if(m_helpfileanchorsThread)
         {
@@ -418,8 +425,7 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir)
       }
       else
       {
-        wxLogMessage(wxString::Format(_("Help file %s not found!"),
-                                      GetMaximaHelpFile().c_str()));
+        wxLogMessage(_("Maxima help file not found!"));
         LoadBuiltInManualAnchors();
       }
     }

@@ -30,6 +30,7 @@
 #ifndef MAXIMAMANUAL_H
 #define MAXIMAMANUAL_H
 
+#include <wx/dir.h>
 #include "precomp.h"
 #include <thread>
 #include <memory>
@@ -58,13 +59,13 @@ public:
   explicit MaximaManual(Configuration *configuration);
   WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);
   HelpFileAnchors GetHelpfileAnchors();
-  bool FindMaximaHtmlDir(wxString docDir);
+  void FindMaximaHtmlDir(wxString docDir);
   wxString GetHelpfileAnchorName(wxString keyword);
   wxString GetHelpfileAnchor_Singlepage(wxString keyword);
   wxString GetHelpfileAnchor_FilePerChapter(wxString keyword);
   wxString GetHelpfileAnchor(wxString keyword){return GetHelpfileAnchor_Singlepage(keyword);}
   //! Search maxima's help file for command and variable names
-  void LoadHelpFileAnchors(wxString directory);
+  void LoadHelpFileAnchors(wxString directory, wxString maximaVersion);
   //! Collect all keyword anchors in the help file
   void CompileHelpFileAnchors();
   //! Load the result from the last CompileHelpFileAnchors from the disk cache
@@ -78,6 +79,36 @@ public:
 
   ~MaximaManual();
 private:
+    //! Scans the maxima directory for a list of loadable files
+  class GetHTMLFiles : public wxDirTraverser
+  {
+  public:
+    explicit GetHTMLFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+      m_files(files), m_prefix(prefix) { }
+    virtual wxDirTraverseResult OnFile(const wxString& filename) override
+      {
+        wxFileName newItemName(filename);
+        wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "\"";
+        newItem.Replace(wxFileName::GetPathSeparator(),"/");
+        if(filename.EndsWith(".html") && (m_files.Index(newItem) == wxNOT_FOUND))
+          m_files.Add(newItem);
+        return wxDIR_CONTINUE;
+      }
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
+      {
+        wxFileName newItemName(dirname);
+        wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
+        newItem.Replace(wxFileName::GetPathSeparator(),"/");
+        if(m_files.Index(newItem) == wxNOT_FOUND)
+          m_files.Add(newItem);
+        return wxDIR_IGNORE;
+      }
+    wxArrayString& GetResult(){return m_files;}
+  protected: 
+    wxArrayString& m_files;
+    wxString m_prefix;
+  };
+
   //! The thread the help file anchors are compiled in
   std::unique_ptr<std::thread> m_helpfileanchorsThread;
   //! The configuration storage
@@ -89,6 +120,7 @@ private:
   //! All anchors for keywords maxima's helpfile contains (without the file name)
   HelpFileAnchors m_helpFileAnchors_generic;
   wxString m_maximaHtmlDir;
+  wxString m_maximaVersion;
 };
 
 #endif // MAXIMAMANUAL_H
