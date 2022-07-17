@@ -134,6 +134,35 @@ bool MaximaManual::LoadManualAnchorsFromCache()
   return !m_helpFileAnchors_singlePage.empty();
 }
 
+void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors)
+{
+  HelpFileAnchors aliasses;
+  aliasses["%solve"] = "to_poly_solve";
+  aliasses["find_root_error"] = "find_root";
+  aliasses["wxbarsplot"] = "barsplot";
+  aliasses["wxboxplot"] = "boxplot";
+  aliasses["wxhistogram"] = "histogram";
+  aliasses["wxpiechart"] = "piechart";
+  aliasses["wxscatterplot"] = "scatterplot";
+  aliasses["wxstarplot"] = "starplot";
+  aliasses["wxdrawdf"] = "drawdf";
+  aliasses["wxdraw"] = "draw";
+  aliasses["wxdraw2d"] = "draw2d";
+  aliasses["wxdraw3d"] = "draw3d";
+  aliasses["with_slider_draw"] = "draw";
+  aliasses["with_slider_draw2d"] = "draw2d";
+  aliasses["with_slider_draw3d"] = "draw3d";
+  
+  for (auto it = aliasses.begin(); it !=aliasses.end(); ++it)
+  {
+    wxString cmdName = it->first;
+    
+    if((anchors.find(it->first) == anchors.end()) &&
+       (anchors.find(it->second) != anchors.end()))
+      anchors[it->first] = anchors[it->second];
+  }
+}
+
 
 void MaximaManual::CompileHelpFileAnchors()
 {
@@ -149,19 +178,6 @@ void MaximaManual::CompileHelpFileAnchors()
     {
       wxLogMessage(wxString::Format(_("Scanning help file %s for anchors"),
                                     file.c_str()));
-      m_helpFileAnchors_singlePage["wxbarsplot"] = "barsplot";
-      m_helpFileAnchors_singlePage["wxboxplot"] = "boxplot";
-      m_helpFileAnchors_singlePage["wxhistogram"] = "histogram";
-      m_helpFileAnchors_singlePage["wxpiechart"] = "piechart";
-      m_helpFileAnchors_singlePage["wxscatterplot"] = "scatterplot";
-      m_helpFileAnchors_singlePage["wxstarplot"] = "starplot";
-      m_helpFileAnchors_singlePage["wxdrawdf"] = "drawdf";
-      m_helpFileAnchors_singlePage["wxdraw"] = "draw";
-      m_helpFileAnchors_singlePage["wxdraw2d"] = "draw2d";
-      m_helpFileAnchors_singlePage["wxdraw3d"] = "draw3d";
-      m_helpFileAnchors_singlePage["with_slider_draw"] = "draw";
-      m_helpFileAnchors_singlePage["with_slider_draw2d"] = "draw2d";
-      m_helpFileAnchors_singlePage["with_slider_draw3d"] = "draw3d";
       
       wxRegEx idExtractor(".*<span id=\\\"([a-zAZ0-9_-]*)\\\"");
       wxRegEx idExtractor2("<dt id=\\\"(index-[a-zAZ0-9_-]*)\\\"");
@@ -205,20 +221,22 @@ void MaximaManual::CompileHelpFileAnchors()
                 token = token.Right(token.Length()-3);
               //! Tokens that end with "-1" aren't too useful, normally.
               if((!token.EndsWith("-1")) && (!token.Contains(" ")))              {
-                m_helpFileAnchors_singlePage[token] = id;
-                foundAnchors++;
+                {
+                  if(!file.EndsWith(wxT("_singlepage.html")))
+                    m_helpFileAnchors_singlePage[token] = file + "+" + id;
+                  else
+                    m_helpFileAnchors_FilePerChapter[token] = file + "+" + id;
+                  m_helpFileAnchors_generic[token] = id;
+                  foundAnchors++;
+                }
               }
             }
           }
         }
       }
-      if(m_helpFileAnchors_singlePage["%solve"].IsEmpty())
-        m_helpFileAnchors_singlePage["%solve"] = m_helpFileAnchors_singlePage["to_poly_solve"];
-      
-      if((m_helpFileAnchors_singlePage.find("find_root_error") == m_helpFileAnchors_singlePage.end()) &&
-         (m_helpFileAnchors_singlePage.find("find_root") != m_helpFileAnchors_singlePage.end()))
-        m_helpFileAnchors_singlePage["find_root_error"] = m_helpFileAnchors_singlePage["find_root"];
-      
+      AnchorAliasses(m_helpFileAnchors_generic);
+      AnchorAliasses(m_helpFileAnchors_FilePerChapter);
+      AnchorAliasses(m_helpFileAnchors_singlePage);
       wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
     }
     if(foundAnchors > 50)
@@ -255,8 +273,8 @@ void MaximaManual::SaveManualAnchorsToCache()
     );
 
   MaximaManual::HelpFileAnchors::const_iterator it;
-  for (it = m_helpFileAnchors_singlePage.begin();
-       it != m_helpFileAnchors_singlePage.end();
+  for (it = m_helpFileAnchors_generic.begin();
+       it != m_helpFileAnchors_generic.end();
        ++it)
   {
     wxXmlNode *manualEntry =
@@ -264,24 +282,52 @@ void MaximaManual::SaveManualAnchorsToCache()
         headNode,
           wxXML_ELEMENT_NODE,
         "entry");
-    wxXmlNode *anchorNode = new wxXmlNode(
-      manualEntry,
-      wxXML_ELEMENT_NODE,
-      "anchor");
-    new wxXmlNode(
-      anchorNode,
-      wxXML_TEXT_NODE,
-      wxEmptyString,
-      it->second);
-    wxXmlNode *keyNode = new wxXmlNode(
-      manualEntry,
-      wxXML_ELEMENT_NODE,
+    {
+      wxXmlNode *keyNode = new wxXmlNode(
+        manualEntry,
+        wxXML_ELEMENT_NODE,
         "key");
-    new wxXmlNode(
+      new wxXmlNode(
         keyNode,
         wxXML_TEXT_NODE,
         wxEmptyString,
         it->first);
+    }
+    {
+      wxXmlNode *anchorNode = new wxXmlNode(
+        manualEntry,
+        wxXML_ELEMENT_NODE,
+        "anchor");
+      new wxXmlNode(
+        anchorNode,
+        wxXML_TEXT_NODE,
+        wxEmptyString,
+        it->second);
+    }
+    if(m_helpFileAnchors_singlePage.find(it->first) != m_helpFileAnchors_singlePage.end())
+    {
+      wxXmlNode *keyNode = new wxXmlNode(
+        manualEntry,
+        wxXML_ELEMENT_NODE,
+        "anchor_singlepage");
+      new wxXmlNode(
+        keyNode,
+        wxXML_TEXT_NODE,
+        wxEmptyString,
+        m_helpFileAnchors_singlePage[it->first]);
+    }
+    if(m_helpFileAnchors_FilePerChapter.find(it->first) != m_helpFileAnchors_FilePerChapter.end())
+    {
+      wxXmlNode *keyNode = new wxXmlNode(
+        manualEntry,
+        wxXML_ELEMENT_NODE,
+        "anchor_fileperchapter");
+      new wxXmlNode(
+        keyNode,
+        wxXML_TEXT_NODE,
+        wxEmptyString,
+        m_helpFileAnchors_singlePage[it->first]);
+    }
   }
   wxXmlDocument xmlDoc;
   xmlDoc.SetDocumentNode(topNode);
@@ -333,6 +379,8 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool chec
     if(entry->GetName() == wxT("entry"))
     {
       wxString key;
+      wxString anchor_singlepage;
+      wxString anchor_FilePerChapter;
       wxString anchor;
       wxXmlNode *node = entry->GetChildren();
       while(node)
@@ -341,10 +389,18 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool chec
           anchor = node->GetChildren()->GetContent();
         if((node->GetName() == wxT("key")) && (node->GetChildren()))
           key = node->GetChildren()->GetContent();
+        if((node->GetName() == wxT("anchor_singlepage")) && (node->GetChildren()))
+          anchor_singlepage = node->GetChildren()->GetContent();
+        if((node->GetName() == wxT("anchor_fileperchapter")) && (node->GetChildren()))
+          anchor_FilePerChapter = node->GetChildren()->GetContent();
         node = node->GetNext();
       }
       if((!key.IsEmpty()) && (!anchor.IsEmpty()))
         m_helpFileAnchors_singlePage[key] = anchor;
+      if((!key.IsEmpty()) && (!anchor_FilePerChapter.IsEmpty()))
+        m_helpFileAnchors_FilePerChapter[key] = anchor_FilePerChapter;
+      if((!key.IsEmpty()) && (!anchor_singlepage.IsEmpty()))
+        m_helpFileAnchors_singlePage[key] = anchor_singlepage;
     }
     entry = entry->GetNext();
   }
