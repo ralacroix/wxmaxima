@@ -146,6 +146,11 @@ private:
       }
     virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
+        wxFileName newItemName(dirname);
+        wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
+        newItem.Replace(wxFileName::GetPathSeparator(),"/");
+        if(m_files.Index(newItem) == wxNOT_FOUND)
+          m_files.Add(newItem);
         return wxDIR_IGNORE;
       }
     wxArrayString& GetResult(){return m_files;}

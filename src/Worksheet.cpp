@@ -2004,6 +2004,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
   }
 }
 
+
 /***
  * We have a mouse click to the left of a GroupCel.
  */

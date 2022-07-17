@@ -2014,7 +2014,7 @@
 		   (format t "~a" (print_value key))))
 	     *variable-initial-values*)
 
-    (mapcar (lambda(key) (if (eq (char (format nil "~a" key) 0) #\$ ) (symbol-to-xml (make-symbol key)))) (wx-list-all-maxima-vars))
+;;    (mapcar (lambda(key) (if (eq (char (format nil "~a" key) 0) #\$ ) (symbol-to-xml (make-symbol key)))) (wx-list-all-maxima-vars))
 
     ;; ezunits publishes all known units in a function.
     (if (boundp '$known_units)
