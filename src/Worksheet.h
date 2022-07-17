@@ -32,6 +32,7 @@
 
 #include "stx/optional.hpp"
 #include "precomp.h"
+#include "MaximaManual.h"
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
 #include <wx/aui/aui.h>
@@ -86,7 +87,6 @@ wxMaxima can display it.
 class Worksheet : public wxScrolled<wxWindow>
 {
 public:
-  WX_DECLARE_STRING_HASH_MAP(wxString, HelpFileAnchors);
   //! Is an update of the worksheet controls needed?
   bool UpdateControlsNeeded(){bool result = m_updateControls; m_updateControls = false; return result;}
 private:
@@ -604,7 +604,6 @@ private:
   AutocompletePopup *m_autocompletePopup;
 
 public:
-  wxString GetMaximaHelpFile();
   void SetMaximaVersion(wxString version){m_maximaVersion = version;}
   wxString GetMaximaVersion(){return m_maximaVersion;}
   //! Is this worksheet empty?
@@ -762,9 +761,6 @@ public:
 
   //! Re-read the configuration
   void UpdateConfig() { m_configuration->ReadConfig(); }
-
-  //! The thread the help file anchors are compiled in
-  std::unique_ptr<std::thread> m_helpfileanchorsThread;
 
   //! The name of the currently-opened file
   wxString m_currentFile;
@@ -1539,20 +1535,8 @@ public:
 
   wxString GetOutputAboveCaret();
 
-  //! Search maxima's help file for command and variable names
-  void LoadHelpFileAnchors();
   //! Compile a list of known autocompletion symbols
   void LoadSymbols();
-  //! Collect all keyword anchors in the help file
-  void CompileHelpFileAnchors();
-  //! Load the result from the last CompileHelpFileAnchors from the disk cache
-  bool LoadManualAnchorsFromCache();
-  //! Load the help file anchors from an wxXmlDocument
-  bool LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool checkManualVersion = true);
-  //! Load the help file anchors from the built-in list
-  bool LoadBuiltInManualAnchors();
-  //! Save the list of help file anchors to the cache.
-  void SaveManualAnchorsToCache();
 
   bool Autocomplete(AutoComplete::autoCompletionType type = AutoComplete::command);
 
@@ -1627,18 +1611,15 @@ public:
     use the last cell maxima was known to work on.
   */
   GroupCell *GetWorkingGroup(bool resortToLast = false) const;
-
+  //! Tries to parse maxima's manual in order to find out which anchors it contains
+  void LoadHelpFileAnchors(wxString docdir)
+    {m_maximaManual.LoadHelpFileAnchors(docdir);}
   //! The panel the user can display variable contents in
   Variablespane *m_variablesPane;
 
   //! Returns the index in (%i...) or (%o...)
   int GetCellIndex(Cell *cell) const;
 
-  wxString GetHelpfileAnchor(wxString keyword);
-  //! All anchors for keywords maxima's helpfile contains
-  HelpFileAnchors m_helpFileAnchors_singlePage;
-  //! All anchors for keywords maxima's helpfile contains
-  HelpFileAnchors m_helpFileAnchors_shortFiles;
   //! Suggestions for how the word that was right-clicked on could continue
   wxArrayString m_replacementsForCurrentWord;
   //Simple iterator over a Maxima input string, skipping comments and strings
@@ -1684,6 +1665,7 @@ public:
     Worksheet *m_worksheet;
   };
 #endif
+  MaximaManual m_maximaManual;
 protected:
   void FocusTextControl();
   wxString m_lastQuestion;

@@ -3237,7 +3237,7 @@ void wxMaxima::VariableActionMaximaInfodir(const wxString &value)
   wxString dir_canonical = dir.GetPath();
   m_worksheet->SetMaximaDocDir(dir_canonical);
   wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),dir_canonical.utf8_str()));
-  m_worksheet->LoadHelpFileAnchors();
+  m_worksheet->LoadHelpFileAnchors(dir_canonical);
 }
 
 void wxMaxima::VariableActionMaximaHtmldir(const wxString &value)

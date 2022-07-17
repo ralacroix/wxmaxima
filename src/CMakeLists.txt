@@ -122,6 +122,7 @@ set(SOURCE_FILES
     MaximaIPC.cpp
     MaximaTokenizer.cpp
     MaxSizeChooser.cpp
+    MaximaManual.cpp
     Notification.cpp
     RecentDocuments.cpp
     RegexCtrl.cpp
