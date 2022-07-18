@@ -173,7 +173,8 @@ void MaximaManual::CompileHelpFileAnchors()
   {
     wxArrayString helpFiles;
     GetHTMLFiles htmlFiles(helpFiles, m_maximaHtmlDir);
-
+    helpFiles = htmlFiles.GetResult();
+    
     for (auto file: helpFiles)
     {
       wxLogMessage(wxString::Format(_("Scanning help file %s for anchors"),
@@ -244,6 +245,21 @@ void MaximaManual::CompileHelpFileAnchors()
     else
       LoadBuiltInManualAnchors();
   }
+}
+
+wxDirTraverseResult MaximaManual::GetHTMLFiles::OnFile(const wxString& filename)
+{
+  wxFileName newItemName(filename);
+  wxString newItem = m_prefix + newItemName.GetFullName();
+  newItem.Replace(wxFileName::GetPathSeparator(),"/");
+  if(newItem.EndsWith(".html") && (m_files.Index(newItem) == wxNOT_FOUND))
+    m_files.Add(newItem);
+  return wxDIR_CONTINUE;
+}
+
+wxDirTraverseResult MaximaManual::GetHTMLFiles::OnDir(const wxString& dirname)
+{
+  return wxDIR_IGNORE;
 }
 
 void MaximaManual::SaveManualAnchorsToCache()
@@ -429,11 +445,11 @@ void MaximaManual::FindMaximaHtmlDir(wxString docDir)
   }
 #endif // __CYGWIN__
   wxPathList helpfilepaths;
-  helpfilepaths.Add(m_maximaHtmlDir);
-  helpfilepaths.Add(m_maximaHtmlDir+"/info");
-  helpfilepaths.Add(m_maximaHtmlDir+"/info/html");
-  helpfilepaths.Add(m_maximaHtmlDir+"/html");
-  helpfilepaths.Add(m_maximaHtmlDir+"/../html");
+  helpfilepaths.Add(docDir);
+  helpfilepaths.Add(docDir+"/info");
+  helpfilepaths.Add(docDir+"/info/html");
+  helpfilepaths.Add(docDir+"/html");
+  helpfilepaths.Add(docDir+"/../html");
   helpfilepaths.Add(m_configuration->MaximaShareDir() + "/../doc/html");
   helpfilepaths.Add(m_configuration->MaximaShareDir() + "/doc/html");
   wxString helpfile_location = helpfilepaths.FindAbsoluteValidPath("maxima_singlepage.html");

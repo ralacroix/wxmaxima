@@ -87,25 +87,9 @@ private:
   public:
     explicit GetHTMLFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
       m_files(files), m_prefix(prefix) { }
-    virtual wxDirTraverseResult OnFile(const wxString& filename) override
-      {
-        wxFileName newItemName(filename);
-        wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "\"";
-        newItem.Replace(wxFileName::GetPathSeparator(),"/");
-        if(filename.EndsWith(".html") && (m_files.Index(newItem) == wxNOT_FOUND))
-          m_files.Add(newItem);
-        return wxDIR_CONTINUE;
-      }
-    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
-      {
-        wxFileName newItemName(dirname);
-        wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
-        newItem.Replace(wxFileName::GetPathSeparator(),"/");
-        if(m_files.Index(newItem) == wxNOT_FOUND)
-          m_files.Add(newItem);
-        return wxDIR_IGNORE;
-      }
-    wxArrayString& GetResult(){return m_files;}
+    virtual wxDirTraverseResult OnFile(const wxString& filename) override;
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override;
+    wxArrayString& GetResult() const {return m_files;}
   protected: 
     wxArrayString& m_files;
     wxString m_prefix;

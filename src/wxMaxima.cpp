@@ -3232,18 +3232,18 @@ void wxMaxima::VariableActionMaximaInfodir(const wxString &value)
 {
   // Make sure that we get out all ".." and "~" of the path as they seem to confuse
   // the help browser logic
-  wxFileName dir(value);
-  dir.MakeAbsolute();
-  wxString dir_canonical = dir.GetPath();
-  m_worksheet->SetMaximaDocDir(dir_canonical);
-  wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),dir_canonical.utf8_str()));
-  m_worksheet->LoadHelpFileAnchors(dir_canonical, m_worksheet->GetMaximaVersion());
+  wxLogMessage(wxString::Format(_("Maxima's manual lies in directory %s"),value.utf8_str()));
 }
 
 void wxMaxima::VariableActionMaximaHtmldir(const wxString &value)
 {
   m_maximaHtmlDir = value;
-  wxLogMessage(wxString::Format(_("Maxima's HTML manuals are in directory %s"),value.utf8_str()));
+  wxFileName dir(value);
+  dir.MakeAbsolute();
+  wxString dir_canonical = dir.GetPath();
+  wxLogMessage(wxString::Format(_("Maxima's HTML manuals are in directory %s"),dir_canonical.utf8_str()));
+  m_worksheet->SetMaximaDocDir(dir_canonical);
+  m_worksheet->LoadHelpFileAnchors(dir_canonical, m_worksheet->GetMaximaVersion());
 }
 void wxMaxima::GnuplotCommandName(wxString gnuplot)
 {
