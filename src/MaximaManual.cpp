@@ -180,7 +180,12 @@ void MaximaManual::CompileHelpFileAnchors()
     for (auto file: helpFiles)
     {
       wxString fileURI = wxURI(wxT("file://") + file).BuildURI();
+      // wxWidgets cannot automatically replace a # as it doesn't know if it is a anchor
+      // separator
       fileURI.Replace("#", "%23");
+#ifdef __WINDOWS__
+      fileURI.Replace("\\", "/");
+#endif
 #ifdef  __WXMSW__
       // Fixes a missing "///" after the "file:". This works because we always get absolute
       // file names.
@@ -435,6 +440,11 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool chec
     entry = entry->GetNext();
   }
   return !m_helpFileAnchors_singlePage.empty();
+}
+
+wxString MaximaManual::GetHelpfileURL(wxString keyword)
+{
+  return GetHelpfileUrl_Singlepage(keyword);
 }
 
 void MaximaManual::FindMaximaHtmlDir(wxString docDir)

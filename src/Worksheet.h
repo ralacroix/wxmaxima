@@ -1614,7 +1614,10 @@ public:
   //! Tries to parse maxima's manual in order to find out which anchors it contains
   void LoadHelpFileAnchors(wxString docdir, wxString maximaVersion)
     {m_maximaManual.LoadHelpFileAnchors(docdir, maximaVersion);}
-  wxString GetHelpfileAnchor(wxString keyword){return m_maximaManual.GetHelpfileAnchor(keyword);}
+  wxString GetHelpfileAnchorName(wxString keyword)
+    {return m_maximaManual.GetHelpfileAnchorName(keyword);}
+  wxString GetHelpfileURL(wxString keyword)
+    {return m_maximaManual.GetHelpfileURL(keyword);}
   //! The panel the user can display variable contents in
   Variablespane *m_variablesPane;
 

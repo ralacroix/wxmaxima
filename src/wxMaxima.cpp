@@ -4729,33 +4729,17 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
     keyword = "inchar";
   if(keyword.StartsWith("(%o"))
     keyword = "outchar";
-  wxString MaximaHelpFile = m_worksheet->GetHelpfileAnchor(keyword);
-#ifdef __WINDOWS__
-  // replace \ with / as directory separator
-  MaximaHelpFile.Replace("\\", "/", true);
-#endif
+  wxString tmp = m_worksheet->GetHelpfileAnchorName(keyword);
+  if(tmp.IsEmpty())
+    keyword = "Function-and-Variable-Index";
+
+  wxString maximaHelpURL = m_worksheet->GetHelpfileURL(keyword);
 
   wxBusyCursor crs;
-  keyword = m_worksheet->GetHelpfileAnchor(keyword);
-  if(keyword.IsEmpty())
-    keyword = "Function-and-Variable-Index";
-  if(!MaximaHelpFile.IsEmpty())
+  if(!maximaHelpURL.IsEmpty())
   {
-    // A Unix absolute path starts with a "/", so a valid file URI
-    // file:///path/to/helpfile (3 slashes!!) is constructed.
-    // On Windows the path starts e.g. with C:/path/to/helpfile
-    // so a third "/" must be inserted.
-    // Otherwise "C" might be considered as hostname.
-    wxString maximaHelpfileURI = wxString("file://")+
-#ifdef __WINDOWS__
-      wxString("/") +
-#endif
-      MaximaHelpFile;
-    if(!keyword.IsEmpty()) {
-      maximaHelpfileURI = maximaHelpfileURI + "#" + keyword;
-    }
-    wxLogMessage(wxString::Format(_("Opening help file %s"),maximaHelpfileURI.utf8_str()));
-    LaunchHelpBrowser(maximaHelpfileURI);
+    wxLogMessage(wxString::Format(_("Opening help file %s"),maximaHelpURL.utf8_str()));
+    LaunchHelpBrowser(maximaHelpURL);
   }
   else
   {
