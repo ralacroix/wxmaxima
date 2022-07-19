@@ -61,9 +61,9 @@ public:
   HelpFileAnchors GetHelpfileAnchors();
   void FindMaximaHtmlDir(wxString docDir);
   wxString GetHelpfileAnchorName(wxString keyword);
-  wxString GetHelpfileAnchor_Singlepage(wxString keyword);
-  wxString GetHelpfileAnchor_FilePerChapter(wxString keyword);
-  wxString GetHelpfileAnchor(wxString keyword){return GetHelpfileAnchor_Singlepage(keyword);}
+  wxString GetHelpfileUrl_Singlepage(wxString keyword);
+  wxString GetHelpfileUrl_FilePerChapter(wxString keyword);
+  wxString GetHelpfileAnchor(wxString keyword){return GetHelpfileUrl_Singlepage(keyword);}
   //! Search maxima's help file for command and variable names
   void LoadHelpFileAnchors(wxString directory, wxString maximaVersion);
   //! Collect all keyword anchors in the help file

@@ -34,6 +34,7 @@
 #include <wx/wfstream.h>
 #include <wx/tokenzr.h>
 #include <wx/txtstrm.h>
+#include <wx/uri.h>
 
 MaximaManual::MaximaManual(Configuration *configuration)
 {
@@ -66,7 +67,7 @@ wxString MaximaManual::GetHelpfileAnchorName(wxString keyword)
   else
     return anchor->second;
 }
-wxString MaximaManual::GetHelpfileAnchor_Singlepage(wxString keyword)
+wxString MaximaManual::GetHelpfileUrl_Singlepage(wxString keyword)
 {
   if(m_helpfileanchorsThread)
   {
@@ -81,7 +82,7 @@ wxString MaximaManual::GetHelpfileAnchor_Singlepage(wxString keyword)
   else
     return anchor->second;
 }
-wxString MaximaManual::GetHelpfileAnchor_FilePerChapter(wxString keyword)
+wxString MaximaManual::GetHelpfileUrl_FilePerChapter(wxString keyword)
 {
   if(m_helpfileanchorsThread)
   {
@@ -172,11 +173,24 @@ void MaximaManual::CompileHelpFileAnchors()
   if(m_helpFileAnchors_singlePage.empty() && (!(m_maximaHtmlDir.IsEmpty())))
   {
     wxArrayString helpFiles;
-    GetHTMLFiles htmlFiles(helpFiles, m_maximaHtmlDir);
-    helpFiles = htmlFiles.GetResult();
+    GetHTMLFiles htmlFilesTraverser(helpFiles, m_maximaHtmlDir);
+    wxDir dir(m_maximaHtmlDir);
+    dir.Traverse(htmlFilesTraverser);
     
     for (auto file: helpFiles)
     {
+      wxString fileURI = wxURI(wxT("file://") + file).BuildURI();
+      fileURI.Replace("#", "%23");
+#ifdef  __WXMSW__
+      // Fixes a missing "///" after the "file:". This works because we always get absolute
+      // file names.
+      wxRegEx uriCorector1("^file:([a-zA-Z]):");
+      wxRegEx uriCorector2("^file:([a-zA-Z][a-zA-Z]):");
+      
+      uriCorector1.ReplaceFirst(&fileURI, wxT("file:///\\1:"));
+      uriCorector2.ReplaceFirst(&fileURI, wxT("file:///\\1:"));
+#endif
+
       wxLogMessage(wxString::Format(_("Scanning help file %s for anchors"),
                                     file.c_str()));
       
@@ -224,9 +238,9 @@ void MaximaManual::CompileHelpFileAnchors()
               if((!token.EndsWith("-1")) && (!token.Contains(" ")))              {
                 {
                   if(!file.EndsWith(wxT("_singlepage.html")))
-                    m_helpFileAnchors_singlePage[token] = file + "+" + id;
+                    m_helpFileAnchors_singlePage[token] = fileURI + "#" + id;
                   else
-                    m_helpFileAnchors_FilePerChapter[token] = file + "+" + id;
+                    m_helpFileAnchors_FilePerChapter[token] = fileURI + "#" + id;
                   m_helpFileAnchors_generic[token] = id;
                   foundAnchors++;
                 }
@@ -250,7 +264,7 @@ void MaximaManual::CompileHelpFileAnchors()
 wxDirTraverseResult MaximaManual::GetHTMLFiles::OnFile(const wxString& filename)
 {
   wxFileName newItemName(filename);
-  wxString newItem = m_prefix + newItemName.GetFullName();
+  wxString newItem = m_prefix + wxFileName::GetPathSeparator() + newItemName.GetFullName();
   newItem.Replace(wxFileName::GetPathSeparator(),"/");
   if(newItem.EndsWith(".html") && (m_files.Index(newItem) == wxNOT_FOUND))
     m_files.Add(newItem);
@@ -325,7 +339,7 @@ void MaximaManual::SaveManualAnchorsToCache()
       wxXmlNode *keyNode = new wxXmlNode(
         manualEntry,
         wxXML_ELEMENT_NODE,
-        "anchor_singlepage");
+        "url_singlepage");
       new wxXmlNode(
         keyNode,
         wxXML_TEXT_NODE,
@@ -337,7 +351,7 @@ void MaximaManual::SaveManualAnchorsToCache()
       wxXmlNode *keyNode = new wxXmlNode(
         manualEntry,
         wxXML_ELEMENT_NODE,
-        "anchor_fileperchapter");
+        "url_fileperchapter");
       new wxXmlNode(
         keyNode,
         wxXML_TEXT_NODE,
@@ -395,8 +409,8 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool chec
     if(entry->GetName() == wxT("entry"))
     {
       wxString key;
-      wxString anchor_singlepage;
-      wxString anchor_FilePerChapter;
+      wxString url_singlepage;
+      wxString url_filePerChapter;
       wxString anchor;
       wxXmlNode *node = entry->GetChildren();
       while(node)
@@ -405,18 +419,18 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool chec
           anchor = node->GetChildren()->GetContent();
         if((node->GetName() == wxT("key")) && (node->GetChildren()))
           key = node->GetChildren()->GetContent();
-        if((node->GetName() == wxT("anchor_singlepage")) && (node->GetChildren()))
-          anchor_singlepage = node->GetChildren()->GetContent();
-        if((node->GetName() == wxT("anchor_fileperchapter")) && (node->GetChildren()))
-          anchor_FilePerChapter = node->GetChildren()->GetContent();
+        if((node->GetName() == wxT("url_singlepage")) && (node->GetChildren()))
+          url_singlepage = node->GetChildren()->GetContent();
+        if((node->GetName() == wxT("url_fileperchapter")) && (node->GetChildren()))
+          url_filePerChapter = node->GetChildren()->GetContent();
         node = node->GetNext();
       }
       if((!key.IsEmpty()) && (!anchor.IsEmpty()))
         m_helpFileAnchors_singlePage[key] = anchor;
-      if((!key.IsEmpty()) && (!anchor_FilePerChapter.IsEmpty()))
-        m_helpFileAnchors_FilePerChapter[key] = anchor_FilePerChapter;
-      if((!key.IsEmpty()) && (!anchor_singlepage.IsEmpty()))
-        m_helpFileAnchors_singlePage[key] = anchor_singlepage;
+      if((!key.IsEmpty()) && (!url_filePerChapter.IsEmpty()))
+        m_helpFileAnchors_FilePerChapter[key] = url_filePerChapter;
+      if((!key.IsEmpty()) && (!url_singlepage.IsEmpty()))
+        m_helpFileAnchors_singlePage[key] = url_singlepage;
     }
     entry = entry->GetNext();
   }
