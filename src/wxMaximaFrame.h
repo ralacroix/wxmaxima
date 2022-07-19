@@ -44,6 +44,7 @@ surrounding the worksheet.
 
 #include "ScrollingGenWizPanel.h"
 #include "Worksheet.h"
+#include "HelpBrowser.h"
 #include "RecentDocuments.h"
 #include "Version.h"
 #include "MainMenuBar.h"
@@ -110,6 +111,7 @@ public:
     menu_pane_log,       //!< Both the "toggle the log pane" command and the "log" pane
     menu_pane_variables, //!< Both the "toggle the variables pane" command and the "variables" pane
     menu_pane_draw,      //!< Both the "toggle the draw pane" command for the "draw" pane
+    menu_pane_help,      //!< Both the "toggle the draw pane" command for the help browser
     menu_pane_symbols,   //!< Both the "toggle the symbols pane" command for the "symbols" pane
     /*! Both used as the "toggle the stats pane" command and as the ID of the stats pane
 
@@ -937,6 +939,7 @@ protected:
   virtual wxSize DoGetBestClientSize() const;
   //! The sidebar with the draw commands
   DrawPane *m_drawPane;
+  HelpBrowser *m_helpPane;
 private:
   class GreekPane : public wxScrolled<wxPanel>
   {

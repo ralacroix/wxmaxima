@@ -110,6 +110,7 @@ set(SOURCE_FILES
     FindReplacePane.cpp
     FontAttribs.cpp
     FontCache.cpp
+    HelpBrowser.cpp
     History.cpp
     Image.cpp
     LicenseDialog.cpp

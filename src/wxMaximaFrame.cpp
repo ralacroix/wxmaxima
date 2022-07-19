@@ -375,7 +375,18 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                     PaneBorder(true).
                     Left());
   wxWindowUpdateLocker drawBlocker(m_drawPane);
+  
+  m_manager.AddPane(m_helpPane = new HelpBrowser(this, &m_configuration),
+                    wxAuiPaneInfo().Name(wxT("help")).
+                    CloseButton(true).
+                    TopDockable(true).
+                    BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
+                    PaneBorder(true).
+                    Right());
 
+  
   m_worksheet->m_mainToolBar = new ToolBar(this);
 
   m_manager.AddPane(m_worksheet->m_mainToolBar,
@@ -790,6 +801,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure, _("Table of Contents\tAlt+Shift+T"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt+Shift+C"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_draw, _("Plot using Draw"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_help, _("The integrated help browser"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_log,   _("Debug messages"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_variables,   _("Variables"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("Raw XML monitor"));
@@ -2018,6 +2030,9 @@ bool wxMaximaFrame::IsPaneDisplayed(Event id)
     case menu_pane_draw:
       displayed = m_manager.GetPane(wxT("draw")).IsShown();
       break;
+    case menu_pane_help:
+      displayed = m_manager.GetPane(wxT("help")).IsShown();
+      break;
     default:
       wxASSERT(false);
       break;
@@ -2041,6 +2056,7 @@ void wxMaximaFrame::DockAllSidebars(wxCommandEvent & WXUNUSED(ev))
   m_manager.GetPane(wxT("symbols")).Dock();
   m_manager.GetPane(wxT("format")).Dock();
   m_manager.GetPane(wxT("draw")).Dock();
+  m_manager.GetPane(wxT("help")).Dock();
   m_manager.Update();
 }
 
@@ -2061,6 +2077,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       m_manager.GetPane(wxT("log")).Show(false);
       m_manager.GetPane(wxT("variables")).Show(false);
       m_manager.GetPane(wxT("draw")).Show(false);
+      m_manager.GetPane(wxT("wizard")).Show(false);
       m_manager.GetPane(wxT("symbols")).Show(false);
       m_manager.GetPane(wxT("stats")).Show(false);
       ShowToolBar(false);
@@ -2097,6 +2114,9 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       break;
     case menu_pane_draw:
       m_manager.GetPane(wxT("draw")).Show(show);
+      break;
+    case menu_pane_help:
+      m_manager.GetPane(wxT("help")).Show(show);
       break;
     case menu_pane_symbols:
       m_manager.GetPane(wxT("symbols")).Show(show);
