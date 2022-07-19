@@ -485,6 +485,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     m_manager.GetPane(wxT("format")).Caption(_("Insert")).CloseButton(true).Resizable().PaneBorder(true).Movable(true);
   m_manager.GetPane(wxT("draw")) =
     m_manager.GetPane(wxT("draw")).Caption(_("Plot using Draw")).CloseButton(true).Resizable().PaneBorder(true).Movable(true);
+  m_manager.GetPane(wxT("help")) =
+    m_manager.GetPane(wxT("help")).Caption(_("Help")).CloseButton(true).Resizable().PaneBorder(true).Movable(true);
   m_manager.GetPane(wxT("greek")) =
     m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters")).CloseButton(true).Resizable().Gripper(false).PaneBorder(true).Movable(true).
     Gripper(false).CloseButton(true);

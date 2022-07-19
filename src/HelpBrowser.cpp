@@ -30,13 +30,13 @@
 #include <wx/sizer.h>
 
 HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration):
-  wxPanel(parent, wxID_ANY),
+  wxScrolled<wxPanel>(parent, wxID_ANY),
   m_configuration(configuration)
 {
   wxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   m_webView = wxWebView::New(this, wxID_ANY,
                              "https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html");
-  vbox->Add(m_webView, wxSizerFlags().Border(wxRIGHT, 10*GetContentScaleFactor()).Expand());
+  vbox->Add(m_webView, wxSizerFlags().Expand());
   SetSizer(vbox);
   FitInside();
 }

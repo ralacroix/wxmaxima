@@ -34,14 +34,14 @@
 #include "precomp.h"
 #include <wx/wx.h>
 #include <wx/webview.h>
+#include <wx/scrolwin.h>
 #include <wx/panel.h>
 #include "Configuration.h"
 
 /* The help browser sidebar
  */
-class HelpBrowser : public wxPanel
+class HelpBrowser : public wxScrolled<wxPanel>
 {
-
 public:
   explicit HelpBrowser(wxWindow *parent, Configuration *configuration);
 private:
