@@ -33,10 +33,19 @@ HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration):
   wxScrolled<wxPanel>(parent, wxID_ANY),
   m_configuration(configuration)
 {
-  wxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  SetScrollRate(5*GetContentScaleFactor(), 5*GetContentScaleFactor());
+  SetMinSize(wxSize(GetContentScaleFactor()*100,GetContentScaleFactor()*100));
+
+  auto *vbox = new wxBoxSizer(wxVERTICAL);
+  
   m_webView = wxWebView::New(this, wxID_ANY,
                              "https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html");
-  vbox->Add(m_webView, wxSizerFlags().Expand());
+  vbox->Add(m_webView, wxSizerFlags(1).Expand());
   SetSizer(vbox);
   FitInside();
+}
+
+void HelpBrowser::SetURL(wxString url)
+{
+  m_webView->LoadURL(url);
 }

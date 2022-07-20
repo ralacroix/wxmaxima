@@ -530,8 +530,12 @@ void ConfigDialogue::SetCheckboxValues()
   }
 
   m_autoMathJaxURL->SetValue(m_configuration->MathJaXURL_Auto());
-  m_autodetectHelpBrowser->SetValue(m_configuration->AutodetectHelpBrowser());
-  m_noAutodetectHelpBrowser->SetValue(!m_configuration->AutodetectHelpBrowser());
+  m_internalHelpBrowser->SetValue(m_configuration->InternalHelpBrowser());
+  if(!m_configuration->InternalHelpBrowser())
+  {
+    m_autodetectHelpBrowser->SetValue(m_configuration->AutodetectHelpBrowser());
+    m_noAutodetectHelpBrowser->SetValue(!m_configuration->AutodetectHelpBrowser());
+  }
   m_maximaUserLocation->SetValue(m_configuration->MaximaUserLocation());
   m_autodetectMaxima->SetValue(m_configuration->AutodetectMaxima());
   m_noAutodetectMaxima->SetValue(!m_configuration->AutodetectMaxima());
@@ -1220,6 +1224,9 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
+  m_internalHelpBrowser = new wxRadioButton(invocationSizer->GetStaticBox(), -1, _("Internal"), wxDefaultPosition,
+                                            wxDefaultSize, wxRB_GROUP);
+  nameSizer->Add(m_internalHelpBrowser, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   m_autodetectHelpBrowser = new wxRadioButton(invocationSizer->GetStaticBox(), -1, _("Autodetect"), wxDefaultPosition,
                                               wxDefaultSize, wxRB_GROUP);
   nameSizer->Add(m_autodetectHelpBrowser, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
@@ -1751,7 +1758,15 @@ void ConfigDialogue::WriteSettings()
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
   configuration->HelpBrowserUserLocation(m_helpBrowserUserLocation->GetValue());
   configuration->MaximaUsesHtmlBrowser(m_maximaUsesHtmlHelp->GetValue());
-  configuration->AutodetectHelpBrowser(m_autodetectHelpBrowser->GetValue());
+  if(m_internalHelpBrowser->GetValue())
+  {
+    configuration->InternalHelpBrowser(true);
+  }
+  else
+  {
+    configuration->InternalHelpBrowser(false);
+    configuration->AutodetectHelpBrowser(m_autodetectHelpBrowser->GetValue());
+  }
   configuration->MaximaParameters(m_additionalParameters->GetValue());
   configuration->SetMatchParens(m_matchParens->GetValue());
   configuration->ShowMatchingParens(m_showMatchingParens->GetValue());

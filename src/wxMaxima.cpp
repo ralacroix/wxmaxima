@@ -4600,28 +4600,36 @@ void wxMaxima::ShowTip(bool force)
 
 void wxMaxima::LaunchHelpBrowser(wxString uri)
 {
-  if(m_configuration.AutodetectHelpBrowser())
+  if(m_configuration.InternalHelpBrowser())
   {
-    bool helpBrowserLaunched;
-    {
-      SuppressErrorDialogs suppressor;
-      helpBrowserLaunched = wxLaunchDefaultBrowser(uri);
-    }
-    if(!helpBrowserLaunched)
-    {
-      // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
-      auto *manager = wxTheMimeTypesManager;
-      wxFileType *filetype = manager->GetFileTypeFromExtension("html");
-      wxString command = filetype->GetOpenCommand(uri);
-      wxLogMessage(wxString::Format(_("Launching the system's default help browser failed. Trying to execute %s instead."), command.utf8_str()));
-      wxExecute(command);
-    }
+    m_helpPane->SetURL(uri);
+    ShowPane(menu_pane_help);
   }
   else
   {
-    wxString command;
-    command = m_configuration.HelpBrowserUserLocation() + wxT(" ") + uri;
-    wxExecute(command);
+    if(m_configuration.AutodetectHelpBrowser())
+    {
+      bool helpBrowserLaunched;
+      {
+        SuppressErrorDialogs suppressor;
+        helpBrowserLaunched = wxLaunchDefaultBrowser(uri);
+      }
+      if(!helpBrowserLaunched)
+      {
+        // see https://docs.wxwidgets.org/3.0/classwx_mime_types_manager.html
+        auto *manager = wxTheMimeTypesManager;
+        wxFileType *filetype = manager->GetFileTypeFromExtension("html");
+        wxString command = filetype->GetOpenCommand(uri);
+        wxLogMessage(wxString::Format(_("Launching the system's default help browser failed. Trying to execute %s instead."), command.utf8_str()));
+        wxExecute(command);
+      }
+    }
+    else
+    {
+      wxString command;
+      command = m_configuration.HelpBrowserUserLocation() + wxT(" ") + uri;
+      wxExecute(command);
+    }
   }
 }
 

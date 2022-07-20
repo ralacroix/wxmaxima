@@ -677,15 +677,21 @@ public:
   //! Sets the location of the maxima binary.
   void MaximaUserLocation(wxString maxima) { m_maximaUserLocation = maxima; }
 
-  //! Autodetect maxima's location? (If false the user-specified location is used)
+  //! Autodetect the web browser? (If false the user-specified location is used)
   bool AutodetectHelpBrowser() const {return m_autodetectHelpBrowser;}
-  //! Autodetect maxima's location?
+  //! Autodetect the web browser?
   void AutodetectHelpBrowser(bool autodetect){m_autodetectHelpBrowser = autodetect;}
 
-  //! Returns the location of the help browser the user has selected.
+  //! Use the internal help browser? If not a external web browser is used.
+  bool InternalHelpBrowser() const {return m_useInternalHelpBrowser;}
+  //! Use the internal help browser? If not a external web browser is used.
+  void InternalHelpBrowser(bool useInternalHelpBrowser)
+    {m_useInternalHelpBrowser = useInternalHelpBrowser;}
+
+  //! Returns the location of the web browser the user has selected.
   wxString HelpBrowserUserLocation() const {return m_helpBrowserUserLocation;}
 
-  //! Sets the location of the maxima binary.
+  //! Sets the location of the web browser the user has detected.
   void HelpBrowserUserLocation(wxString helpBrowser) { m_helpBrowserUserLocation = helpBrowser;}
 
   /*! Could a maxima binary be found in the path we expect it to be in?
@@ -900,6 +906,8 @@ private:
   bool m_autodetectMaxima;
   //! Autodetect the help browser?
   bool m_autodetectHelpBrowser;
+  //! Use the internal help browser?
+  bool m_useInternalHelpBrowser;
   //! The worksheet all cells are drawn on
   wxRect m_updateRegion;
   //! Do we want to use incremental search?
