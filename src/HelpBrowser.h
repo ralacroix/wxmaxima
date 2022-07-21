@@ -43,7 +43,7 @@
 class HelpBrowser : public wxScrolled<wxPanel>
 {
 public:
-  explicit HelpBrowser(wxWindow *parent, Configuration *configuration);
+  explicit HelpBrowser(wxWindow *parent, Configuration *configuration, wxString url);
   void SetURL(wxString url);
 private:
   wxWebView *m_webView;

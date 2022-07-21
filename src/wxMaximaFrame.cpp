@@ -47,7 +47,7 @@
 #include "UnicodeSidebar.h"
 #include "CharButton.h"
 
-wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
+wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale, const wxString &title,
                              const wxPoint &pos, const wxSize &size,
                              long style, bool becomeLogTarget) :
   wxFrame(parent, id, title, pos, size, style),
@@ -56,6 +56,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_unsavedDocuments(wxT("unsaved")),
   m_recentPackages(wxT("packages"))
 {
+  m_locale = locale;
+  wxLogMessage(_("Selected language: ") + m_locale->GetCanonicalName() +
+               " (" + wxString::Format("%i", m_locale->GetLanguage()) + ")");
+
   m_bytesFromMaxima = 0;
   m_drawDimensions_last = -1;
   // Suppress window updates until this window has fully been created.
@@ -376,7 +380,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                     Left());
   wxWindowUpdateLocker drawBlocker(m_drawPane);
   
-  m_manager.AddPane(m_helpPane = new HelpBrowser(this, &m_configuration),
+  m_manager.AddPane(m_helpPane = new HelpBrowser(this, &m_configuration, wxMaximaManualLocation()),
                     wxAuiPaneInfo().Name(wxT("help")).
                     CloseButton(true).
                     TopDockable(true).
@@ -1839,6 +1843,29 @@ m_CalculusMenu->AppendSeparator();
 
   SetMenuBar(m_MenuBar);
 #undef APPEND_MENU_ITEM
+}
+
+wxString wxMaximaFrame::wxMaximaManualLocation()
+{
+  wxString helpfile;
+  wxString lang_long = m_locale->GetCanonicalName(); /* two- or five-letter string in xx or xx_YY format. Examples: "en", "en_GB", "en_US" or "fr_FR" */
+  wxString lang_short = lang_long.Left(lang_long.Find('_'));
+  
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".html";
+  if(!wxFileExists(helpfile))
+    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".html";
+  if(!wxFileExists(helpfile))
+    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.html");
+  
+  /* If wxMaxima is called via ./wxmaxima-local directly from the build directory and *not* installed */
+  /* the help files are in the "info/" subdirectory of the current (build) directory */
+  if(!wxFileExists(helpfile))
+    helpfile = wxGetCwd() + wxT("/info/wxmaxima.") + lang_long + ".html";
+  if(!wxFileExists(helpfile))
+    helpfile = wxGetCwd() + wxT("/info/wxmaxima.") + lang_short + ".html";
+  if(!wxFileExists(helpfile))
+    helpfile = wxGetCwd() + wxT("/info/wxmaxima.html");
+  return helpfile;
 }
 
 bool wxMaximaFrame::ToolbarIsShown()

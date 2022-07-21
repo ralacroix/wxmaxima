@@ -29,7 +29,7 @@
 #include "HelpBrowser.h"
 #include <wx/sizer.h>
 
-HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration):
+HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration, wxString url):
   wxScrolled<wxPanel>(parent, wxID_ANY),
   m_configuration(configuration)
 {
@@ -38,8 +38,7 @@ HelpBrowser::HelpBrowser(wxWindow *parent, Configuration *configuration):
 
   auto *vbox = new wxBoxSizer(wxVERTICAL);
   
-  m_webView = wxWebView::New(this, wxID_ANY,
-                             "https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html");
+  m_webView = wxWebView::New(this, wxID_ANY, url);
   vbox->Add(m_webView, wxSizerFlags(1).Expand());
   SetSizer(vbox);
   FitInside();

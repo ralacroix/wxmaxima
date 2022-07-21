@@ -61,7 +61,7 @@ surrounding the worksheet.
 class wxMaximaFrame : public wxFrame
 {
 public:
-  wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
+  wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale, const wxString &title,
                 const wxPoint &pos = wxDefaultPosition,
                 const wxSize &size = wxDefaultSize,
                 long style = wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION, bool becomeLogTarget = true);
@@ -843,6 +843,7 @@ protected:
   wxMenu *m_Simplify_Complex_Sub;
   //! The calculus menu
   wxMenu *m_CalculusMenu;
+  
   //! The plot menu
   wxMenu *m_PlotMenu;
   //! The list menu
@@ -858,12 +859,16 @@ protected:
   //! Remember a temporary autosave file name.
   void RegisterAutoSaveFile();
   /*! An instant single-window mode
-
+   
     A last resort if https://trac.wxwidgets.org/ticket/18815 hinders one from 
     re-docking windows.
    */
   void DockAllSidebars(wxCommandEvent &ev);
 
+  wxString wxMaximaManualLocation();
+protected:
+  wxLocale *m_locale;
+  
 private:
   //! How many bytes did maxima send us when we updated the statusbar?
   long m_bytesFromMaxima_last;

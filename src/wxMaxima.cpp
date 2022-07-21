@@ -117,15 +117,6 @@
  */
 #define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))
 
-wxDECLARE_APP (MyApp);
-
-void MyApp::DelistTopLevelWindow(wxMaxima *window)
-{
-  auto pos = std::find(m_topLevelWindows.begin(), m_topLevelWindows.end(), window);
-  if (pos != m_topLevelWindows.end())
-    m_topLevelWindows.erase(pos);
-}
-
 void wxMaxima::ConfigChanged()
 {
   if(m_worksheet->GetTree())
@@ -189,8 +180,8 @@ void wxMaxima::ConfigChanged()
 
 wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString title,
                    const wxString &filename, const wxPoint pos, const wxSize size) :
-  wxMaximaFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION,
-                MyApp::m_topLevelWindows.empty()),
+  wxMaximaFrame(parent, id, locale, title, pos, size, wxDEFAULT_FRAME_STYLE | wxSYSTEM_MENU | wxCAPTION,
+                m_topLevelWindows.empty()),
   m_openFile(filename),
   m_gnuplotcommand("gnuplot"),
   m_parser(&m_configuration)
@@ -255,13 +246,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
   m_maxOutputCellsPerCommand = -1;
   m_exitAfterEval = false;
   m_exitOnError = false;
-  m_locale = locale;
-  wxLogMessage(_("Selected language: ") + m_locale->GetCanonicalName() +
-               " (" + wxString::Format("%i", m_locale->GetLanguage()) + ")");
   wxString lang;
   if(wxGetEnv("LANG", &lang))
     wxLogMessage("LANG=" + lang);
-  m_isLogTarget = MyApp::m_topLevelWindows.empty();
+  m_isLogTarget = m_topLevelWindows.empty();
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
@@ -1639,16 +1627,16 @@ void wxMaxima::StartAutoSaveTimer()
 wxMaxima::~wxMaxima()
 {
   KillMaxima(false);
-  MyApp::DelistTopLevelWindow(this);
+  DelistTopLevelWindow(this);
 
-  if(MyApp::m_topLevelWindows.empty())
+  if(m_topLevelWindows.empty())
     wxExit();
   else
   {
     if(m_isLogTarget)
     {
       m_logPane->DropLogTarget();
-      MyApp::m_topLevelWindows.back()->BecomeLogTarget();
+      m_topLevelWindows.back()->BecomeLogTarget();
     }
   }
   wxSocketBase::Shutdown();
@@ -4635,25 +4623,7 @@ void wxMaxima::LaunchHelpBrowser(wxString uri)
 
 void wxMaxima::ShowWxMaximaHelp()
 {
-  wxString helpfile;
-  wxString lang_long = m_locale->GetCanonicalName(); /* two- or five-letter string in xx or xx_YY format. Examples: "en", "en_GB", "en_US" or "fr_FR" */
-  wxString lang_short = lang_long.Left(lang_long.Find('_'));
-
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".html";
-  if(!wxFileExists(helpfile))
-    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".html";
-  if(!wxFileExists(helpfile))
-    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.html");
-
-  /* If wxMaxima is called via ./wxmaxima-local directly from the build directory and *not* installed */
-  /* the help files are in the "info/" subdirectory of the current (build) directory */
-  if(!wxFileExists(helpfile))
-    helpfile = wxGetCwd() + wxT("/info/wxmaxima.") + lang_long + ".html";
-  if(!wxFileExists(helpfile))
-    helpfile = wxGetCwd() + wxT("/info/wxmaxima.") + lang_short + ".html";
-  if(!wxFileExists(helpfile))
-    helpfile = wxGetCwd() + wxT("/info/wxmaxima.html");
-
+  wxString helpfile = wxMaximaManualLocation();
 
   if(!wxFileExists(helpfile)) {
     wxLogMessage(_(wxT("No offline manual found => Redirecting to the wxMaxima homepage")));
@@ -10333,8 +10303,16 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   if(m_fileSaved)
     RemoveTempAutosavefile();
   KillMaxima();
-  MyApp::DelistTopLevelWindow(this);
+  DelistTopLevelWindow(this);
 }
+
+void wxMaxima::DelistTopLevelWindow(wxMaxima *window)
+{
+  auto pos = std::find(m_topLevelWindows.begin(), m_topLevelWindows.end(), window);
+  if (pos != m_topLevelWindows.end())
+    m_topLevelWindows.erase(pos);
+}
+
 
 void wxMaxima::PopupMenu(wxCommandEvent &event)
 {
@@ -12052,3 +12030,4 @@ wxString wxMaxima::m_firstPrompt(wxT("(%i1) "));
 wxMaxima::ParseFunctionHash wxMaxima::m_knownXMLTags;
 wxMaxima::VarReadFunctionHash wxMaxima::m_variableReadActions;
 wxMaxima::VarUndefinedFunctionHash wxMaxima::m_variableUndefinedActions;
+std::vector<wxMaxima *> wxMaxima::m_topLevelWindows;
