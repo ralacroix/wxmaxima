@@ -29,7 +29,7 @@
 class GenWiz : public wxDialog
 {
 public:
-  GenWiz(wxWindow *parent, Configuration *cfg,
+  GenWiz(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
          const wxString &title,
          const wxString &description, const wxString &description_tooltip,
          const wxString &commandRule,

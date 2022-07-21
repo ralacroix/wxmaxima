@@ -1670,6 +1670,7 @@ public:
   };
 #endif
   MaximaManual m_maximaManual;
+  MaximaManual *GetMaximaManual() {return &m_maximaManual;}
 protected:
   void FocusTextControl();
   wxString m_lastQuestion;

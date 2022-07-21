@@ -343,7 +343,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale, const w
   
   m_manager.AddPane(
     m_wizard = new ScrollingGenWizPanel(
-      this, &m_configuration),
+      this, &m_configuration, m_worksheet->GetMaximaManual()),
     wxAuiPaneInfo().Name(wxT("wizard")).
     CloseButton(true).
     TopDockable(true).

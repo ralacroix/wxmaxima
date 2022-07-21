@@ -25,7 +25,7 @@
 #include <wx/msgdlg.h>
 #include <wx/notebook.h>
 
-GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
+GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
                          const wxString &description, const wxString &description_tooltip,
                          const wxString &commandRule,
                          wxString label1, wxString defaultval1, wxString tooltip1,
@@ -37,7 +37,7 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
                          wxString label7, wxString defaultval7, wxString tooltip7,
                          wxString label8, wxString defaultval8, wxString tooltip8,
                          wxString label9, wxString defaultval9, wxString tooltip9) :
-  GenWizPanel(parent, cfg,
+  GenWizPanel(parent, cfg, manual,
               description, description_tooltip,
               commandRule, false,
               label1, defaultval1, tooltip1,
@@ -51,7 +51,7 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
               label9, defaultval9, tooltip9)
 {}
   
-GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
+GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
                          const wxString &description, const wxString &description_tooltip,
                          const wxString &commandRule, bool dockable,
                          wxString label1, wxString defaultval1, wxString tooltip1,
@@ -67,7 +67,8 @@ GenWizPanel::GenWizPanel(wxWindow *parent, Configuration *cfg,
   m_commandRule(commandRule),
   m_description(description),
   m_descriptionToolTip(description_tooltip),
-  m_configuration(cfg)
+  m_configuration(cfg),
+  m_maximaManual(manual)
 {
   wxBoxSizer *vbox =
     new wxBoxSizer(wxVERTICAL);

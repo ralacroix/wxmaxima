@@ -9877,7 +9877,7 @@ void wxMaxima::CommandWiz(const wxString &title,
   }
   else
   {
-    GenWiz *wiz = new GenWiz(this, &m_configuration,
+    GenWiz *wiz = new GenWiz(this, &m_configuration, m_worksheet->GetMaximaManual(),
                              title,
                              description,description_tooltip,
                              commandRule,

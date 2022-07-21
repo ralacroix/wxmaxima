@@ -31,7 +31,7 @@
 class ScrollingGenWizPanel : public wxScrolled<wxPanel>
 {
 public:
-  ScrollingGenWizPanel(wxWindow *parent, Configuration *cfg,
+  ScrollingGenWizPanel(wxWindow *parent, Configuration *cfg, MaximaManual *manual,
                        const wxString &description = {}, const wxString &description_tooltip = {},
                        const wxString &commandRule = {}, 
                        wxString label1 = {}, wxString defaultval1 = {}, wxString tooltip1 = {},
