@@ -164,7 +164,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_symbolPaneAdditionalChars = wxT("Øü§");
   m_hidemultiplicationsign = true;
   m_autodetectHelpBrowser = true;
-  m_useInternalHelpBrowser = false;
+  m_singlePageManual = false;
 
   #ifdef __WXGTK__
   m_helpBrowserUserLocation = wxT("xdg-open");
@@ -691,6 +691,7 @@ void Configuration::ReadConfig()
   config->Read("parameters", &m_maximaParameters);
   config->Read("autodetectHelpBrowser", &m_autodetectHelpBrowser);
   config->Read(wxT("useInternalHelpBrowser"), &m_useInternalHelpBrowser);
+  config->Read(wxT("singlePageManual"), &m_singlePageManual);
   config->Read("helpBrowser", &m_helpBrowserUserLocation);
   {
     int tmp;
@@ -1534,6 +1535,7 @@ void Configuration::WriteStyles(wxConfigBase *config)
   config->Write(wxT("maxima"), m_maximaUserLocation);
   config->Write(wxT("autodetectHelpBrowser"), m_autodetectHelpBrowser);
   config->Write(wxT("useInternalHelpBrowser"), m_useInternalHelpBrowser);
+  config->Write(wxT("singlePageManual"), m_singlePageManual);
   config->Write(wxT("helpBrowser"), m_helpBrowserUserLocation);
   config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices);
   config->Write(wxT("mathJaxURL_UseUser"), m_mathJaxURL_UseUser);

@@ -263,6 +263,7 @@ protected:
   wxRadioButton *m_autodetectHelpBrowser;
   wxRadioButton *m_noAutodetectHelpBrowser;
   wxRadioButton *m_internalHelpBrowser;
+  wxCheckBox *m_singlePageManual;
   wxCheckBox *m_maximaUsesHtmlHelp;
   //! Autodetect the mathJaX location?
   wxRadioButton *m_autodetectMathJaX;

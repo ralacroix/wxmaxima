@@ -100,11 +100,11 @@ private:
   //! The configuration storage
   Configuration *m_configuration;
   //! All anchors for keywords maxima's helpfile contains (singlepage version)
-  HelpFileAnchors m_helpFileAnchors_singlePage;
+  HelpFileAnchors m_helpFileURLs_singlePage;
   //! All anchors for keywords maxima's helpfile contains (file-per-chapter version)
-  HelpFileAnchors m_helpFileAnchors_FilePerChapter;
+  HelpFileAnchors m_helpFileURLs_filePerChapter;
   //! All anchors for keywords maxima's helpfile contains (without the file name)
-  HelpFileAnchors m_helpFileAnchors_generic;
+  HelpFileAnchors m_helpFileAnchors;
   wxString m_maximaHtmlDir;
   wxString m_maximaVersion;
 };

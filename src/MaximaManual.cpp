@@ -49,7 +49,7 @@ MaximaManual::MaximaManual(Configuration *configuration)
         m_helpfileanchorsThread->join();
       m_helpfileanchorsThread.reset();
     }
-    return m_helpFileAnchors_generic;
+    return m_helpFileAnchors;
   }
 
 wxString MaximaManual::GetHelpfileAnchorName(wxString keyword)
@@ -61,8 +61,8 @@ wxString MaximaManual::GetHelpfileAnchorName(wxString keyword)
     m_helpfileanchorsThread.reset();
   }
   
-  auto anchor = m_helpFileAnchors_generic.find(keyword);
-  if(anchor == m_helpFileAnchors_generic.end())
+  auto anchor = m_helpFileAnchors.find(keyword);
+  if(anchor == m_helpFileAnchors.end())
     return wxEmptyString;
   else
     return anchor->second;
@@ -76,8 +76,8 @@ wxString MaximaManual::GetHelpfileUrl_Singlepage(wxString keyword)
     m_helpfileanchorsThread.reset();
   }
 
-  auto anchor = m_helpFileAnchors_singlePage.find(keyword);
-  if(anchor == m_helpFileAnchors_singlePage.end())
+  auto anchor = m_helpFileURLs_singlePage.find(keyword);
+  if(anchor == m_helpFileURLs_singlePage.end())
     return wxEmptyString;
   else
     return anchor->second;
@@ -91,8 +91,8 @@ wxString MaximaManual::GetHelpfileUrl_FilePerChapter(wxString keyword)
     m_helpfileanchorsThread.reset();
   }
 
-  auto anchor = m_helpFileAnchors_FilePerChapter.find(keyword);
-  if(anchor == m_helpFileAnchors_FilePerChapter.end())
+  auto anchor = m_helpFileURLs_filePerChapter.find(keyword);
+  if(anchor == m_helpFileURLs_filePerChapter.end())
     return wxEmptyString;
   else
     return anchor->second;
@@ -132,7 +132,7 @@ bool MaximaManual::LoadManualAnchorsFromCache()
     wxLogMessage(wxString::Format(_("Read the entries the maxima manual offers from %s"), Dirstructure::Get()->AnchorsCacheFile().utf8_str()));
     return true;
   }
-  return !m_helpFileAnchors_singlePage.empty();
+  return !m_helpFileURLs_singlePage.empty();
 }
 
 void MaximaManual::AnchorAliasses(HelpFileAnchors &anchors)
@@ -170,7 +170,7 @@ void MaximaManual::CompileHelpFileAnchors()
   SuppressErrorDialogs suppressor;
 
   int foundAnchors = 0;
-  if(m_helpFileAnchors_singlePage.empty() && (!(m_maximaHtmlDir.IsEmpty())))
+  if(m_helpFileURLs_singlePage.empty() && (!(m_maximaHtmlDir.IsEmpty())))
   {
     wxArrayString helpFiles;
     GetHTMLFiles htmlFilesTraverser(helpFiles, m_maximaHtmlDir);
@@ -243,10 +243,10 @@ void MaximaManual::CompileHelpFileAnchors()
               if((!token.EndsWith("-1")) && (!token.Contains(" ")))              {
                 {
                   if(!file.EndsWith(wxT("_singlepage.html")))
-                    m_helpFileAnchors_singlePage[token] = fileURI + "#" + id;
+                    m_helpFileURLs_singlePage[token] = fileURI + "#" + id;
                   else
-                    m_helpFileAnchors_FilePerChapter[token] = fileURI + "#" + id;
-                  m_helpFileAnchors_generic[token] = id;
+                    m_helpFileURLs_filePerChapter[token] = fileURI + "#" + id;
+                  m_helpFileAnchors[token] = id;
                   foundAnchors++;
                 }
               }
@@ -254,9 +254,9 @@ void MaximaManual::CompileHelpFileAnchors()
           }
         }
       }
-      AnchorAliasses(m_helpFileAnchors_generic);
-      AnchorAliasses(m_helpFileAnchors_FilePerChapter);
-      AnchorAliasses(m_helpFileAnchors_singlePage);
+      AnchorAliasses(m_helpFileAnchors);
+      AnchorAliasses(m_helpFileURLs_filePerChapter);
+      AnchorAliasses(m_helpFileURLs_singlePage);
       wxLogMessage(wxString::Format(_("Found %i anchors."), foundAnchors));
     }
     if(foundAnchors > 50)
@@ -283,7 +283,7 @@ wxDirTraverseResult MaximaManual::GetHTMLFiles::OnDir(const wxString& dirname)
 
 void MaximaManual::SaveManualAnchorsToCache()
 {
-  long num = m_helpFileAnchors_singlePage.size();
+  long num = m_helpFileURLs_singlePage.size();
   if(num <= 50)
   {
     wxLogMessage(
@@ -308,8 +308,8 @@ void MaximaManual::SaveManualAnchorsToCache()
     );
 
   MaximaManual::HelpFileAnchors::const_iterator it;
-  for (it = m_helpFileAnchors_generic.begin();
-       it != m_helpFileAnchors_generic.end();
+  for (it = m_helpFileAnchors.begin();
+       it != m_helpFileAnchors.end();
        ++it)
   {
     wxXmlNode *manualEntry =
@@ -339,7 +339,7 @@ void MaximaManual::SaveManualAnchorsToCache()
         wxEmptyString,
         it->second);
     }
-    if(m_helpFileAnchors_singlePage.find(it->first) != m_helpFileAnchors_singlePage.end())
+    if(m_helpFileURLs_singlePage.find(it->first) != m_helpFileURLs_singlePage.end())
     {
       wxXmlNode *keyNode = new wxXmlNode(
         manualEntry,
@@ -349,9 +349,9 @@ void MaximaManual::SaveManualAnchorsToCache()
         keyNode,
         wxXML_TEXT_NODE,
         wxEmptyString,
-        m_helpFileAnchors_singlePage[it->first]);
+        m_helpFileURLs_singlePage[it->first]);
     }
-    if(m_helpFileAnchors_FilePerChapter.find(it->first) != m_helpFileAnchors_FilePerChapter.end())
+    if(m_helpFileURLs_filePerChapter.find(it->first) != m_helpFileURLs_filePerChapter.end())
     {
       wxXmlNode *keyNode = new wxXmlNode(
         manualEntry,
@@ -361,7 +361,7 @@ void MaximaManual::SaveManualAnchorsToCache()
         keyNode,
         wxXML_TEXT_NODE,
         wxEmptyString,
-        m_helpFileAnchors_singlePage[it->first]);
+        m_helpFileURLs_singlePage[it->first]);
     }
   }
   wxXmlDocument xmlDoc;
@@ -431,20 +431,35 @@ bool MaximaManual::LoadManualAnchorsFromXML(wxXmlDocument xmlDocument, bool chec
         node = node->GetNext();
       }
       if((!key.IsEmpty()) && (!anchor.IsEmpty()))
-        m_helpFileAnchors_singlePage[key] = anchor;
+        m_helpFileAnchors[key] = anchor;
       if((!key.IsEmpty()) && (!url_filePerChapter.IsEmpty()))
-        m_helpFileAnchors_FilePerChapter[key] = url_filePerChapter;
+        m_helpFileURLs_filePerChapter[key] = url_filePerChapter;
       if((!key.IsEmpty()) && (!url_singlepage.IsEmpty()))
-        m_helpFileAnchors_singlePage[key] = url_singlepage;
+        m_helpFileURLs_singlePage[key] = url_singlepage;
     }
     entry = entry->GetNext();
   }
-  return !m_helpFileAnchors_singlePage.empty();
+  return !m_helpFileURLs_singlePage.empty();
 }
 
 wxString MaximaManual::GetHelpfileURL(wxString keyword)
 {
-  return GetHelpfileUrl_Singlepage(keyword);
+  if(m_configuration->SinglePageManual())
+  {
+    auto anchor = m_helpFileURLs_singlePage.find(keyword);
+    if(anchor == m_helpFileURLs_singlePage.end())
+      return GetHelpfileUrl_FilePerChapter(keyword);
+    else
+      return GetHelpfileUrl_Singlepage(keyword);
+  }
+  else
+  {
+    auto anchor = m_helpFileURLs_filePerChapter.find(keyword);
+    if(anchor == m_helpFileURLs_filePerChapter.end())
+      return GetHelpfileUrl_Singlepage(keyword);
+    else
+      return GetHelpfileUrl_FilePerChapter(keyword);
+  }
 }
 
 void MaximaManual::FindMaximaHtmlDir(wxString docDir)
@@ -503,7 +518,7 @@ void MaximaManual::LoadHelpFileAnchors(wxString docdir, wxString maximaVersion)
     m_helpfileanchorsThread->join();
     m_helpfileanchorsThread.reset();
   }
-  if(m_helpFileAnchors_singlePage.empty())
+  if(m_helpFileURLs_singlePage.empty())
   {
     if(!LoadManualAnchorsFromCache())
     {

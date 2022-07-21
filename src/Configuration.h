@@ -688,6 +688,12 @@ public:
   void InternalHelpBrowser(bool useInternalHelpBrowser)
     {m_useInternalHelpBrowser = useInternalHelpBrowser;}
 
+  //! Prefer the single-page manual?
+  bool SinglePageManual() const {return m_singlePageManual;}
+  //! Prefer the single-page manual?
+  void SinglePageManual(bool singlePageManual)
+    {m_singlePageManual = singlePageManual;}
+
   //! Returns the location of the web browser the user has selected.
   wxString HelpBrowserUserLocation() const {return m_helpBrowserUserLocation;}
 
@@ -908,6 +914,8 @@ private:
   bool m_autodetectHelpBrowser;
   //! Use the internal help browser?
   bool m_useInternalHelpBrowser;
+  //! Prefer the single-page manual?
+  bool m_singlePageManual;
   //! The worksheet all cells are drawn on
   wxRect m_updateRegion;
   //! Do we want to use incremental search?

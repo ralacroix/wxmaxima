@@ -530,7 +530,10 @@ void ConfigDialogue::SetCheckboxValues()
   }
 
   m_autoMathJaxURL->SetValue(m_configuration->MathJaXURL_Auto());
+  m_singlePageManual->SetValue(m_configuration->SinglePageManual());
   m_internalHelpBrowser->SetValue(m_configuration->InternalHelpBrowser());
+  m_singlePageManual->SetValue(configuration->SinglePageManual());
+
   if(!m_configuration->InternalHelpBrowser())
   {
     m_autodetectHelpBrowser->SetValue(m_configuration->AutodetectHelpBrowser());
@@ -1194,7 +1197,7 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
   panel->SetSizer(vsizer);
   wxStaticBoxSizer *invocationSizer = new wxStaticBoxSizer(wxVERTICAL, panel, _("Maxima Location"));
 
-  wxFlexGridSizer *nameSizer = new wxFlexGridSizer(6, 3, 0, 0);
+  wxFlexGridSizer *nameSizer = new wxFlexGridSizer(9, 3, 0, 0);
   nameSizer->Add(new wxStaticText(invocationSizer->GetStaticBox(), -1, _("Maxima program:")),
                  wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
@@ -1227,8 +1230,10 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
   m_internalHelpBrowser = new wxRadioButton(invocationSizer->GetStaticBox(), -1, _("Internal"), wxDefaultPosition,
                                             wxDefaultSize, wxRB_GROUP);
   nameSizer->Add(m_internalHelpBrowser, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
+  nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
+  nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   m_autodetectHelpBrowser = new wxRadioButton(invocationSizer->GetStaticBox(), -1, _("Autodetect"), wxDefaultPosition,
-                                              wxDefaultSize, wxRB_GROUP);
+                                              wxDefaultSize);
   nameSizer->Add(m_autodetectHelpBrowser, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
   nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
@@ -1243,8 +1248,16 @@ wxWindow *ConfigDialogue::CreateMaximaPanel()
 
   nameSizer->Add(m_helpBrowserUserLocation, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
   nameSizer->Add(mpBrowse2, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
+  m_singlePageManual = new wxCheckBox(invocationSizer->GetStaticBox(),
+                                      -1,
+                                      _("Prefer the all-in-one-file >1000 page manual"));
       
+  nameSizer->Add(m_singlePageManual, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
+  nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
+  nameSizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
+
   invocationSizer->Add(nameSizer, wxSizerFlags().Expand().Border(wxUP | wxDOWN, 0));
+
   vsizer->Add(invocationSizer, wxSizerFlags().Expand().Border(wxALL, 5*GetContentScaleFactor()));
   vsizer->Add(10*GetContentScaleFactor(), 10*GetContentScaleFactor());
     
@@ -1758,6 +1771,7 @@ void ConfigDialogue::WriteSettings()
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
   configuration->HelpBrowserUserLocation(m_helpBrowserUserLocation->GetValue());
   configuration->MaximaUsesHtmlBrowser(m_maximaUsesHtmlHelp->GetValue());
+  configuration->SinglePageManual(m_singlePageManual->GetValue());
   if(m_internalHelpBrowser->GetValue())
   {
     configuration->InternalHelpBrowser(true);

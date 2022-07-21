@@ -4603,7 +4603,7 @@ void wxMaxima::LaunchHelpBrowser(wxString uri)
   if(m_configuration.InternalHelpBrowser())
   {
     m_helpPane->SetURL(uri);
-    ShowPane(menu_pane_help);
+    wxMaximaFrame::ShowPane(menu_pane_help);
   }
   else
   {
