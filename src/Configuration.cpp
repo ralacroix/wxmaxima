@@ -140,6 +140,7 @@ void Configuration::ResetAllToDefaults(InitOpt options)
   m_maximaEnvVars[wxT("PAGER")] = wxT("cat");
   #endif
   m_wrapLatexMath = true;
+  m_allowNetworkHelp = false;
   m_exportContainsWXMX = true;
   m_maximaUsesHhtmlBrowser = true;
   m_bitmapScale = 3;
@@ -544,6 +545,7 @@ void Configuration::ReadConfig()
     config->Read(wxT("lineBreaksInLongNums"), &m_lineBreaksInLongNums);
     config->Read(wxT("autoSaveMinutes"), &m_autoSaveMinutes);
     config->Read(wxT("wrapLatexMath"), &m_wrapLatexMath);
+    config->Read(wxT("allowNetworkHelp"), &m_allowNetworkHelp);
     config->Read(wxT("exportContainsWXMX"), &m_exportContainsWXMX);
     config->Read(wxT("maximaUsesHhtmlBrowser"), &m_maximaUsesHhtmlBrowser);
     config->Read(wxT("texPreamble"), &m_texPreamble);
@@ -1490,6 +1492,7 @@ bool Configuration::CharVisiblyDifferent(wxChar ch, wxChar otherChar, const wxFo
 void Configuration::WriteStyles(wxConfigBase *config)
 {
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath);
+  config->Write(wxT("allowNetworkHelp"), m_allowNetworkHelp);
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX);
   config->Write(wxT("maximaUsesHhtmlBrowser"), m_maximaUsesHhtmlBrowser);
   config->Write(wxT("texPreamble"), m_texPreamble);

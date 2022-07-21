@@ -4626,6 +4626,9 @@ void wxMaxima::ShowWxMaximaHelp()
   wxString helpfile = wxMaximaManualLocation();
 
   if(!wxFileExists(helpfile)) {
+    if(!AllowOnlineManualP())
+      return;
+
     wxLogMessage(_(wxT("No offline manual found => Redirecting to the wxMaxima homepage")));
     helpfile = wxString("https://htmlpreview.github.io/?https://github.com/wxMaxima-developers/wxmaxima/blob/main/info/wxmaxima.html");
   } else {
@@ -4666,6 +4669,9 @@ wxLogMessage(m_maximaHtmlDir);
   helpfile = m_maximaHtmlDir.Trim() + wxString("/maxima_singlepage.html");
   wxLogMessage(helpfile);
   if(!wxFileExists(helpfile)) {
+    if(!AllowOnlineManualP())
+      return;
+
     wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
     helpfile = wxString("https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html");
   } else {
@@ -4721,8 +4727,11 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   }
   else
   {
-    wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
-    LaunchHelpBrowser("https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#"+keyword);
+    if(AllowOnlineManualP())
+    {
+      wxLogMessage(_(wxT("No offline manual found => Redirecting to the Maxima homepage")));
+      LaunchHelpBrowser("https://maxima.sourceforge.io/docs/manual/maxima_singlepage.html#"+keyword);
+    }
   }
 }
 
@@ -11927,6 +11936,33 @@ int wxMaxima::SaveDocumentP()
   dialog.SetYesNoCancelLabels(_("Save"), _("Don't save"), _("Cancel"));
 
   return dialog.ShowModal();
+}
+
+bool wxMaxima::AllowOnlineManualP()
+{
+  if(m_configuration.AllowNetworkHelp())
+    return true;
+  
+  LoggingMessageDialog dialog(this,
+                              _("Allow to access a online manual for maxima?"),
+                              "Manual", wxCENTER | wxYES_NO | wxCANCEL);
+  
+  dialog.SetExtendedMessage(_("Didn't find an installed offline manual."));
+  
+  int result = dialog.ShowModal();
+
+  if(result == wxID_CANCEL)
+    return false;
+
+ 
+  if(result == wxID_YES)
+  {
+    m_configuration.AllowNetworkHelp(true);
+    return true;
+  }
+
+  m_configuration.AllowNetworkHelp(false);
+  return false;
 }
 
 void wxMaxima::OnFocus(wxFocusEvent &event)

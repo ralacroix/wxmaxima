@@ -282,6 +282,9 @@ protected:
 
   //! Show the help for Maxima
   void ShowMaximaHelp(wxString = {});
+  
+  //! Ask the user if we are allowed to access an online manual
+  bool AllowOnlineManualP();
 
   //! Show the help for Maxima (without handling of anchors).
   void ShowMaximaHelpWithoutAnchor();

@@ -861,6 +861,8 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
 
   bool WrapLatexMath() const {return m_wrapLatexMath;}
   void WrapLatexMath(bool wrapLatexMath){m_wrapLatexMath = wrapLatexMath;}
+  bool AllowNetworkHelp() const {return m_allowNetworkHelp;}
+  void AllowNetworkHelp(bool allowNetworkHelp){m_allowNetworkHelp = allowNetworkHelp;}
   bool ShowAllDigits() const {return m_showAllDigits;}
   void ShowAllDigits(bool shw){m_showAllDigits = shw;}
   bool LineBreaksInLongNums() const {return m_lineBreaksInLongNums;}
@@ -939,6 +941,7 @@ private:
   bool CharsExistInFont(const wxFont &font, const wxString& chars);
   //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
   bool m_wrapLatexMath;
+  bool m_allowNetworkHelp;
   bool m_exportContainsWXMX;
   wxString m_texPreamble;
 
