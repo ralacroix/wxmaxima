@@ -875,8 +875,6 @@ wxString DocumentclassOptions() const {return m_documentclassOptions;}
   bool MaximaUsesHtmlBrowser() const {return m_maximaUsesHhtmlBrowser;}
   void ExportContainsWXMX(bool exportContainsWXMX){m_exportContainsWXMX = exportContainsWXMX;}
   bool ExportContainsWXMX() const {return m_exportContainsWXMX;}
-  void DockableWizards(bool dockableWizards){m_dockableWizards = dockableWizards;}
-  bool DockableWizards() const {return m_dockableWizards;}
   void WizardTab(long tab){m_wizardTab = tab;}
   long WizardTab() const {return m_wizardTab;}
 
@@ -902,7 +900,6 @@ private:
   wxSize m_ppi = wxSize(-1, -1);
   mathDisplayMode m_displayMode = display_2d;
   using CellRedrawTrace = std::vector<const Cell*>;
-  bool m_dockableWizards;
   long m_wizardTab;
   bool m_usePartialForDiff;
   bool m_maximaUsesHhtmlBrowser;

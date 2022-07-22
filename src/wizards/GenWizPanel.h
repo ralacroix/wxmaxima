@@ -85,6 +85,7 @@ public:
   wxButton *GetAbortButton() const {return button_1;}
   #endif
   wxButton *GetInsertButton() const{return m_insertButton;}
+  wxString GetHelpKeyword(int ID);
   virtual ~GenWizPanel();
 protected:
   void OnSize(wxSizeEvent &event);

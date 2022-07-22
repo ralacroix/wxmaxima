@@ -124,7 +124,6 @@ wxSize Configuration::GetPPI() const
 void Configuration::ResetAllToDefaults(InitOpt options)
 {
   m_wizardTab = 0;
-  m_dockableWizards = true;
   for(auto i:m_renderableChars)
     m_renderableChars[i.first] = wxEmptyString;
   for(auto i:m_nonRenderableChars)
@@ -662,7 +661,6 @@ void Configuration::ReadConfig()
   config->Read(wxT("defaultPlotHeight"), &m_defaultPlotHeight);
   config->Read(wxT("fixedFontTC"), &m_fixedFontTC);
   config->Read(wxT("usepngCairo"), &m_usepngCairo);
-  config->Read(wxT("dockableWizards"), &m_dockableWizards);
   
   if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
   {
@@ -1268,7 +1266,6 @@ void Configuration::WriteSettings(const wxString &file)
   config->Write(wxT("autoSaveMinutes"), m_autoSaveMinutes);
   config->Write(wxT("wxMathML_Filename"), m_wxMathML_Filename);
   config->Write(wxT("wxMathML_UseFile"), m_wxMathML_UseFile);
-  config->Write(wxT("dockableWizards"), m_dockableWizards);
 
   config->Write(wxT("maxClipbrd_BitmapMegabytes"), m_maxClipbrd_BitmapMegabytes);
 

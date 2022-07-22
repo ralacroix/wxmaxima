@@ -311,7 +311,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString ti
     wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardAbort), NULL, this);
   m_wizard->GetInsertButton()->Connect(
     wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardInsert), NULL, this);
-  
+  m_wizard->Connect(wxEVT_BUTTON, wxCommandEventHandler(wxMaxima::OnWizardHelpButton), NULL, this);
 #ifdef wxHAS_POWER_EVENTS 
   Connect(
     wxEVT_POWER_SUSPENDED,
@@ -9859,41 +9859,19 @@ void wxMaxima::CommandWiz(const wxString &title,
                           wxString label9, wxString defaultval9, wxString tooltip9
   )
 {
-  if(m_configuration.DockableWizards())
-  {
-    m_wizard->NewWizard(description,description_tooltip,
-                        commandRule,
-                        label1, defaultval1, tooltip1,
-                        label2, defaultval2, tooltip2,
-                        label3, defaultval3, tooltip3,
-                        label4, defaultval4, tooltip4,
-                        label5, defaultval5, tooltip5,
-                        label6, defaultval6, tooltip6,
-                        label7, defaultval7, tooltip7,
-                        label8, defaultval8, tooltip8,
-                        label9, defaultval9, tooltip9);
-    m_manager.GetPane("wizard").Show(true).Caption(title);
-    m_manager.Update();
-  }
-  else
-  {
-    GenWiz *wiz = new GenWiz(this, &m_configuration, m_worksheet->GetMaximaManual(),
-                             title,
-                             description,description_tooltip,
-                             commandRule,
-                             label1, defaultval1, tooltip1,
-                             label2, defaultval2, tooltip2,
-                             label3, defaultval3, tooltip3,
-                             label4, defaultval4, tooltip4,
-                             label5, defaultval5, tooltip5,
-                             label6, defaultval6, tooltip6,
-                             label7, defaultval7, tooltip7,
-                             label8, defaultval8, tooltip8,
-                             label9, defaultval9, tooltip9);
-    if (wiz->ShowModal() == wxID_OK)
-      MenuCommand(wiz->GetOutput());
-    wiz->Destroy();
-  }
+  m_wizard->NewWizard(description,description_tooltip,
+                      commandRule,
+                      label1, defaultval1, tooltip1,
+                      label2, defaultval2, tooltip2,
+                      label3, defaultval3, tooltip3,
+                      label4, defaultval4, tooltip4,
+                      label5, defaultval5, tooltip5,
+                      label6, defaultval6, tooltip6,
+                      label7, defaultval7, tooltip7,
+                      label8, defaultval8, tooltip8,
+                      label9, defaultval9, tooltip9);
+  m_manager.GetPane("wizard").Show(true).Caption(title);
+  m_manager.Update();
 }
 
 void wxMaxima::OnWizardAbort(wxCommandEvent &WXUNUSED(event))
@@ -9908,6 +9886,11 @@ void wxMaxima::OnWizardOK(wxCommandEvent &event)
   OnWizardInsert(event);
   OnWizardAbort(event);
   m_configuration.LastActiveTextCtrl(NULL);
+}
+
+void wxMaxima::OnWizardHelpButton(wxCommandEvent &event)
+{
+  ShowMaximaHelp(m_wizard->GetHelpKeyword(event.GetId()));
 }
 
 void wxMaxima::OnWizardInsert(wxCommandEvent &event)

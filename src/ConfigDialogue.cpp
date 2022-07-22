@@ -411,7 +411,6 @@ void ConfigDialogue::SetCheckboxValues()
   m_noAutodetectMathJaX->SetValue(configuration->MathJaXURL_UseUser());
   m_texPreamble->SetValue(configuration->TexPreamble());
   m_autoSave->SetValue(!configuration->AutoSaveAsTempFile());
-  m_dockableWizards->SetValue(configuration->DockableWizards());
 
   m_maximaEnvVariables->BeginBatch();
   if(m_maximaEnvVariables->GetNumberRows() > 0)
@@ -1123,10 +1122,6 @@ wxWindow *ConfigDialogue::CreateOptionsPanel()
 
   m_autoSave = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1, _("Save the worksheet automatically"));
   stdOpts_sizer->Add(m_autoSave, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
-
-  m_dockableWizards = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1, _("Dockable wizards"));
-  stdOpts_sizer->Add(m_dockableWizards, wxSizerFlags().Border(wxALL, 5*GetContentScaleFactor()));
-
   
   m_usesvg = new wxCheckBox(stdOpts_sizer->GetStaticBox(), -1, _("Create scalable plots."));
   m_usesvg->Connect(wxEVT_CHECKBOX,
@@ -1849,7 +1844,6 @@ void ConfigDialogue::WriteSettings()
   configuration->SetKeepPercent(m_keepPercentWithSpecials->GetValue());
   configuration->TexPreamble(m_texPreamble->GetValue());
   configuration->AutoSaveAsTempFile(!m_autoSave->GetValue());
-  configuration->DockableWizards(m_dockableWizards->GetValue());
   configuration->Documentclass(m_documentclass->GetValue());
   configuration->DocumentclassOptions(m_documentclassOptions->GetValue());
   configuration->MathJaXURL(m_mathJaxURL->GetValue());

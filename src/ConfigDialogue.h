@@ -292,7 +292,6 @@ protected:
   wxTextCtrl *m_mathJaxURL;
   wxChoice *m_language;
   wxTextCtrl *m_symbolPaneAdditionalChars;
-  wxCheckBox *m_dockableWizards;
   wxCheckBox *m_abortOnError;
   wxCheckBox *m_offerKnownAnswers;
   wxCheckBox *m_restartOnReEvaluation;

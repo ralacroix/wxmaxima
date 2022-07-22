@@ -237,7 +237,7 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
       wxButton *button = new wxButton(descriptionpane, id,
                                       wxString::Format(_("Help on %s"),
                                                        m_manualKeywords[buttonNum]));
-      pageSizer->Add(button, wxSizerFlags(1).Border(wxALL, 0*GetContentScaleFactor()).Expand());
+      pageSizer->Add(button, wxSizerFlags(0).Expand());
       buttonNum ++;
       id++;
     }
@@ -303,6 +303,16 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
   m_textctrl[8]->SetToolTip(tooltip9);
   Layout();
   m_ignorePageChange = false;
+}
+
+wxString GenWizPanel::GetHelpKeyword(int ID)
+{
+  ID -= wxID_HIGHEST + 5000;
+  if(ID < 0)
+    return wxEmptyString;
+  if(ID >= m_manualKeywords.GetCount())
+    return wxEmptyString;
+  return m_manualKeywords[ID];
 }
 
 void GenWizPanel::OnTextEnter(wxCommandEvent& event)

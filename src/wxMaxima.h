@@ -279,6 +279,7 @@ protected:
   void OnWizardAbort(wxCommandEvent &event);
   void OnWizardOK(wxCommandEvent &event);
   void OnWizardInsert(wxCommandEvent &event);
+  void OnWizardHelpButton(wxCommandEvent &event);
 
   //! Show the help for Maxima
   void ShowMaximaHelp(wxString = {});

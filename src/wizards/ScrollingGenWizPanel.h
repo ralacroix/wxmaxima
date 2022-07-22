@@ -77,6 +77,7 @@ public:
   wxButton *GetOKButton() const {return m_panel->GetOKButton();}
   wxButton *GetAbortButton() const {return m_panel->GetAbortButton();}
   wxButton *GetInsertButton() const{return m_panel->GetInsertButton();}
+  wxString GetHelpKeyword(int ID){return m_panel->GetHelpKeyword(ID);}
 
   protected:
   GenWizPanel *m_panel;

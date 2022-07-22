@@ -57,8 +57,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale, const w
   m_recentPackages(wxT("packages"))
 {
   m_locale = locale;
-  wxLogMessage(_("Selected language: ") + m_locale->GetCanonicalName() +
-               " (" + wxString::Format("%i", m_locale->GetLanguage()) + ")");
+//  wxLogMessage(_("Selected language: ") + m_locale->GetCanonicalName() +
+//               " (" + wxString::Format("%i", m_locale->GetLanguage()) + ")");
 
   m_bytesFromMaxima = 0;
   m_drawDimensions_last = -1;
@@ -379,8 +379,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale, const w
                     PaneBorder(true).
                     Left());
   wxWindowUpdateLocker drawBlocker(m_drawPane);
-  
-  m_manager.AddPane(m_helpPane = new HelpBrowser(this, &m_configuration, wxMaximaManualLocation()),
+
+  m_manager.AddPane(m_helpPane = new HelpBrowser(this, &m_configuration,
+                                                 wxT("file://") + wxMaximaManualLocation()),
                     wxAuiPaneInfo().Name(wxT("help")).
                     CloseButton(true).
                     TopDockable(true).
