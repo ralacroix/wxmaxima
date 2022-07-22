@@ -110,6 +110,7 @@ protected:
   MaximaManual *m_maximaManual;
 private:
   bool m_ignorePageChange = true;
+  wxArrayString m_manualKeywords;
 };
 
 #endif // GENWIZ_PANEL_H

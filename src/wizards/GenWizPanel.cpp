@@ -169,6 +169,22 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
                             wxString label8, wxString defaultval8, wxString tooltip8,
                             wxString label9, wxString defaultval9, wxString tooltip9)
 {
+  wxString::const_iterator it = commandRule.begin();
+
+  m_manualKeywords.Clear();
+  while(it < commandRule.end())
+  {
+    while((it < commandRule.end()) && (!wxIsalpha(*it)) && (!(*it == '_')))
+      it++;
+    wxString word;
+    while((it < commandRule.end()) && (wxIsalpha(*it)) || ((*it == '_')))
+    {
+      word += *it;
+      it++;
+    }
+    if(!m_maximaManual->GetHelpfileAnchorName(word).IsEmpty())
+      m_manualKeywords.Add(word);
+  }
   m_ignorePageChange = true;
   long page = m_configuration->WizardTab();
   if(page < 0)
@@ -177,7 +193,7 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
     page = 1;
   
   m_commandRule = commandRule;
-  if((!commandRule.IsEmpty()) || (!description.IsEmpty()))
+  if((!commandRule.IsEmpty()) || (!description.IsEmpty()) || (!m_manualKeywords.IsEmpty()))
   {
     m_notebook->DeleteAllPages();
     m_output = NULL;
@@ -203,14 +219,28 @@ void GenWizPanel::NewWizard(wxString description, const wxString &description_to
 
   UpdateOutput();
   m_description = description;
-  if(!description.IsEmpty())
+  if((!description.IsEmpty()) || (!m_manualKeywords.IsEmpty()))
   {
     wxSizer *pageSizer = new wxBoxSizer(wxVERTICAL);
     wxPanel *descriptionpane = new wxPanel(m_notebook, wxID_ANY);
-    wxTextCtrl *desc = new wxTextCtrl(descriptionpane, wxID_ANY, description, wxDefaultPosition,
-                                      wxDefaultSize,
-                                      wxTE_READONLY|wxTE_MULTILINE|wxTE_BESTWRAP|wxTE_NO_VSCROLL);
-    pageSizer->Add(desc, wxSizerFlags(1).Border(wxALL, 0*GetContentScaleFactor()).Expand());
+    if(!description.IsEmpty())
+    {
+      wxTextCtrl *desc = new wxTextCtrl(descriptionpane, wxID_ANY, description, wxDefaultPosition,
+                                        wxDefaultSize,
+                                        wxTE_READONLY|wxTE_MULTILINE|wxTE_BESTWRAP|wxTE_NO_VSCROLL);
+      pageSizer->Add(desc, wxSizerFlags(1).Border(wxALL, 0*GetContentScaleFactor()).Expand());
+    }
+    int id = wxID_HIGHEST+5000;
+    int buttonNum = 0;
+    for(auto i:m_manualKeywords)
+    {
+      wxButton *button = new wxButton(descriptionpane, id,
+                                      wxString::Format(_("Help on %s"),
+                                                       m_manualKeywords[buttonNum]));
+      pageSizer->Add(button, wxSizerFlags(1).Border(wxALL, 0*GetContentScaleFactor()).Expand());
+      buttonNum ++;
+      id++;
+    }
     descriptionpane->SetSizer(pageSizer);
     descriptionpane->FitInside();
     m_notebook->AddPage(descriptionpane, _("Description"));
