@@ -2971,14 +2971,17 @@ void wxMaxima::ReadStatusBar(wxString &data)
 
 void wxMaxima::ReadManualTopicNames(wxString &data)
 {
+  std::cerr<<"ReadManualTopicNames1\n";
   if (!data.StartsWith(m_jumpManualPrefix))
     return;
+  std::cerr<<"ReadManualTopicNames2\n";
 
-  m_worksheet->SetCurrentTextCell(nullptr);
+  std::cerr<<"ReadManualTopicNames3\n";
 
   int end;
   if ((end = FindTagEnd(data,m_jumpManualPrefix)) != wxNOT_FOUND)
   {
+    std::cerr<<"ReadManualTopicNames4\n";
     wxArrayString topics;
     wxXmlDocument xmldoc;
     wxString xml = data.Left( end + m_jumpManualPrefix.Length());
@@ -12060,8 +12063,8 @@ wxString wxMaxima::m_addVariablesPrefix(wxT("<watch_variables_add>"));
 wxString wxMaxima::m_addVariablesSuffix(wxT("</watch_variables_add>"));
 wxString wxMaxima::m_statusbarPrefix(wxT("<statusbar>"));
 wxString wxMaxima::m_statusbarSuffix(wxT("</statusbar>\n"));
-wxString wxMaxima::m_jumpManualPrefix(wxT("<html-manual-keyword>"));
-wxString wxMaxima::m_jumpManualSuffix(wxT("</html-manual-keyword>\n"));
+wxString wxMaxima::m_jumpManualPrefix(wxT("<html-manual-keywords>"));
+wxString wxMaxima::m_jumpManualSuffix(wxT("</html-manual-keywords>\n"));
 wxString wxMaxima::m_mathPrefix1(wxT("<mth>"));
 wxString wxMaxima::m_mathPrefix2(wxT("<math>"));
 wxString wxMaxima::m_mathSuffix1(wxT("</mth>"));
