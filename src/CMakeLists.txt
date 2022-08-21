@@ -170,7 +170,7 @@ bin2h(SOURCE_FILE "wxMathML.lisp" HEADER_FILE "${CMAKE_BINARY_DIR}/wxMathML_lisp
 file(APPEND "${CMAKE_BINARY_DIR}/wxMathML_lisp.h" "#endif // WXMATHML_LISP_H\n")
 
 message(STATUS "Embedding NEWS.md into header file news_md.h")
-file(WRITE "${CMAKE_BINARY_DIR}/NEWS_md.h"
+file(WRITE "${CMAKE_BINARY_DIR}/src/news_md.h"
   "/** \\file NEWS_md\n"
   " * This header file was generated from NEWS.md.\n"
   " */\n"
@@ -178,7 +178,7 @@ file(WRITE "${CMAKE_BINARY_DIR}/NEWS_md.h"
   "#define NEWS_MD_H\n"
   " #include <cstddef>\n"
   )
-bin2h(SOURCE_FILE "../NEWS.md" HEADER_FILE "${CMAKE_BINARY_DIR}/news_md.h" VARIABLE_NAME "news_md" APPEND NULL_TERMINATE)
+bin2h(SOURCE_FILE "../NEWS.md" HEADER_FILE "${CMAKE_BINARY_DIR}/src/news_md.h" VARIABLE_NAME "news_md" APPEND NULL_TERMINATE)
 file(APPEND "${CMAKE_BINARY_DIR}/NEWS_md.h" "#endif // NEWS_MD_H\n")
 
 list(APPEND SOURCE_FILES
