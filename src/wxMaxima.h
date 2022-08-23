@@ -172,6 +172,7 @@ public:
 
 private:
   bool m_maximaAuthenticated = false;
+  bool m_discardAllData = false;
   wxString m_maximaAuthString;
   MaximaIPC m_ipc{this};
   //! wxm data the worksheet is populated from

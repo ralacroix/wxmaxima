@@ -754,7 +754,6 @@ public:
     waiting,
     waitingForPrompt,
     waitingForAuth,
-    waiting,
     calculating,
     parsing,
     transferring,

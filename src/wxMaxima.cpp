@@ -2310,6 +2310,7 @@ bool wxMaxima::StartMaxima(bool force) {
       // kill() command.
       environment["MAXIMA_SIGNALS_THREAD"] = "1";
       m_maximaAuthenticated = false;
+      m_discardAllData = false;
       std::random_device rd;
       std::default_random_engine eng{rd()}; // static_cast<long unsigned int>(time(0)), 
       std::uniform_real_distribution<double> urd(0.0, 256.0);
@@ -3015,7 +3016,26 @@ void wxMaxima::ReadMath(wxString &data) {
 void wxMaxima::ReadSuppressedOutput(wxString &data) {
   if (!data.StartsWith(m_suppressOutputPrefix))
     return;
+
+  if(!m_maximaAuthenticated)
+    {
+      if(data.Find("</wxxml-key>") != wxNOT_FOUND) {
+	if(data.Find("<wxxml-key>" + m_maximaAuthString + "</wxxml-key>")){
+	  wxLogMessage(_("Maxima has authenticated!"));
+	  m_maximaAuthenticated = true;
+	} else {
+	  wxLogMessage(_("Cannot authenticate Maxima!"));
+	  LoggingMessageBox(
+			    _("Could not make sure that we talk to the maxima we started => "
+			      "discarding all data it sends."),
+			    _("Warning"), wxOK | wxICON_EXCLAMATION);	    
+	  m_discardAllData = true;
+	}
+      }
+    }
+
   int end = FindTagEnd(data, m_suppressOutputSuffix);
+
   if (end != wxNOT_FOUND) {
     data = data.Right(data.Length() - end - m_suppressOutputSuffix.Length());
   }
@@ -4602,6 +4622,10 @@ void wxMaxima::ShowMaximaHelp(wxString keyword) {
 }
 
 bool wxMaxima::InterpretDataFromMaxima(const wxString &newData) {
+  if(m_discardAllData)
+      return;
+  wxString miscText;
+
   if (newData.empty())
     return false;
 
@@ -4623,7 +4647,15 @@ bool wxMaxima::InterpretDataFromMaxima(const wxString &newData) {
 
   if (!m_dispReadOut && (m_currentOutput != wxT("\n")) &&
       (m_currentOutput != m_emptywxxmlSymbols)) {
-    StatusMaximaBusy(transferring);
+    if(!m_first)
+      {
+	  StatusMaximaBusy(waitingForPrompt);
+      } else {
+	if(!m_maximaAuthenticated)
+	  StatusMaximaBusy(waitingForAuth);
+	else
+	  StatusMaximaBusy(transferring);
+      }
     m_dispReadOut = true;
   }
 
