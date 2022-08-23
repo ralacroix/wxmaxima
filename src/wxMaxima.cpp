@@ -2816,13 +2816,19 @@ bool wxMaxima::ParseNextChunkFromMaxima(wxString &data) {
     data = rest;
   }
   if (tagFound) {
-    retval = true;
-    CALL_MEMBER_FN(*this, tagIndex->second)(data);
+    if((m_maximaAuthenticated) || (tagIndex->second == &wxMaxima::ReadSuppressedOutput))
+      {
+	retval = true;
+	CALL_MEMBER_FN(*this, tagIndex->second)(data);
+      }
   }
   return retval;
 }
 
 void wxMaxima::ReadMiscText(const wxString &data) {
+  if(!m_maximaAuthenticated)
+    return;
+  
   auto style = MC_TYPE_TEXT;
 
   if (data.StartsWith(wxT("(%")))
@@ -3038,6 +3044,16 @@ void wxMaxima::ReadSuppressedOutput(wxString &data) {
 
   if (end != wxNOT_FOUND) {
     data = data.Right(data.Length() - end - m_suppressOutputSuffix.Length());
+    if(!m_maximaAuthenticated)
+      {
+	wxLogMessage(_("Maxima didn't attempt to authenticate!"));
+	LoggingMessageBox(
+			  _("Could not make sure that we talk to the maxima we started => "
+			    "discarding all data it sends."),
+			  _("Warning"), wxOK | wxICON_EXCLAMATION);	    
+	m_discardAllData = true;
+      }
+
   }
 }
 
@@ -4623,7 +4639,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword) {
 
 bool wxMaxima::InterpretDataFromMaxima(const wxString &newData) {
   if(m_discardAllData)
-      return;
+      return false;
   wxString miscText;
 
   if (newData.empty())
@@ -5080,6 +5096,8 @@ void wxMaxima::UpdateToolBar() {
     m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
     m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
     break;
+  case waitingForAuth:
+  case waitingForPrompt:
   case waiting:
   case sending:
     m_worksheet->m_mainToolBar->ShowFollowBitmap();
