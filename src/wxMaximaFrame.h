@@ -79,6 +79,7 @@ public:
 
   /*! A list of all events the maxima frame can receive
 
+    @{
     This list serves several purposes:
     - wxwidgets uses this list to tell us what kind of events it has to inform us about.
     - we use these events for inter process communication.\n
@@ -87,635 +88,636 @@ public:
     - Thirdly his enum is used for assigning panels an ID that matches the ID of the event
     that toggles them which makes the handling of these IDs easier.
   */
-  enum Event
-  {
-    /*! Hide all panes
-      
-      This event is assigned an ID higher than the highest ID wxWidgets assigns to 
-      its internal events in order to avoid ID clashes.
-    */
-    menu_pane_hideall = wxID_HIGHEST + 10500,
+
+
+  /*! Hide all panes
+    
+    This event is assigned an ID higher than the highest ID wxWidgets assigns to 
+    its internal events in order to avoid ID clashes.
+  */
+  int menu_pane_hideall;
     /*! Both used as the "toggle the math pane" command and as the ID of the math pane
 
       Since this enum is also used for iterating over the panes it is vital 
       that this entry stays that of the first pane in this enum.
     */
-    menu_pane_math,
-    menu_pane_history,      //!< Both the "toggle the history pane" command and the history pane
-    menu_pane_structure,    //!< Both the "toggle the structure pane" command and the structure
-    menu_pane_xmlInspector, //!< Both the "toggle the xml monitor" command and the monitor pane
-    menu_pane_format,    //!< Both the "toggle the format pane" command and the format pane
-    menu_pane_greek,     //!< Both the "toggle the greek pane" command and the "greek" pane
-    menu_pane_unicode,   //!< Both the "toggle the unicode pane" command and the "unicode" pane
-    menu_pane_log,       //!< Both the "toggle the log pane" command and the "log" pane
-    menu_pane_variables, //!< Both the "toggle the variables pane" command and the "variables" pane
-    menu_pane_draw,      //!< Both the "toggle the draw pane" command for the "draw" pane
-    menu_pane_help,      //!< Both the "toggle the draw pane" command for the help browser
-    menu_pane_symbols,   //!< Both the "toggle the symbols pane" command for the "symbols" pane
+    int menu_pane_math;
+    int menu_pane_history;      //!< Both the "toggle the history pane" command and the history pane
+    int menu_pane_structure;    //!< Both the "toggle the structure pane" command and the structure
+    int menu_pane_xmlInspector; //!< Both the "toggle the xml monitor" command and the monitor pane
+    int menu_pane_format;    //!< Both the "toggle the format pane" command and the format pane
+    int menu_pane_greek;     //!< Both the "toggle the greek pane" command and the "greek" pane
+    int menu_pane_unicode;   //!< Both the "toggle the unicode pane" command and the "unicode" pane
+    int menu_pane_log;       //!< Both the "toggle the log pane" command and the "log" pane
+    int menu_pane_variables; //!< Both the "toggle the variables pane" command and the "variables" pane
+    int menu_pane_draw;      //!< Both the "toggle the draw pane" command for the "draw" pane
+    int menu_pane_help;      //!< Both the "toggle the draw pane" command for the help browser
+    int menu_pane_symbols;   //!< Both the "toggle the symbols pane" command for the "symbols" pane
     /*! Both used as the "toggle the stats pane" command and as the ID of the stats pane
 
       Since this enum is also used for iterating over the panes it is vital 
       that this entry stays that of the last pane in this enum.
     */
-    menu_pane_stats,
-    menu_pane_dockAll,
-    input_line_id,
-    refresh_id,
-    menu_batch_id,
-    menu_load_id,
-    menu_sconsole_id,
-    menu_interrupt_id,
-    menu_solve,
-    menu_solve_to_poly,
-    menu_solve_num,
-    menu_allroots,
-    menu_bfallroots,
-    menu_realroots,
-    menu_solve_lin,
-    menu_solve_algsys,
-    menu_eliminate,
-    menu_solve_ode,
-    menu_ivp_1,
-    menu_ivp_2,
-    menu_rk,
-    menu_bvp,
-    menu_genmatrix,
-    menu_gen_mat,
-    menu_gen_mat_lambda,
-    menu_enter_mat,
-    menu_csv2mat,
-    menu_mat2csv,
-    menu_csv2list,
-    menu_list2csv,
-    menu_matrix_row,
-    menu_matrix_col,
-    menu_matrix_row_list,
-    menu_matrix_col_list,
-    menu_submatrix,
-    menu_matrix_multiply,
-    menu_matrix_exponent,
-    menu_matrix_hadamard_product,
-    menu_matrix_hadamard_exponent,
-    menu_matrix_loadLapack,
-    menu_matrix_dgeev_eigenvaluesOnly,
-    menu_matrix_dgeev,
-    menu_matrix_zgeev_eigenvaluesOnly,
-    menu_matrix_zgeev,
-    menu_matrix_dgeqrf,
-    menu_matrix_dgesv,
-    menu_matrix_dgesvd,
-    menu_matrix_dgesvd_valuesOnly,
-    menu_matrix_dlange_max,
-    menu_matrix_dlange_one,
-    menu_matrix_dlange_inf,
-    menu_matrix_dlange_frobenius,
-    menu_matrix_zlange_max,
-    menu_matrix_zlange_one,
-    menu_matrix_zlange_inf,
-    menu_matrix_zlange_frobenius,
-    menu_matrix_zheev,
-    menu_invert_mat,
-    menu_cpoly,
-    menu_determinant,
-    menu_rank,
-    menu_eigen,
-    menu_eigvect,
-    menu_fun_def,
-    menu_gensym,
-    menu_adjoint_mat,
-    menu_transpose,
-    menu_map_mat,
-    menu_map,
-    menu_map_lambda,
-    menu_copymatrix,
-    menu_ratsimp,
-    menu_radsimp,
-    menu_scanmapfactor,
-    menu_factor,
-    menu_horner,
-    menu_collapse,
-    menu_optimize,
-    menu_mainvar,
-    menu_grind,
-    menu_gfactor,
-    menu_expand,
-    menu_expandwrt,
-    menu_expandwrt_denom,
-    menu_stringproc_setposition,
-    menu_stringproc_getposition,
-    menu_stringproc_flush_output,
-    menu_stringproc_flength,
-    menu_stringproc_close,
-    menu_stringproc_opena,
-    menu_stringproc_openr,
-    menu_stringproc_openw,
-    menu_stringproc_printf,
-    menu_stringproc_readline,
-    menu_stringproc_readchar,
-    menu_stringproc_readbyte,
-    menu_stringproc_writebyte,
-    menu_stringproc_charp,
-    menu_stringproc_alphacharp,
-    menu_stringproc_alphanumericp,
-    menu_stringproc_digitcharp,
-    menu_stringproc_constituent,
-    menu_stringproc_uppercasep,
-    menu_stringproc_lowercasep,
-    menu_stringproc_create_ascii,
-    menu_stringproc_cequal,
-    menu_stringproc_cequalignore,
-    menu_stringproc_clessp,
-    menu_stringproc_clesspignore,
-    menu_stringproc_cgreaterp,
-    menu_stringproc_cgreaterpignore,
-    menu_stringproc_sequal,
-    menu_stringproc_sequalignore,
-    menu_stringproc_ascii,
-    menu_stringproc_cint,
-    menu_stringproc_unicode,
-    menu_stringproc_unicode_to_utf8,
-    menu_stringproc_utf8_to_unicode,
-    menu_stringproc_charat,
-    menu_stringproc_charlist,
-    menu_stringproc_simplode,
-    menu_stringproc_sinsert,
-    menu_stringproc_eval_string,
-    menu_stringproc_parse_string,
-    menu_stringproc_scopy,
-    menu_stringproc_sdowncase,
-    menu_stringproc_slength,
-    menu_stringproc_smake,
-    menu_stringproc_smismatch,
-    menu_stringproc_split,
-    menu_stringproc_sposition,
-    menu_stringproc_sremove,
-    menu_stringproc_sremovefirst,
-    menu_stringproc_tokens,
-    menu_stringproc_ssearch,
-    menu_stringproc_ssort,
-    menu_stringproc_ssubstfirst,
-    menu_stringproc_strim,
-    menu_stringproc_striml,
-    menu_stringproc_strimr,
-    menu_stringproc_number_to_octets,
-    menu_stringproc_octets_to_number,
-    menu_stringproc_octets_to_string,
-    menu_stringproc_string_to_octets,
-    menu_sregex_load,
-    menu_sregex_regex_compile,
-    menu_sregex_regex_match_pos,
-    menu_sregex_regex_match,
-    menu_sregex_regex_split,
-    menu_sregex_subst_first,
-    menu_sregex_regex_subst,
-    menu_sregex_string_to_regex,
-    menu_opsyst_load,
-    menu_opsyst_chdir,
-    menu_opsyst_mkdir,
-    menu_opsyst_rmdir,
-    menu_opsyst_getcurrentdirectory,
-    menu_opsyst_copy_file,
-    menu_opsyst_rename_file,
-    menu_opsyst_delete_file,
-    menu_opsyst_getenv,
-    menu_opsyst_directory,
-    menu_opsyst_pathname_directory,
-    menu_opsyst_pathname_name,
-    menu_opsyst_pathname_type,
-    menu_scsimp,
-    menu_xthru,
-    menu_talg,
-    menu_tellrat,
-    menu_modulus,
-    menu_trigsimp,
-    menu_trigreduce,
-    menu_trigexpand,
-    menu_trigrat,
-    menu_rectform,
-    menu_polarform,
-    menu_demoivre,
-    menu_exponentialize,
-    menu_num_out,
-    menu_stringdisp,
-    menu_to_float,
-    menu_to_bfloat,
-    menu_to_numer,
-    menu_rat,
-    menu_rationalize,
-    menu_guess_exact_value,
-    menu_quad_qag,
-    menu_quad_qags,
-    menu_quad_qagi,
-    menu_quad_qawc,
-    menu_quad_qawf_sin,
-    menu_quad_qawf_cos,
-    menu_quad_qawo_sin,
-    menu_quad_qawo_cos,
-    menu_quad_qaws1,
-    menu_quad_qaws2,
-    menu_quad_qaws3,
-    menu_quad_qaws4,
-    menu_quad_qagp,
-    menu_num_domain,
-    menu_set_precision,
-    menu_set_displayprecision,
-    menu_engineeringFormat,
-    menu_engineeringFormatSetup,
-    menu_functions,
-    menu_variables,
-    menu_arrays,
-    menu_macros,
-    menu_labels,
-    menu_myoptions,
-    menu_rules,
-    menu_aliases,
-    menu_structs,
-    menu_dependencies,
-    menu_gradefs,
-    menu_let_rule_packages,
-/*    menu_prop,*/
-    menu_maxima_uses_internal_help,
-    menu_maxima_uses_html_help,
-    menu_maxima_uses_wxmaxima_help,
-    menu_goto_url,
-    menu_clear_var,
-    menu_clear_fun,
-    menu_kill,
-    menu_integrate,
-    menu_risch,
-    menu_laplace,
-    menu_ilt,
-    menu_continued_fraction,
-    menu_gcd,
-    menu_lcm,
-    menu_divide,
-    menu_partfrac,
-    menu_sum,
-    menu_simpsum,
-    menu_limit,
-    menu_lbfgs,
-    menu_taylor,
-    menu_powerseries,
-    menu_fourier,
-    menu_pade,
-    menu_diff,
-    menu_solve_de,
-    menu_atvalue,
-    menu_lhs,
-    menu_rhs,
-    menu_wxmaximahelp,
-    menu_maximahelp,
-    menu_example,
-    menu_apropos,
-    menu_product,
-    menu_time,
-    menu_factsimp,
-    menu_factcomb,
-    menu_realpart,
-    menu_imagpart,
-    menu_subst,
-    menu_psubst,
-    menu_ratsubst,
-    menu_fullratsubst,
-    menu_at,
-    menu_substinpart,
-    menu_opsubst,
-    menu_jumptoerror,
-    menu_math_as_1D_ASCII,
-    menu_math_as_2D_ASCII,
-    menu_math_as_graphics,
-    menu_logexpand_false,
-    menu_logexpand_true,
-    menu_logexpand_all,
-    menu_logexpand_super,
-    menu_noAutosubscript,
-    menu_defaultAutosubscript,
-    menu_alwaysAutosubscript,
-    menu_autosubscriptIndividual,
-    menu_declareAutosubscript,
-    menu_noAutosubscriptIndividual,
-    menu_roundedMatrixParens,
-    menu_squareMatrixParens,
-    menu_straightMatrixParens,
-    menu_angledMatrixParens,
-    menu_noMatrixParens,
-    menu_draw_2d,
-    menu_draw_3d,
-    menu_draw_explicit,
-    menu_draw_implicit,
-    menu_draw_parametric,
-    menu_draw_points,
-    menu_draw_fgcolor,
-    menu_draw_fillcolor,
-    menu_draw_title,
-    menu_draw_key,
-    menu_draw_grid,
-    menu_draw_axis,
-    menu_draw_accuracy,
-    menu_draw_contour,
-    menu_license,
-    menu_changelog,
-    button_factor_id,
-    button_solve,
-    button_solve_ode,
-    button_limit,
-    button_taylor,
-    button_expand,
-    button_ratsimp,
-    button_radcan,
-    button_trigsimp,
-    button_trigexpand,
-    button_trigreduce,
-    button_trigrat,
-    button_integrate,
-    button_diff,
-    button_sum,
-    button_product,
-    button_button_constant,
-    button_factor,
-    button_subst,
-    button_plot2,
-    button_plot3,
-    button_rectform,
-    button_map,
-    gp_plot2,
-    gp_plot3,
-    menu_animationautostart,
-    menu_animationframerate,
-    menu_display,
-    menu_soft_restart,
-    menu_plot_format,
-    menu_build_info,
-    menu_bug_report,
-    menu_add_path,
-    menu_evaluate_all_visible,
-    menu_evaluate_all,
-    menu_show_tip,
-    menu_copy_matlab_from_worksheet,
-    menu_copy_tex_from_worksheet,
-    menu_copy_text_from_worksheet,
-    menu_logcontract,
-    menu_logexpand,
-    menu_to_fact,
-    menu_to_gamma,
-    menu_texform,
-    menu_debugmode,
-    menu_debugmode_off,
-    menu_debugmode_lisp,
-    menu_debugmode_all,
+    int menu_pane_stats;
+    int menu_pane_dockAll;
+    int input_line_id;
+    int refresh_id;
+    int menu_batch_id;
+    int menu_load_id;
+    int menu_sconsole_id;
+    int menu_interrupt_id;
+    int menu_solve;
+    int menu_solve_to_poly;
+    int menu_solve_num;
+    int menu_allroots;
+    int menu_bfallroots;
+    int menu_realroots;
+    int menu_solve_lin;
+    int menu_solve_algsys;
+    int menu_eliminate;
+    int menu_solve_ode;
+    int menu_ivp_1;
+    int menu_ivp_2;
+    int menu_rk;
+    int menu_bvp;
+    int menu_genmatrix;
+    int menu_gen_mat;
+    int menu_gen_mat_lambda;
+    int menu_enter_mat;
+    int menu_csv2mat;
+    int menu_mat2csv;
+    int menu_csv2list;
+    int menu_list2csv;
+    int menu_matrix_row;
+    int menu_matrix_col;
+    int menu_matrix_row_list;
+    int menu_matrix_col_list;
+    int menu_submatrix;
+    int menu_matrix_multiply;
+    int menu_matrix_exponent;
+    int menu_matrix_hadamard_product;
+    int menu_matrix_hadamard_exponent;
+    int menu_matrix_loadLapack;
+    int menu_matrix_dgeev_eigenvaluesOnly;
+    int menu_matrix_dgeev;
+    int menu_matrix_zgeev_eigenvaluesOnly;
+    int menu_matrix_zgeev;
+    int menu_matrix_dgeqrf;
+    int menu_matrix_dgesv;
+    int menu_matrix_dgesvd;
+    int menu_matrix_dgesvd_valuesOnly;
+    int menu_matrix_dlange_max;
+    int menu_matrix_dlange_one;
+    int menu_matrix_dlange_inf;
+    int menu_matrix_dlange_frobenius;
+    int menu_matrix_zlange_max;
+    int menu_matrix_zlange_one;
+    int menu_matrix_zlange_inf;
+    int menu_matrix_zlange_frobenius;
+    int menu_matrix_zheev;
+    int menu_invert_mat;
+    int menu_cpoly;
+    int menu_determinant;
+    int menu_rank;
+    int menu_eigen;
+    int menu_eigvect;
+    int menu_fun_def;
+    int menu_gensym;
+    int menu_adjoint_mat;
+    int menu_transpose;
+    int menu_map_mat;
+    int menu_map;
+    int menu_map_lambda;
+    int menu_copymatrix;
+    int menu_ratsimp;
+    int menu_radsimp;
+    int menu_scanmapfactor;
+    int menu_factor;
+    int menu_horner;
+    int menu_collapse;
+    int menu_optimize;
+    int menu_mainvar;
+    int menu_grind;
+    int menu_gfactor;
+    int menu_expand;
+    int menu_expandwrt;
+    int menu_expandwrt_denom;
+    int menu_stringproc_setposition;
+    int menu_stringproc_getposition;
+    int menu_stringproc_flush_output;
+    int menu_stringproc_flength;
+    int menu_stringproc_close;
+    int menu_stringproc_opena;
+    int menu_stringproc_openr;
+    int menu_stringproc_openw;
+    int menu_stringproc_printf;
+    int menu_stringproc_readline;
+    int menu_stringproc_readchar;
+    int menu_stringproc_readbyte;
+    int menu_stringproc_writebyte;
+    int menu_stringproc_charp;
+    int menu_stringproc_alphacharp;
+    int menu_stringproc_alphanumericp;
+    int menu_stringproc_digitcharp;
+    int menu_stringproc_constituent;
+    int menu_stringproc_uppercasep;
+    int menu_stringproc_lowercasep;
+    int menu_stringproc_create_ascii;
+    int menu_stringproc_cequal;
+    int menu_stringproc_cequalignore;
+    int menu_stringproc_clessp;
+    int menu_stringproc_clesspignore;
+    int menu_stringproc_cgreaterp;
+    int menu_stringproc_cgreaterpignore;
+    int menu_stringproc_sequal;
+    int menu_stringproc_sequalignore;
+    int menu_stringproc_ascii;
+    int menu_stringproc_cint;
+    int menu_stringproc_unicode;
+    int menu_stringproc_unicode_to_utf8;
+    int menu_stringproc_utf8_to_unicode;
+    int menu_stringproc_charat;
+    int menu_stringproc_charlist;
+    int menu_stringproc_simplode;
+    int menu_stringproc_sinsert;
+    int menu_stringproc_eval_string;
+    int menu_stringproc_parse_string;
+    int menu_stringproc_scopy;
+    int menu_stringproc_sdowncase;
+    int menu_stringproc_slength;
+    int menu_stringproc_smake;
+    int menu_stringproc_smismatch;
+    int menu_stringproc_split;
+    int menu_stringproc_sposition;
+    int menu_stringproc_sremove;
+    int menu_stringproc_sremovefirst;
+    int menu_stringproc_tokens;
+    int menu_stringproc_ssearch;
+    int menu_stringproc_ssort;
+    int menu_stringproc_ssubstfirst;
+    int menu_stringproc_strim;
+    int menu_stringproc_striml;
+    int menu_stringproc_strimr;
+    int menu_stringproc_number_to_octets;
+    int menu_stringproc_octets_to_number;
+    int menu_stringproc_octets_to_string;
+    int menu_stringproc_string_to_octets;
+    int menu_sregex_load;
+    int menu_sregex_regex_compile;
+    int menu_sregex_regex_match_pos;
+    int menu_sregex_regex_match;
+    int menu_sregex_regex_split;
+    int menu_sregex_subst_first;
+    int menu_sregex_regex_subst;
+    int menu_sregex_string_to_regex;
+    int menu_opsyst_load;
+    int menu_opsyst_chdir;
+    int menu_opsyst_mkdir;
+    int menu_opsyst_rmdir;
+    int menu_opsyst_getcurrentdirectory;
+    int menu_opsyst_copy_file;
+    int menu_opsyst_rename_file;
+    int menu_opsyst_delete_file;
+    int menu_opsyst_getenv;
+    int menu_opsyst_directory;
+    int menu_opsyst_pathname_directory;
+    int menu_opsyst_pathname_name;
+    int menu_opsyst_pathname_type;
+    int menu_scsimp;
+    int menu_xthru;
+    int menu_talg;
+    int menu_tellrat;
+    int menu_modulus;
+    int menu_trigsimp;
+    int menu_trigreduce;
+    int menu_trigexpand;
+    int menu_trigrat;
+    int menu_rectform;
+    int menu_polarform;
+    int menu_demoivre;
+    int menu_exponentialize;
+    int menu_num_out;
+    int menu_stringdisp;
+    int menu_to_float;
+    int menu_to_bfloat;
+    int menu_to_numer;
+    int menu_rat;
+    int menu_rationalize;
+    int menu_guess_exact_value;
+    int menu_quad_qag;
+    int menu_quad_qags;
+    int menu_quad_qagi;
+    int menu_quad_qawc;
+    int menu_quad_qawf_sin;
+    int menu_quad_qawf_cos;
+    int menu_quad_qawo_sin;
+    int menu_quad_qawo_cos;
+    int menu_quad_qaws1;
+    int menu_quad_qaws2;
+    int menu_quad_qaws3;
+    int menu_quad_qaws4;
+    int menu_quad_qagp;
+    int menu_num_domain;
+    int menu_set_precision;
+    int menu_set_displayprecision;
+    int menu_engineeringFormat;
+    int menu_engineeringFormatSetup;
+    int menu_functions;
+    int menu_variables;
+    int menu_arrays;
+    int menu_macros;
+    int menu_labels;
+    int menu_myoptions;
+    int menu_rules;
+    int menu_aliases;
+    int menu_structs;
+    int menu_dependencies;
+    int menu_gradefs;
+    int menu_let_rule_packages;
+/*    menu_prop;*/
+    int menu_maxima_uses_internal_help;
+    int menu_maxima_uses_html_help;
+    int menu_maxima_uses_wxmaxima_help;
+    int menu_goto_url;
+    int menu_clear_var;
+    int menu_clear_fun;
+    int menu_kill;
+    int menu_integrate;
+    int menu_risch;
+    int menu_laplace;
+    int menu_ilt;
+    int menu_continued_fraction;
+    int menu_gcd;
+    int menu_lcm;
+    int menu_divide;
+    int menu_partfrac;
+    int menu_sum;
+    int menu_simpsum;
+    int menu_limit;
+    int menu_lbfgs;
+    int menu_taylor;
+    int menu_powerseries;
+    int menu_fourier;
+    int menu_pade;
+    int menu_diff;
+    int menu_solve_de;
+    int menu_atvalue;
+    int menu_lhs;
+    int menu_rhs;
+    int menu_wxmaximahelp;
+    int menu_maximahelp;
+    int menu_example;
+    int menu_apropos;
+    int menu_product;
+    int menu_time;
+    int menu_factsimp;
+    int menu_factcomb;
+    int menu_realpart;
+    int menu_imagpart;
+    int menu_subst;
+    int menu_psubst;
+    int menu_ratsubst;
+    int menu_fullratsubst;
+    int menu_at;
+    int menu_substinpart;
+    int menu_opsubst;
+    int menu_jumptoerror;
+    int menu_math_as_1D_ASCII;
+    int menu_math_as_2D_ASCII;
+    int menu_math_as_graphics;
+    int menu_logexpand_false;
+    int menu_logexpand_true;
+    int menu_logexpand_all;
+    int menu_logexpand_super;
+    int menu_noAutosubscript;
+    int menu_defaultAutosubscript;
+    int menu_alwaysAutosubscript;
+    int menu_autosubscriptIndividual;
+    int menu_declareAutosubscript;
+    int menu_noAutosubscriptIndividual;
+    int menu_roundedMatrixParens;
+    int menu_squareMatrixParens;
+    int menu_straightMatrixParens;
+    int menu_angledMatrixParens;
+    int menu_noMatrixParens;
+    int menu_draw_2d;
+    int menu_draw_3d;
+    int menu_draw_explicit;
+    int menu_draw_implicit;
+    int menu_draw_parametric;
+    int menu_draw_points;
+    int menu_draw_fgcolor;
+    int menu_draw_fillcolor;
+    int menu_draw_title;
+    int menu_draw_key;
+    int menu_draw_grid;
+    int menu_draw_axis;
+    int menu_draw_accuracy;
+    int menu_draw_contour;
+    int menu_license;
+    int menu_changelog;
+    int button_factor_id;
+    int button_solve;
+    int button_solve_ode;
+    int button_limit;
+    int button_taylor;
+    int button_expand;
+    int button_ratsimp;
+    int button_radcan;
+    int button_trigsimp;
+    int button_trigexpand;
+    int button_trigreduce;
+    int button_trigrat;
+    int button_integrate;
+    int button_diff;
+    int button_sum;
+    int button_product;
+    int button_button_constant;
+    int button_factor;
+    int button_subst;
+    int button_plot2;
+    int button_plot3;
+    int button_rectform;
+    int button_map;
+    int gp_plot2;
+    int gp_plot3;
+    int menu_animationautostart;
+    int menu_animationframerate;
+    int menu_display;
+    int menu_soft_restart;
+    int menu_plot_format;
+    int menu_build_info;
+    int menu_bug_report;
+    int menu_add_path;
+    int menu_evaluate_all_visible;
+    int menu_evaluate_all;
+    int menu_show_tip;
+    int menu_copy_matlab_from_worksheet;
+    int menu_copy_tex_from_worksheet;
+    int menu_copy_text_from_worksheet;
+    int menu_logcontract;
+    int menu_logexpand;
+    int menu_to_fact;
+    int menu_to_gamma;
+    int menu_texform;
+    int menu_debugmode;
+    int menu_debugmode_off;
+    int menu_debugmode_lisp;
+    int menu_debugmode_all;
 
     // The programming menu
-    menu_for,
-    menu_while,
-    menu_block,
-    menu_block_noLocal,
-    menu_local,
-    menu_return,
-    menu_trace,
-    menu_lambda,
-    menu_quotequote,
-    menu_quote,
-    menu_quoteblock,
-    menu_def_fun,
-    menu_def_macro,
-    menu_def_variable,
-    menu_compile,
-    menu_paramType,
-    menu_structdef,
-    menu_structnew,
-    menu_structuse,
-    menu_saveLisp,
-    menu_loadLisp,
-    menu_maximatostring,
-    menu_stringtomaxima,
+    int menu_for;
+    int menu_while;
+    int menu_block;
+    int menu_block_noLocal;
+    int menu_local;
+    int menu_return;
+    int menu_trace;
+    int menu_lambda;
+    int menu_quotequote;
+    int menu_quote;
+    int menu_quoteblock;
+    int menu_def_fun;
+    int menu_def_macro;
+    int menu_def_variable;
+    int menu_compile;
+    int menu_paramType;
+    int menu_structdef;
+    int menu_structnew;
+    int menu_structuse;
+    int menu_saveLisp;
+    int menu_loadLisp;
+    int menu_maximatostring;
+    int menu_stringtomaxima;
     
-    button_enter,
-    menu_zoom_80,
-    /* Instead of menu_zoom_100 we use the standard wxID_ZOOM_100, which displays an icon in the menu (currently Unix only) */
-    menu_zoom_120,
-    menu_zoom_150,
-    menu_zoom_200,
-    menu_zoom_300,
-    menu_copy_as_bitmap,
-    menu_copy_as_svg,
-    menu_save_as_svg,
-    menu_copy_as_emf,
-    menu_save_as_emf,
-    menu_copy_as_rtf,
-    menu_copy_to_file,
-    menu_export_html,
-    menu_change_var,
-    menu_change_var_evaluate,
-    menu_nouns,
-    menu_evaluate,
-    menu_convert_to_code,
-    menu_add_comment,
-    menu_convert_to_comment,
-    menu_add_subsubsection,
-    menu_add_heading5,
-    menu_add_heading6,
-    menu_convert_to_subsubsection,
-    menu_convert_to_heading5,
-    menu_convert_to_heading6,
-    menu_add_subsection,
-    menu_convert_to_subsection,
-    menu_add_section,
-    menu_convert_to_section,
-    menu_add_title,
-    menu_convert_to_title,
-    menu_add_pagebreak,
-    menu_fold_all_cells,
-    menu_unfold_all_cells,
-    menu_insert_input,
-    menu_insert_previous_input,
-    menu_insert_previous_output,
-    menu_autocomplete,
-    menu_autocomplete_templates,
-    menu_paste_input,
-    menu_fullscreen,
-    menu_remove_output,
-    menu_list_create_from_elements,
-    menu_list_create_from_rule,
-    menu_list_create_from_list,
-    menu_list_create_from_args,
-    menu_list_list2matrix,
-    menu_list_matrix2list,
-    menu_list_actual_values_storage,
-    menu_list_sort,
-    menu_list_remove_duplicates,
-    menu_list_length,
-    menu_list_push,
-    menu_list_pop,
-    menu_list_reverse,
-    menu_list_first,
-    menu_list_last,
-    menu_list_lastn,
-    menu_list_rest,
-    menu_list_restN,
-    menu_list_nth,
-    menu_list_map,
-    menu_list_use_actual_values,
-    menu_list_extract_value,
-    menu_list_as_function_arguments,
-    menu_list_do_for_each_element,
-    menu_list_remove_element,
-    menu_list_append_item_start,
-    menu_list_append_item_end,
-    menu_list_append_list,
-    menu_list_interleave,
-    menu_recent_packages,
-    menu_recent_package_0,
-    menu_recent_package_1,
-    menu_recent_package_2,
-    menu_recent_package_3,
-    menu_recent_package_4,
-    menu_recent_package_5,
-    menu_recent_package_6,
-    menu_recent_package_7,
-    menu_recent_package_8,
-    menu_recent_package_9,
-    menu_recent_package_10,
-    menu_recent_package_11,
-    menu_recent_package_12,
-    menu_recent_package_13,
-    menu_recent_package_14,
-    menu_recent_package_15,
-    menu_recent_package_16,
-    menu_recent_package_17,
-    menu_recent_package_18,
-    menu_recent_package_19,
-    menu_recent_package_20,
-    menu_recent_package_21,
-    menu_recent_package_22,
-    menu_recent_package_23,
-    menu_recent_package_24,
-    menu_recent_package_25,
-    menu_recent_package_26,
-    menu_recent_package_27,
-    menu_recent_package_28,
-    menu_recent_package_29,
-    menu_recent_documents,
-    menu_recent_document_0,
-    menu_recent_document_1,
-    menu_recent_document_2,
-    menu_recent_document_3,
-    menu_recent_document_4,
-    menu_recent_document_5,
-    menu_recent_document_6,
-    menu_recent_document_7,
-    menu_recent_document_8,
-    menu_recent_document_9,
-    menu_recent_document_10,
-    menu_recent_document_11,
-    menu_recent_document_12,
-    menu_recent_document_13,
-    menu_recent_document_14,
-    menu_recent_document_15,
-    menu_recent_document_16,
-    menu_recent_document_17,
-    menu_recent_document_18,
-    menu_recent_document_19,
-    menu_recent_document_20,
-    menu_recent_document_21,
-    menu_recent_document_22,
-    menu_recent_document_23,
-    menu_recent_document_24,
-    menu_recent_document_25,
-    menu_recent_document_26,
-    menu_recent_document_27,
-    menu_recent_document_28,
-    menu_recent_document_29,
-    menu_recent_document_separator,
-    menu_unsaved_document_0,
-    menu_unsaved_document_1,
-    menu_unsaved_document_2,
-    menu_unsaved_document_3,
-    menu_unsaved_document_4,
-    menu_unsaved_document_5,
-    menu_unsaved_document_6,
-    menu_unsaved_document_7,
-    menu_unsaved_document_8,
-    menu_unsaved_document_9,
-    menu_unsaved_document_10,
-    menu_unsaved_document_11,
-    menu_unsaved_document_12,
-    menu_unsaved_document_13,
-    menu_unsaved_document_14,
-    menu_unsaved_document_15,
-    menu_unsaved_document_16,
-    menu_unsaved_document_17,
-    menu_unsaved_document_18,
-    menu_unsaved_document_19,
-    menu_unsaved_document_20,
-    menu_unsaved_document_21,
-    menu_unsaved_document_22,
-    menu_unsaved_document_23,
-    menu_unsaved_document_24,
-    menu_unsaved_document_25,
-    menu_unsaved_document_26,
-    menu_unsaved_document_27,
-    menu_unsaved_document_28,
-    menu_unsaved_document_29,
-    menu_construct_fraction,
-    menu_insert_image,
-    menu_stats_mean,
-    menu_stats_median,
-    menu_stats_var,
-    menu_stats_dev,
-    menu_stats_tt1,
-    menu_stats_tt2,
-    menu_stats_tnorm,
-    menu_stats_linreg,
-    menu_stats_lsquares,
-    menu_stats_histogram,
-    menu_stats_scatterplot,
-    menu_stats_barsplot,
-    menu_stats_piechart,
-    menu_stats_boxplot,
-    menu_stats_readm,
-    menu_stats_enterm,
-    menu_stats_subsample,
-    menu_format_code,
-    menu_format_text,
-    menu_format_heading6,
-    menu_format_heading5,
-    menu_format_subsubsection,
-    menu_format_subsection,
-    menu_format_section,
-    menu_format_title,
-    menu_format_image,
-    menu_format_pagebreak,
-    menu_help_tutorials,
-    menu_help_tutorials_start, //! Start of bundled tutorials
-    menu_help_solving,
-    menu_help_diffequations,
-    menu_help_numberformats,
-    menu_help_tolerances,
-    menu_help_listaccess,
-    menu_help_memoizing,
-    menu_help_3d,
-    menu_help_varnames,
-    menu_help_fittingData,
-    menu_help_tutorials_end, //! End of bundled tutorials
-    menu_show_toolbar,
-    menu_history_previous,
-    menu_history_next,
-    menu_check_updates,
-    gentran_load,
-    gentran_lang_c,
-    gentran_lang_fortran,
-    gentran_lang_ratfor,
-    gentran_to_stdout,
-    gentran_to_file,
-    socket_client_id,
-    socket_server_id,
-    gnuplot_query_terminals_id,
-    menu_additionalSymbols,
-    enable_unicodePane,
-    menu_showLatinGreekLookalikes,
-    menu_showGreekMu,
-    menu_invertWorksheetBackground
-  };
+    int button_enter;
+    int menu_zoom_80;
+    /* Instead of menu_zoom_100 we use the standard int_ZOOM_100; which displays an icon in the menu (currently Unix only) */
+    int menu_zoom_120;
+    int menu_zoom_150;
+    int menu_zoom_200;
+    int menu_zoom_300;
+    int menu_copy_as_bitmap;
+    int menu_copy_as_svg;
+    int menu_save_as_svg;
+    int menu_copy_as_emf;
+    int menu_save_as_emf;
+    int menu_copy_as_rtf;
+    int menu_copy_to_file;
+    int menu_export_html;
+    int menu_change_var;
+    int menu_change_var_evaluate;
+    int menu_nouns;
+    int menu_evaluate;
+    int menu_convert_to_code;
+    int menu_add_comment;
+    int menu_convert_to_comment;
+    int menu_add_subsubsection;
+    int menu_add_heading5;
+    int menu_add_heading6;
+    int menu_convert_to_subsubsection;
+    int menu_convert_to_heading5;
+    int menu_convert_to_heading6;
+    int menu_add_subsection;
+    int menu_convert_to_subsection;
+    int menu_add_section;
+    int menu_convert_to_section;
+    int menu_add_title;
+    int menu_convert_to_title;
+    int menu_add_pagebreak;
+    int menu_fold_all_cells;
+    int menu_unfold_all_cells;
+    int menu_insert_input;
+    int menu_insert_previous_input;
+    int menu_insert_previous_output;
+    int menu_autocomplete;
+    int menu_autocomplete_templates;
+    int menu_paste_input;
+    int menu_fullscreen;
+    int menu_remove_output;
+    int menu_list_create_from_elements;
+    int menu_list_create_from_rule;
+    int menu_list_create_from_list;
+    int menu_list_create_from_args;
+    int menu_list_list2matrix;
+    int menu_list_matrix2list;
+    int menu_list_actual_values_storage;
+    int menu_list_sort;
+    int menu_list_remove_duplicates;
+    int menu_list_length;
+    int menu_list_push;
+    int menu_list_pop;
+    int menu_list_reverse;
+    int menu_list_first;
+    int menu_list_last;
+    int menu_list_lastn;
+    int menu_list_rest;
+    int menu_list_restN;
+    int menu_list_nth;
+    int menu_list_map;
+    int menu_list_use_actual_values;
+    int menu_list_extract_value;
+    int menu_list_as_function_arguments;
+    int menu_list_do_for_each_element;
+    int menu_list_remove_element;
+    int menu_list_append_item_start;
+    int menu_list_append_item_end;
+    int menu_list_append_list;
+    int menu_list_interleave;
+    int menu_recent_packages;
+    int menu_recent_package_0;
+    int menu_recent_package_1;
+    int menu_recent_package_2;
+    int menu_recent_package_3;
+    int menu_recent_package_4;
+    int menu_recent_package_5;
+    int menu_recent_package_6;
+    int menu_recent_package_7;
+    int menu_recent_package_8;
+    int menu_recent_package_9;
+    int menu_recent_package_10;
+    int menu_recent_package_11;
+    int menu_recent_package_12;
+    int menu_recent_package_13;
+    int menu_recent_package_14;
+    int menu_recent_package_15;
+    int menu_recent_package_16;
+    int menu_recent_package_17;
+    int menu_recent_package_18;
+    int menu_recent_package_19;
+    int menu_recent_package_20;
+    int menu_recent_package_21;
+    int menu_recent_package_22;
+    int menu_recent_package_23;
+    int menu_recent_package_24;
+    int menu_recent_package_25;
+    int menu_recent_package_26;
+    int menu_recent_package_27;
+    int menu_recent_package_28;
+    int menu_recent_package_29;
+    int menu_recent_documents;
+    int menu_recent_document_0;
+    int menu_recent_document_1;
+    int menu_recent_document_2;
+    int menu_recent_document_3;
+    int menu_recent_document_4;
+    int menu_recent_document_5;
+    int menu_recent_document_6;
+    int menu_recent_document_7;
+    int menu_recent_document_8;
+    int menu_recent_document_9;
+    int menu_recent_document_10;
+    int menu_recent_document_11;
+    int menu_recent_document_12;
+    int menu_recent_document_13;
+    int menu_recent_document_14;
+    int menu_recent_document_15;
+    int menu_recent_document_16;
+    int menu_recent_document_17;
+    int menu_recent_document_18;
+    int menu_recent_document_19;
+    int menu_recent_document_20;
+    int menu_recent_document_21;
+    int menu_recent_document_22;
+    int menu_recent_document_23;
+    int menu_recent_document_24;
+    int menu_recent_document_25;
+    int menu_recent_document_26;
+    int menu_recent_document_27;
+    int menu_recent_document_28;
+    int menu_recent_document_29;
+    int menu_recent_document_separator;
+    int menu_unsaved_document_0;
+    int menu_unsaved_document_1;
+    int menu_unsaved_document_2;
+    int menu_unsaved_document_3;
+    int menu_unsaved_document_4;
+    int menu_unsaved_document_5;
+    int menu_unsaved_document_6;
+    int menu_unsaved_document_7;
+    int menu_unsaved_document_8;
+    int menu_unsaved_document_9;
+    int menu_unsaved_document_10;
+    int menu_unsaved_document_11;
+    int menu_unsaved_document_12;
+    int menu_unsaved_document_13;
+    int menu_unsaved_document_14;
+    int menu_unsaved_document_15;
+    int menu_unsaved_document_16;
+    int menu_unsaved_document_17;
+    int menu_unsaved_document_18;
+    int menu_unsaved_document_19;
+    int menu_unsaved_document_20;
+    int menu_unsaved_document_21;
+    int menu_unsaved_document_22;
+    int menu_unsaved_document_23;
+    int menu_unsaved_document_24;
+    int menu_unsaved_document_25;
+    int menu_unsaved_document_26;
+    int menu_unsaved_document_27;
+    int menu_unsaved_document_28;
+    int menu_unsaved_document_29;
+    int menu_construct_fraction;
+    int menu_insert_image;
+    int menu_stats_mean;
+    int menu_stats_median;
+    int menu_stats_var;
+    int menu_stats_dev;
+    int menu_stats_tt1;
+    int menu_stats_tt2;
+    int menu_stats_tnorm;
+    int menu_stats_linreg;
+    int menu_stats_lsquares;
+    int menu_stats_histogram;
+    int menu_stats_scatterplot;
+    int menu_stats_barsplot;
+    int menu_stats_piechart;
+    int menu_stats_boxplot;
+    int menu_stats_readm;
+    int menu_stats_enterm;
+    int menu_stats_subsample;
+    int menu_format_code;
+    int menu_format_text;
+    int menu_format_heading6;
+    int menu_format_heading5;
+    int menu_format_subsubsection;
+    int menu_format_subsection;
+    int menu_format_section;
+    int menu_format_title;
+    int menu_format_image;
+    int menu_format_pagebreak;
+    int menu_help_tutorials;
+    int menu_help_tutorials_start; //! Start of bundled tutorials
+    int menu_help_solving;
+    int menu_help_diffequations;
+    int menu_help_numberformats;
+    int menu_help_tolerances;
+    int menu_help_listaccess;
+    int menu_help_memoizing;
+    int menu_help_3d;
+    int menu_help_varnames;
+    int menu_help_fittingData;
+    int menu_help_tutorials_end; //! End of bundled tutorials
+    int menu_show_toolbar;
+    int menu_history_previous;
+    int menu_history_next;
+    int menu_check_updates;
+    int gentran_load;
+    int gentran_lang_c;
+    int gentran_lang_fortran;
+    int gentran_lang_ratfor;
+    int gentran_to_stdout;
+    int gentran_to_file;
+    int socket_client_id;
+    int socket_server_id;
+    int gnuplot_query_terminals_id;
+    int menu_additionalSymbols;
+    int enable_unicodePane;
+    int menu_showLatinGreekLookalikes;
+    int menu_showGreekMu;
+    int menu_invertWorksheetBackground;
+  /*! @}
+   */
 
   /*! Update the recent documents list
 
