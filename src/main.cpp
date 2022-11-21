@@ -479,46 +479,46 @@ void MyApp::NewWindow(const wxString &file, bool evalOnStartup,
 
 void MyApp::OnFileMenu(wxCommandEvent &ev) {
   switch (ev.GetId()) {
-  case wxMaxima::menu_help_numberformats:
+  case Event::menu_help_numberformats:
     NewWindow(wxEmptyString, false, false, NUMBERFORMATS_WXM,
               NUMBERFORMATS_WXM_SIZE);
     break;
-  case wxMaxima::menu_help_3d:
+  case Event::menu_help_3d:
     NewWindow(wxEmptyString, false, false, DISPLAYING3DCURVES_WXM,
               DISPLAYING3DCURVES_WXM_SIZE);
     break;
 
-  case wxMaxima::menu_help_varnames:
+  case Event::menu_help_varnames:
     NewWindow(wxEmptyString, false, false, VARIABLENAMES_WXM,
               VARIABLENAMES_WXM_SIZE);
     break;
 
-  case wxMaxima::menu_help_listaccess:
+  case Event::menu_help_listaccess:
     NewWindow(wxEmptyString, false, false, FASTLISTACCESS_WXM,
               FASTLISTACCESS_WXM_SIZE);
     break;
 
-  case wxMaxima::menu_help_fittingData:
+  case Event::menu_help_fittingData:
     NewWindow(wxEmptyString, false, false, FITTINGEQUATIONS_WXM,
               FITTINGEQUATIONS_WXM_SIZE);
     break;
 
-  case wxMaxima::menu_help_solving:
+  case Event::menu_help_solving:
     NewWindow(wxEmptyString, false, false, SOLVINGEQUATIONS_WXM,
               SOLVINGEQUATIONS_WXM_SIZE);
     break;
 
-  case wxMaxima::menu_help_diffequations:
+  case Event::menu_help_diffequations:
     NewWindow(wxEmptyString, false, false, DIFFEQUATIONS_WXM,
               DIFFEQUATIONS_WXM_SIZE);
     break;
 
-  case wxMaxima::menu_help_tolerances:
+  case Event::menu_help_tolerances:
     NewWindow(wxEmptyString, false, false, TOLERANCECALCULATIONS_WXM,
               TOLERANCECALCULATIONS_WXM_SIZE);
     break;
 
-  case wxMaxima::menu_help_memoizing:
+  case Event::menu_help_memoizing:
     NewWindow(wxEmptyString, false, false, MEMOIZING_WXM, MEMOIZING_WXM_SIZE);
     break;
 
