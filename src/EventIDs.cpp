@@ -727,4 +727,4 @@ const EventIDs::EventId EventIDs:: popid_property_irrational(wxNewId());
 const EventIDs::EventId EventIDs:: popid_property_greaterThan(wxNewId());
 const EventIDs::EventId EventIDs:: popid_property_evfun(wxNewId());
 const EventIDs::EventId EventIDs:: popid_property_evflag(wxNewId());
-const EventIDs::EventId EventIDs:: popid_property_atvalu(wxNewId());
+const EventIDs::EventId EventIDs:: popid_property_atvalue(wxNewId());

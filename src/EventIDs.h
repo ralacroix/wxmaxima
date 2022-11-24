@@ -21,7 +21,7 @@
 
 /*!\file
   
-  This file defines the class Event that contains unique IDs for all events 
+  This file defines the class EventIDs that contains unique IDs for all events 
   wxMaxima needs
 */
 
@@ -790,7 +790,7 @@ public:
   static const EventId popid_property_greaterThan;
   static const EventId popid_property_evfun;
   static const EventId popid_property_evflag;
-  static const EventId popid_property_atvalu;
+  static const EventId popid_property_atvalue;
   /*! @}
    */
 };
