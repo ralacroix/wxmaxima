@@ -782,7 +782,7 @@ void wxMaximaFrame::UpdateStatusMaximaBusy() {
 void wxMaximaFrame::StatusSaveStart() {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = true;
-  RightStatusText(_("Saving..."));
+  LeftStatusText(_("Saving..."));
 }
 
 void wxMaximaFrame::StatusSaveFinished() {
@@ -795,13 +795,13 @@ void wxMaximaFrame::StatusSaveFinished() {
       )
     StatusMaximaBusy(m_StatusMaximaBusy);
   else
-    RightStatusText(_("Saving successful."));
+    LeftStatusText(_("Saving successful."));
 }
 
 void wxMaximaFrame::StatusExportStart() {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = true;
-  RightStatusText(_("Exporting..."));
+  LeftStatusText(_("Exporting..."));
 }
 
 void wxMaximaFrame::StatusExportFinished() {
@@ -810,19 +810,19 @@ void wxMaximaFrame::StatusExportFinished() {
   if (m_StatusMaximaBusy != waiting)
     StatusMaximaBusy(m_StatusMaximaBusy);
   else
-    RightStatusText(_("Export successful."));
+    LeftStatusText(_("Export successful."));
 }
 
 void wxMaximaFrame::StatusSaveFailed() {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
-  RightStatusText(_("Saving failed."));
+  LeftStatusText(_("Saving failed."));
 }
 
 void wxMaximaFrame::StatusExportFailed() {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
-  RightStatusText(_("Export failed."));
+  LeftStatusText(_("Export failed."));
 }
 
 wxMaximaFrame::~wxMaximaFrame() {

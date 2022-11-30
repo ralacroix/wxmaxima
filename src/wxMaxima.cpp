@@ -2219,7 +2219,7 @@ bool wxMaxima::StartServer() {
             (m_port < 65535) && (!m_server)));
 
   if (!m_server) {
-    RightStatusText(_("Starting server failed"));
+    LeftStatusText(_("Starting server failed"));
     m_statusBar->NetworkStatus(StatusBar::error);
     LoggingMessageBox(_("wxMaxima could not start a server.\n\n"
                         "Please check you have network support\n"
@@ -2232,7 +2232,7 @@ bool wxMaxima::StartServer() {
     m_server->Notify(true);
     m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
     m_server->SetTimeout(30);
-    RightStatusText(_("Server started"));
+    LeftStatusText(_("Server started"));
     return true;
   }
 }
@@ -2337,7 +2337,7 @@ bool wxMaxima::StartMaxima(bool force) {
       if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process,
                     env) <= 0) {
         StatusMaximaBusy(process_wont_start);
-        RightStatusText(_("Cannot start the maxima binary"));
+        LeftStatusText(_("Cannot start the maxima binary"));
         m_process = NULL;
         m_maximaStdout = NULL;
         m_maximaStderr = NULL;
@@ -2671,7 +2671,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent &event) {
   }
   m_statusBar->NetworkStatus(StatusBar::offline);
   if (!m_closing) {
-    RightStatusText(_("Maxima process terminated unexpectedly."));
+    LeftStatusText(_("Maxima process terminated unexpectedly."));
 
     if (m_first) {
       LoggingMessageBox(
@@ -3825,7 +3825,7 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document,
   // Show a busy cursor while we open the file.
   wxBusyCursor crs;
 
-  RightStatusText(_("Opening file"));
+  LeftStatusText(_("Opening file"));
   wxWindowUpdateLocker noUpdates(document);
 
   bool xMaximaFile = file.Lower().EndsWith(wxT(".out"));
@@ -3837,7 +3837,7 @@ bool wxMaxima::OpenMACFile(const wxString &file, Worksheet *document,
     LoggingMessageBox(_("wxMaxima encountered an error loading ") + file,
                       _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
+    LeftStatusText(_("File could not be opened"));
     return false;
   }
 
@@ -3879,7 +3879,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
   // Show a busy cursor while we open the file.
   wxBusyCursor crs;
 
-  RightStatusText(_("Opening file"));
+  LeftStatusText(_("Opening file"));
   wxWindowUpdateLocker noUpdates(document);
 
   // open wxm file
@@ -3889,7 +3889,7 @@ bool wxMaxima::OpenWXMFile(const wxString &file, Worksheet *document,
     LoggingMessageBox(_("wxMaxima encountered an error loading ") + file,
                       _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
+    LeftStatusText(_("File could not be opened"));
     return false;
   }
 
@@ -3973,7 +3973,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
   // Show a busy cursor while we open a file.
   wxBusyCursor crs;
 
-  RightStatusText(_("Opening file"));
+  LeftStatusText(_("Opening file"));
 
   wxWindowUpdateLocker noUpdates(document);
 
@@ -4152,7 +4152,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
     LoggingMessageBox(_("wxMaxima cannot read the xml contents of ") + file,
                       _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
+    LeftStatusText(_("File could not be opened"));
     return false;
   }
 
@@ -4163,7 +4163,7 @@ bool wxMaxima::OpenWXMXFile(const wxString &file, Worksheet *document,
 		      file,
 		      _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
+    LeftStatusText(_("File could not be opened"));
     return false;
   }
 
@@ -4259,7 +4259,7 @@ bool wxMaxima::CheckWXMXVersion(const wxString &docversion) {
       LoggingMessageBox(_("Document was saved using a newer version of "
                           "wxMaxima. Please update your wxMaxima."),
                         _("Error"), wxOK | wxICON_EXCLAMATION);
-      RightStatusText(_("File could not be opened"));
+      LeftStatusText(_("File could not be opened"));
       return false;
     }
     if (version_minor > DOCUMENT_VERSION_MINOR)
@@ -4275,7 +4275,7 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document) {
   // Show a busy cursor as long as we open a file.
   wxBusyCursor crs;
 
-  RightStatusText(_("Opening file"));
+  LeftStatusText(_("Opening file"));
 
   wxWindowUpdateLocker noUpdates(document);
 
@@ -4289,7 +4289,7 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document) {
                         "content.xml extracted from a .wxmx zip archive"),
                       _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
+    LeftStatusText(_("File could not be opened"));
     return false;
   }
 
@@ -4300,7 +4300,7 @@ bool wxMaxima::OpenXML(const wxString &file, Worksheet *document) {
 		      file,
 		      _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
-    RightStatusText(_("File could not be opened"));
+    LeftStatusText(_("File could not be opened"));
     return false;
   }
 
@@ -5326,7 +5326,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
 
   if (retval) {
     m_worksheet->RequestRedraw();
-    RightStatusText(_("File opened"));
+    LeftStatusText(_("File opened"));
     if (m_evalOnStartup && m_ready) {
       wxLogMessage(_("Starting evaluation of the document"));
       m_evalOnStartup = false;
@@ -5336,7 +5336,7 @@ bool wxMaxima::OpenFile(const wxString &file, const wxString &command) {
       TriggerEvaluation();
     }
   } else
-    RightStatusText(_("File could not be opened"));
+    LeftStatusText(_("File could not be opened"));
 
   m_worksheet->RecalculateForce();
   UpdateMenus();
