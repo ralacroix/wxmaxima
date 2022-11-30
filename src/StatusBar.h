@@ -70,6 +70,9 @@ public:
   wxWindow *GetStatusTextElement()
     { return m_statusTextPanel; }
 
+  wxWindow *GetMaximaStatusElement()
+    { return m_maximaStatus; }
+
   //! Inform the status bar how many percents of the available CPU power maxima uses
   void SetMaximaCPUPercentage(float percentage)
     {
@@ -95,6 +98,7 @@ public:
   void UpdateStatusMaximaBusy(MaximaStatus status, long bytesFromMaxima);
   void SetStatusText(wxString statusText){m_statusText->SetLabel(statusText);}
 protected:
+  void StatusMsgDClick(wxCommandEvent &ev);
   void OnSize(wxSizeEvent &event);
   void OnTimerEvent(wxTimerEvent &event);
 

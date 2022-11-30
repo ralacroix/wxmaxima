@@ -361,15 +361,24 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale,
 #endif
 
   StatusMaximaBusy(StatusBar::MaximaStatus::disconnected);
-
+  
   m_statusBar->GetNetworkStatusElement()->Connect(
-						  wxEVT_LEFT_DCLICK, wxCommandEventHandler(wxMaxima::NetworkDClick), NULL,
+						  wxEVT_LEFT_DCLICK,
+						  wxCommandEventHandler(wxMaxima::NetworkDClick),
+						  NULL,
 						  this);
-
-  m_statusBar->GetNetworkStatusElement()->Connect(
-						  wxEVT_LEFT_DCLICK, wxCommandEventHandler(wxMaxima::StatusMsgDClick), NULL,
-						  this);
-if (m_openFile.IsEmpty()) {
+  m_statusBar->GetMaximaStatusElement()->Connect(
+						 wxEVT_LEFT_DCLICK,
+						 wxCommandEventHandler(wxMaxima::MaximaDClick),
+						 NULL,
+						 this);
+  
+  m_statusBar->GetStatusTextElement()->Connect(
+					       wxEVT_LEFT_DCLICK,
+					       wxCommandEventHandler(wxMaxima::StatusMsgDClick),
+					       NULL,
+					       this);
+  if (m_openFile.IsEmpty()) {
     if (!StartMaxima())
       StatusText(_("Starting Maxima process failed"));
   }
@@ -4838,11 +4847,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
       if(!m_statusTextHistory[i].IsEmpty()) toolTip +=
 					      m_statusTextHistory[i] + "\n";
 
-    if(IsPaneDisplayed(EventIDs::menu_pane_log))
-      toolTip += "\nDouble-click for a dockable sidebar with more past messages.";
-    else
-      toolTip += "\nDouble-click for hiding the dockable sidebar with more past messages.";
-      
+    toolTip += "\nDouble-click in order to toggle the dockable sidebar with all past messages.";
+    
     m_statusBar->GetStatusTextElement()->SetToolTip(toolTip);
     
     event.RequestMore();
@@ -10717,6 +10723,10 @@ void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(event)) {
   m_manager.GetPane(wxT("XmlInspector"))
     .Show(!m_manager.GetPane(wxT("XmlInspector")).IsShown());
   m_manager.Update();
+}
+
+void wxMaxima::MaximaDClick(wxCommandEvent &WXUNUSED(event)) {
+  m_worksheet->ScrollToCaret();
 }
 
 void wxMaxima::StatusMsgDClick(wxCommandEvent &WXUNUSED(event)) {

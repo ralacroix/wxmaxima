@@ -75,6 +75,10 @@ StatusBar::StatusBar(wxWindow *parent, int id)
   UpdateBitmaps();
   m_statusTextPanel = new wxPanel(this, wxID_ANY);
   m_statusText = new wxStaticText(m_statusTextPanel, wxID_ANY, wxEmptyString);
+  m_statusText->Connect(
+			wxEVT_LEFT_DCLICK, wxCommandEventHandler(StatusBar::StatusMsgDClick), NULL,
+			this);
+
   m_maximaStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
   m_networkStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
   m_networkStatus->SetToolTip(m_stdToolTip);
@@ -89,6 +93,13 @@ StatusBar::StatusBar(wxWindow *parent, int id)
 }
 
 StatusBar::~StatusBar() {}
+
+void StatusBar::StatusMsgDClick(wxCommandEvent &ev)
+{
+  wxCommandEvent *evt = new wxCommandEvent(wxEVT_LEFT_DCLICK);
+  m_statusTextPanel->GetEventHandler()->QueueEvent(evt);
+  ev.Skip();
+}
 
 void StatusBar::UpdateBitmaps() {
   wxSize ppi(-1, -1);

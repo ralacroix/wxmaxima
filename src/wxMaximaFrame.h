@@ -329,7 +329,7 @@ private:
   wxPanel *CreateSymbolsPane();
 
 protected:
-  std::array<wxString,5> m_statusTextHistory;
+  std::array<wxString,10> m_statusTextHistory;
   void OnMenuStatusText(wxMenuEvent &event);
   bool m_historyVisible;
   bool m_xmlMonitorVisible;
