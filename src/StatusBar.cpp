@@ -137,8 +137,8 @@ void StatusBar::UpdateBitmaps() {
       GetImage("go-next", GO_NEXT_SVG_GZ,
 	       GO_NEXT_SVG_GZ_SIZE);
     m_bitmap_waiting =
-      GetImage("image-loading", IMAGE_LOADING_SVG_GZ,
-	       IMAGE_LOADING_SVG_GZ_SIZE);
+      GetImage("dialog-accept", DIALOG_ACCEPT_SVG_GZ,
+	       DIALOG_ACCEPT_SVG_GZ_SIZE);
     m_bitmap_waitingForPrompt =
       GetImage("image-loading", IMAGE_LOADING_SVG_GZ,
 	       IMAGE_LOADING_SVG_GZ_SIZE);
