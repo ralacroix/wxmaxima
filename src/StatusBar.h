@@ -64,8 +64,11 @@ public:
   //! Informs the status bar about networking events.
   void NetworkStatus(networkState status);
 
-  wxStaticBitmap *GetNetworkStatusElement()
+  wxWindow *GetNetworkStatusElement()
     { return m_networkStatus; }
+
+  wxWindow *GetStatusTextElement()
+    { return m_statusTextPanel; }
 
   //! Inform the status bar how many percents of the available CPU power maxima uses
   void SetMaximaCPUPercentage(float percentage)

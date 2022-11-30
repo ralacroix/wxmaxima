@@ -2357,17 +2357,9 @@ bool wxMaximaFrame::IsPaneDisplayed(int id) {
 void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
 {
   if(event.GetId() <= 0)
-    {
-      SetStatusText(wxEmptyString, false);
-      m_statusBar->SetStatusText(wxEmptyString);
-      m_MenuBar->SetToolTip(wxEmptyString);
-    }
+    StatusText(wxEmptyString, false);
   else
-    {
-      SetStatusText(m_MenuBar->GetHelpString(event.GetId()), false);
-      m_statusBar->SetStatusText(m_MenuBar->GetHelpString(event.GetId()));
-      m_MenuBar->SetToolTip(m_MenuBar->GetHelpString(event.GetId()));
-    }
+    StatusText(m_MenuBar->GetHelpString(event.GetId()), false);
 }
 void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   m_manager.GetPane(wxT("math")).Dock();
@@ -2385,6 +2377,19 @@ void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   m_manager.GetPane(wxT("draw")).Dock();
   m_manager.GetPane(wxT("help")).Dock();
   m_manager.Update();
+}
+
+void  wxMaximaFrame::StatusText(const wxString &text, bool saveInLog)
+{
+  m_newStatusText = true;
+  m_leftStatusText = text;
+  if(saveInLog)
+    {
+      wxLogMessage(text);
+      for(auto i = m_statusTextHistory.size() - 1; i > 0; i--)
+	m_statusTextHistory[i] = m_statusTextHistory[i-1];
+      m_statusTextHistory[0] = text;
+    }
 }
 
 void wxMaximaFrame::ShowPane(int id, bool show) {
