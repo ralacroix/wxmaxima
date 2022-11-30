@@ -4819,7 +4819,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   if (m_worksheet->StatusTextChangedHas()) {
     if (m_worksheet->StatusTextHas()) {
-      SetStatusText(m_worksheet->GetStatusText(), 1);
+      m_statusBar->SetStatusText(m_worksheet->GetStatusText());
       event.RequestMore();
       return;
     }
@@ -4827,7 +4827,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event) {
 
   if (m_newStatusText) {
     if (m_newStatusText)
-      SetStatusText(m_leftStatusText, 0);
+      m_statusBar->SetStatusText(m_leftStatusText);
 
     m_newStatusText = false;
 

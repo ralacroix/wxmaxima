@@ -32,6 +32,7 @@
 #include <wx/timer.h>
 #include <wx/statbmp.h>
 #include <wx/statusbr.h>
+#include <wx/stattext.h>
 #include <memory>
 
 extern unsigned char GO_NEXT_SVG_GZ[];
@@ -89,7 +90,7 @@ public:
   };
 
   void UpdateStatusMaximaBusy(MaximaStatus status, long bytesFromMaxima);
- 
+  void SetStatusText(wxString statusText){m_statusText->SetLabel(statusText);}
 protected:
   void OnSize(wxSizeEvent &event);
   void OnTimerEvent(wxTimerEvent &event);
@@ -125,6 +126,8 @@ private:
                     unsigned char *data_128, size_t len_128
     );
   
+  //! The currently shown network status bitmap
+  wxStaticText *m_statusText;
   //! The currently shown network status bitmap
   wxStaticBitmap *m_networkStatus;
   //! The currently shown network status bitmap
