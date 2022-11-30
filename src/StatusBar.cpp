@@ -73,7 +73,8 @@ StatusBar::StatusBar(wxWindow *parent, int id)
       "that maxima cannot be found (see wxMaxima's Configuration dialogue "
       "for a way to specify maxima's location) or isn't in a working order.");
   UpdateBitmaps();
-  m_statusText = new wxStaticText(this, wxID_ANY, wxEmptyString);
+  m_statusTextPanel = new wxPanel(this, wxID_ANY);
+  m_statusText = new wxStaticText(m_statusTextPanel, wxID_ANY, wxEmptyString);
   m_maximaStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
   m_networkStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
   m_networkStatus->SetToolTip(m_stdToolTip);
@@ -333,9 +334,11 @@ void StatusBar::OnSize(wxSizeEvent &event) {
   m_maximaStatus->Move(rect.x + (rect.width - size.x) / 2,
 		       rect.y + (rect.height - size.y) / 2);
   GetFieldRect(0, rect);
+  wxSize borders = GetBorders();
   size = wxSize(rect.GetWidth(), rect.GetHeight());
-  m_statusText->Move(rect.x + (rect.width - size.x) / 2,
-		       rect.y + (rect.height - size.y) / 2);
+  m_statusTextPanel->Move(borders.x + rect.x + 1,
+			  borders.y + rect.y);
+  m_statusTextPanel->SetSize(size);
   
   event.Skip();
 }

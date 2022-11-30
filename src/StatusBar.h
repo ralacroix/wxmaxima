@@ -125,7 +125,9 @@ private:
   wxBitmap GetImage(wxString name,
                     unsigned char *data_128, size_t len_128
     );
-  
+
+  //! The background for m_statusText;
+  wxPanel *m_statusTextPanel;
   //! The currently shown network status bitmap
   wxStaticText *m_statusText;
   //! The currently shown network status bitmap

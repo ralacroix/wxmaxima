@@ -329,6 +329,7 @@ private:
   wxPanel *CreateSymbolsPane();
 
 protected:
+  void OnMenuStatusText(wxMenuEvent &event);
   bool m_historyVisible;
   bool m_xmlMonitorVisible;
   SymbolsPane *m_symbolsPane;

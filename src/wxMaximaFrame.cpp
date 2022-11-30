@@ -665,6 +665,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, wxLocale *locale,
     .Show(false)
     .Movable(true);
   m_manager.Update();
+
+  m_MenuBar->Connect(wxEVT_MENU_HIGHLIGHT,
+		     wxMenuEventHandler(wxMaximaFrame::OnMenuStatusText), NULL, this);
   Connect(EventIDs::menu_pane_dockAll, wxEVT_MENU,
           wxCommandEventHandler(wxMaximaFrame::DockAllSidebars), NULL, this);
   m_historyVisible = m_manager.GetPane(wxT("history")).IsShown();
@@ -2351,7 +2354,21 @@ bool wxMaximaFrame::IsPaneDisplayed(int id) {
 
   return displayed;
 }
-
+void wxMaximaFrame::OnMenuStatusText(wxMenuEvent &event)
+{
+  if(event.GetId() <= 0)
+    {
+      SetStatusText(wxEmptyString, false);
+      m_statusBar->SetStatusText(wxEmptyString);
+      m_MenuBar->SetToolTip(wxEmptyString);
+    }
+  else
+    {
+      SetStatusText(m_MenuBar->GetHelpString(event.GetId()), false);
+      m_statusBar->SetStatusText(m_MenuBar->GetHelpString(event.GetId()));
+      m_MenuBar->SetToolTip(m_MenuBar->GetHelpString(event.GetId()));
+    }
+}
 void wxMaximaFrame::DockAllSidebars(wxCommandEvent &WXUNUSED(ev)) {
   m_manager.GetPane(wxT("math")).Dock();
   m_manager.GetPane(wxT("history")).Dock();
