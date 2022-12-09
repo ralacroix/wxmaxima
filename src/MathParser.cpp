@@ -39,6 +39,7 @@
 #include "AbsCell.h"
 #include "AnimationCell.h"
 #include "AtCell.h"
+#include "BoxCell.h"
 #include "CellList.h"
 #include "ConjugateCell.h"
 #include "DiffCell.h"
