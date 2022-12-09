@@ -239,7 +239,7 @@ std::unique_ptr<Cell> MathParser::ParseHighlightTag(wxXmlNode *node) {
 
   wxString boxName = wxT("boxname");
   std::unique_ptr<Cell> cell;
-  if(node->HasAttribute(boxName))
+  if(!node->HasAttribute(boxName))
     cell = std::make_unique<BoxCell>(m_group, m_configuration, std::move(inner));
   else
     cell = std::make_unique<NamedBoxCell>(m_group, m_configuration, std::move(inner),
