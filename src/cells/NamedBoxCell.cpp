@@ -69,12 +69,14 @@ void NamedBoxCell::Recalculate(AFontSize fontsize) {
   m_innerCell->RecalculateList(fontsize);
   m_boxname->RecalculateList(fontsize);
 
+  m_innerCellWidth = m_innerCell->GetFullWidth();
+  m_innerCellHeight = m_innerCell->GetHeightList();
+  m_nameWidth = m_boxname->GetFullWidth();
+  m_nameHeight = m_boxname->GetHeightList();
+
   if (!IsBrokenIntoLines()) {
-    m_width = wxMax(
-		    m_innerCell->GetFullWidth() + Scale_Px(8),
-		    m_boxname->GetFullWidth() + Scale_Px(8)
-		    );
-    m_height = m_innerCell->GetHeightList() + m_boxname->GetHeightList() + Scale_Px(16);
+    m_width = wxMax(m_innerCellWidth, m_nameWidth) + Scale_Px(8);
+    m_height = m_innerCellHeight + m_nameHeight + Scale_Px(16);
     m_center = m_innerCell->GetCenterList() + Scale_Px(4);
   } else {
     // The NamedBoxCell itself isn't displayed if it is broken into lines.
@@ -96,39 +98,56 @@ void NamedBoxCell::Draw(wxPoint point) {
     wxDC *dc = m_configuration->GetDC();
     SetPen();
     wxPoint in;
-    in.x = point.x + Scale_Px(4);
-    in.y = point.y;
+    in.x = point.x + Scale_Px(4) + ((m_width - Scale_Px(8)) - m_innerCellWidth) / 2;
+    in.y = point.y + Scale_Px(8) + m_nameHeight;
     m_innerCell->DrawList(in);
 
-    int innerCellHeight = m_innerCell->GetHeightList();
     wxPoint namepos(point);
-    namepos.x += (m_width - m_boxname->GetFullWidth()) / 2;
-    namepos.y += (m_height - innerCellHeight) - Scale_Px(2);
+    namepos.x += ((m_width - Scale_Px(8)) - m_nameWidth) / 2 + Scale_Px(4);
+    namepos.y -= m_center - m_boxname->GetCenterList();
     m_boxname->DrawList(namepos);
-    
+
+    // dc->DrawLine(
+    // 		 point.x + Scale_Px(2),
+    // 		 point.y - m_center + innerCellHeight + Scale_Px(2),
+    //              point.x + m_width - Scale_Px(2) - 1,
+    //              point.y - m_center + innerCellHeight + Scale_Px(2)
+    // 		 );
+
+    // The top left line of the box
     dc->DrawLine(
 		 point.x + Scale_Px(2),
-		 point.y - m_center + innerCellHeight + Scale_Px(2),
-                 point.x + m_width - Scale_Px(2) - 1,
-                 point.y - m_center + innerCellHeight + Scale_Px(2)
+		 point.y - m_center + Scale_Px(2) + m_boxname->GetCenterList(),
+                 point.x + (m_width - m_nameWidth) / 2,
+                 point.y - m_center + Scale_Px(2) + m_boxname->GetCenterList()
 		 );
+    // The top right line of the box
     dc->DrawLine(
-		 point.x + Scale_Px(2),
-		 point.y - m_center - Scale_Px(2),
-                 point.x + m_width - Scale_Px(2) - 1,
-                 point.y - m_center - Scale_Px(2)
+		 point.x + m_width - Scale_Px(2),
+		 point.y - m_center + Scale_Px(2) + m_boxname->GetCenterList(),
+                 point.x + m_width - ((m_width - m_nameWidth) / 2),
+                 point.y - m_center + Scale_Px(2) + m_boxname->GetCenterList()
 		 );
+    // The left line of the box
     dc->DrawLine(
 		 point.x + Scale_Px(2),
-		 point.y - m_center + m_height + Scale_Px(2),
+		 point.y - m_center + m_height - Scale_Px(2),
 		 point.x + Scale_Px(2),
-                 point.y - m_center - Scale_Px(2)
+                 point.y - m_center + Scale_Px(2) + m_nameHeight / 2
 		 );
+    // The right line of the box
     dc->DrawLine(
-                 point.x + m_width - Scale_Px(2) - 1,
-		 point.y - m_center - Scale_Px(2),
-                 point.x + m_width - Scale_Px(2) - 1,
-                 point.y - m_center + m_height + Scale_Px(2)
+                 point.x + m_width - Scale_Px(2),
+		 point.y - m_center + Scale_Px(2) + m_nameHeight / 2,
+                 point.x + m_width - Scale_Px(2),
+                 point.y - m_center + m_height - Scale_Px(2)
+		 );
+    // The bottom line of the box
+    dc->DrawLine(
+                 point.x + Scale_Px(2),
+                 point.y - m_center + m_height - Scale_Px(2),
+                 point.x + m_width - Scale_Px(2),
+                 point.y - m_center + m_height - Scale_Px(2)
 		 );
   }
 }

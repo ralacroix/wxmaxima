@@ -94,6 +94,10 @@ private:
   wxString ToString() const override;
   wxString ToTeX() const override;
   wxString ToXML() const override;
+  int m_innerCellWidth = -1;
+  int m_innerCellHeight = -1;
+  int m_nameWidth = -1;
+  int m_nameHeight = -1;
 };
 
 #endif // NAMEDBOXCELL_H
