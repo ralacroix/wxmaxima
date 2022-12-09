@@ -77,7 +77,7 @@ void NamedBoxCell::Recalculate(AFontSize fontsize) {
   if (!IsBrokenIntoLines()) {
     m_width = wxMax(m_innerCellWidth, m_nameWidth) + Scale_Px(8);
     m_height = m_innerCellHeight + m_nameHeight + Scale_Px(16);
-    m_center = m_innerCell->GetCenterList() + Scale_Px(4);
+    m_center = m_innerCell->GetCenterList() + m_nameHeight + Scale_Px(8);
   } else {
     // The NamedBoxCell itself isn't displayed if it is broken into lines.
     // instead m_open, m_innerCell and m_close are => We can set our size to 0
@@ -99,7 +99,7 @@ void NamedBoxCell::Draw(wxPoint point) {
     SetPen();
     wxPoint in;
     in.x = point.x + Scale_Px(4) + ((m_width - Scale_Px(8)) - m_innerCellWidth) / 2;
-    in.y = point.y + Scale_Px(8) + m_nameHeight;
+    in.y = point.y;
     m_innerCell->DrawList(in);
 
     wxPoint namepos(point);
