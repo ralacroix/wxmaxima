@@ -1,6 +1,7 @@
 # Current
  * A cleaner status bar with double-click actions
  * Better display of labels
+ * Better display of boxes
  * Resolved a few display glitches
  * Resolved OS-dependant wrong actions on gui events
  * A few system and compiler specific fixes
