@@ -234,11 +234,16 @@ std::unique_ptr<Cell> MathParser::ParseRowTag(wxXmlNode *node) {
 }
 
 std::unique_ptr<Cell> MathParser::ParseHighlightTag(wxXmlNode *node) {
-  bool highlight = m_highlight;
-  m_highlight = true;
-  auto tmp = ParseTag(node->GetChildren());
-  m_highlight = highlight;
-  return tmp;
+  wxXmlNode *child = node->GetChildren();
+  child = SkipWhitespaceNode(child);
+  auto inner = HandleNullPointer(ParseTag(child, true));
+
+  auto cell =
+    std::make_unique<BoxCell>(m_group, m_configuration, std::move(inner));
+  cell->SetType(m_ParserStyle);
+  cell->SetHighlight(m_highlight);
+  ParseCommonAttrs(node, cell);
+  return cell;
 }
 
 std::unique_ptr<Cell> MathParser::ParseMiscTextTag(wxXmlNode *node) {
