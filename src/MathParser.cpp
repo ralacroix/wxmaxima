@@ -283,8 +283,6 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node) {
   wxString gnuplotSources;
   wxString gnuplotData;
   bool del = node->GetAttribute(wxT("del"), wxT("false")) == wxT("true");
-  node->GetAttribute(wxT("gnuplotSources"), &gnuplotSources);
-  node->GetAttribute(wxT("gnuplotData"), &gnuplotData);
   auto animation =
     std::make_unique<AnimationCell>(m_group, m_configuration, m_fileSystem);
   auto const &str = node->GetChildren()->GetContent();
@@ -319,6 +317,8 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node) {
   if (ppi.ToLong(&ppi_num))
     animation->SetPPI(ppi_num);
 
+  node->GetAttribute(wxT("gnuplotSources"), &gnuplotSources);
+  node->GetAttribute(wxT("gnuplotData"), &gnuplotData);
   wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
   wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
   for (int i = 0; i < numImgs; i++) {

@@ -113,6 +113,11 @@ public:
   */
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
 
+  /*! Loads the compressed gnuplot source and data file for this image
+
+   */
+  void CompressedGnuplotSource(wxString gnuplotFilename, wxString dataFilename, std::shared_ptr<wxFileSystem> filesystem);
+
   //! Load the gnuplot source file from the system's filesystem
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename)
     {
@@ -142,8 +147,10 @@ public:
 
   //! Returns the gnuplot source of this image
   const wxMemoryBuffer GetGnuplotSource() const;
+  const wxMemoryBuffer GetCompressedGnuplotSource() const;
   //! Returns the gnuplot data of this image
   const wxMemoryBuffer GetGnuplotData() const;
+  const wxMemoryBuffer GetCompressedGnuplotData() const;
   
   /*! Temporarily forget the scaled image in order to save memory
 

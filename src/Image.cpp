@@ -450,6 +450,16 @@ const wxMemoryBuffer Image::GetGnuplotSource() const {
   return retval;
 }
 
+const wxMemoryBuffer Image::GetCompressedGnuplotSource() const
+{
+  return m_gnuplotSource_Compressed;
+}
+
+const wxMemoryBuffer Image::GetCompressedGnuplotData() const
+{
+  return m_gnuplotData_Compressed;
+}
+
 const wxMemoryBuffer Image::GetGnuplotData() const {
   wxMemoryBuffer retval;
   if ((m_gnuplotSource_Compressed.GetDataLen() < 2) ||
