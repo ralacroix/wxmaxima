@@ -317,9 +317,10 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node) {
   if (ppi.ToLong(&ppi_num))
     animation->SetPPI(ppi_num);
 
-  if(node->GetAttribute(wxT("gnuplotSources"), &gnuplotSources) ||
+  if(node->GetAttribute(wxT("gnuplotSources"), &gnuplotSources) &&
      node->GetAttribute(wxT("gnuplotData"), &gnuplotData))
     {
+      wxLogMessage(_("Importing uncompressed gnuplot sources for an animation"));
       wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
       wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
       for (int i = 0; i < numImgs; i++) {
@@ -329,9 +330,10 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node) {
 	}
       }
     }
-  if(node->GetAttribute(wxT("gnuplotSources_gz"), &gnuplotSources) ||
+  if(node->GetAttribute(wxT("gnuplotSources_gz"), &gnuplotSources) &&
      node->GetAttribute(wxT("gnuplotData_gz"), &gnuplotData))
     {
+      wxLogMessage(_("Importing compressed gnuplot sources for an animation"));
       wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
       wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
       for (int i = 0; i < numImgs; i++) {
