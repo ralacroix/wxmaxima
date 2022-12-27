@@ -317,17 +317,31 @@ std::unique_ptr<Cell> MathParser::ParseAnimationTag(wxXmlNode *node) {
   if (ppi.ToLong(&ppi_num))
     animation->SetPPI(ppi_num);
 
-  node->GetAttribute(wxT("gnuplotSources"), &gnuplotSources);
-  node->GetAttribute(wxT("gnuplotData"), &gnuplotData);
-  wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
-  wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
-  for (int i = 0; i < numImgs; i++) {
-    if ((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens())) {
-      animation->GnuplotSource(i, gnuplotFiles.GetNextToken(),
-                               dataFiles.GetNextToken(), m_fileSystem);
+  if(node->GetAttribute(wxT("gnuplotSources"), &gnuplotSources) ||
+     node->GetAttribute(wxT("gnuplotData"), &gnuplotData))
+    {
+      wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
+      wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
+      for (int i = 0; i < numImgs; i++) {
+	if ((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens())) {
+	  animation->GnuplotSource(i, gnuplotFiles.GetNextToken(),
+				   dataFiles.GetNextToken(), m_fileSystem);
+	}
+      }
     }
-  }
-
+  if(node->GetAttribute(wxT("gnuplotSources_gz"), &gnuplotSources) ||
+     node->GetAttribute(wxT("gnuplotData_gz"), &gnuplotData))
+    {
+      wxStringTokenizer dataFiles(gnuplotData, wxT(";"));
+      wxStringTokenizer gnuplotFiles(gnuplotSources, wxT(";"));
+      for (int i = 0; i < numImgs; i++) {
+	if ((dataFiles.HasMoreTokens()) && (gnuplotFiles.HasMoreTokens())) {
+	  animation->CompressedGnuplotSource(i, gnuplotFiles.GetNextToken(),
+					     dataFiles.GetNextToken(), m_fileSystem);
+	}
+      }
+    }
+  
   return animation;
 }
 
@@ -376,12 +390,17 @@ std::unique_ptr<Cell> MathParser::ParseImageTag(wxXmlNode *node) {
   if (ppi.ToLong(&ppi_num) && (imageCell != NULL))
     imageCell->SetPPI(ppi_num);
 
-  wxString gnuplotSource =
-    node->GetAttribute(wxT("gnuplotsource"), wxEmptyString);
-  wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);
-
-  if (!gnuplotSource.empty())
-    imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
+  wxString gnuplotSource;
+  if(node->GetAttribute(wxT("gnuplotsource"), &gnuplotSource))
+    {
+      wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);      
+      imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
+    }
+  if(node->GetAttribute(wxT("gnuplotsource_gz"), &gnuplotSource))
+    {
+      wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata_gz"), wxEmptyString);      
+      imageCell->CompressedGnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
+    }
 
   if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
     imageCell->DrawRectangle(false);

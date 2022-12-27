@@ -325,15 +325,15 @@ wxString ImgCell::ToXML() const {
     wxString gnuplotData;
     if (m_image->GnuplotData() != wxEmptyString) {
       wxFileName gnuplotDataFile(m_image->GnuplotData());
-      m_configuration->PushFileToSave(gnuplotDataFile.GetFullName(),
-				      m_image->GetGnuplotData());
-      flags += " gnuplotdata=\"" + gnuplotData + "\"";
+      m_configuration->PushFileToSave(gnuplotDataFile.GetFullName() + wxT(".gz"),
+				      m_image->GetCompressedGnuplotData());
+      flags += " gnuplotdata_gz=\"" + gnuplotData + ".gz\"";
     }
     if (m_image->GnuplotSource() != wxEmptyString) {
       wxFileName gnuplotSourceFile(m_image->GnuplotSource());
-      m_configuration->PushFileToSave(gnuplotSourceFile.GetFullName(),
-				      m_image->GetGnuplotSource());
-      flags += " gnuplotsource=\"" + gnuplotSource + "\"";
+      m_configuration->PushFileToSave(gnuplotSourceFile.GetFullName() + wxT(".gz"),
+				      m_image->GetCompressedGnuplotSource());
+      flags += " gnuplotsource_gz=\"" + gnuplotSource + ".gz\"";
     }
   }
 
