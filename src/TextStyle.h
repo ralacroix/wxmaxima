@@ -134,6 +134,7 @@ public:
   Style(const Style &);
   explicit Style(AFontSize fontSize) { m.fontSize = fontSize; }
 
+  
   Style &operator=(const Style &);
   bool operator==(const Style &o) const = delete;
 
@@ -248,6 +249,7 @@ private:
   Style &FromFontNoCache(const wxFont &);
   void SetFromFontNoCache(const wxFont &);
 
+  static size_t GetFontHash(const Style &st);
   struct Data // POD, 40 bytes on 64-bit platforms
   {
     // 8/4-byte members
@@ -275,11 +277,10 @@ private:
   static_assert(sizeof(Data) <= 40,
                 "Style::Data is misaligned and grew too big.");
 
-  size_t GetFontHash() const;
-
   const wxFont& LookupFont() const;
   // cppcheck-suppress noExplicitConstructor
   Style(Data::NotOK_t) : m(Data::NotOK) {}
+  size_t GetFontHash() const;
 };
 
 //! Hash functor of the font size and attributes of the style

@@ -600,7 +600,23 @@ public:
     const wxMemoryBuffer m_data;
     const wxString m_filename;
   };
-    
+
+  //! Stores the information about a file we need to write during the save process
+  class TextsnippetToDraw
+  {
+  public:
+    TextsnippetToDraw(const wxString &text, const wxColor color):
+      m_text(text),
+      m_color(color)
+      {        
+      }
+    const wxString Text() const{return m_text;}
+    const wxColor Color() const{return m_color;}
+  private:
+    const wxString m_text;
+    const wxColor m_color;
+  };
+
   std::list<FileToSave> m_filesToSave;
   FileToSave PopFileToSave();
   void PushFileToSave(const wxString &filename, const wxMemoryBuffer &data)
