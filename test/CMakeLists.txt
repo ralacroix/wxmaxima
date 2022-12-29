@@ -1,5 +1,6 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
+# Compile a list of test files
 file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg *.png)
 
 # Copy the .wxm files to the binary dir so they can be used as test case without
@@ -621,10 +622,10 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --logtostderr --pipe  --batch displaying3DCurves.wxm)
 
-add_test(
-    NAME tutorial_memoizing
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
-    COMMAND wxmaxima --logtostderr --pipe  --batch memoizing.wxm)
+#add_test(
+#    NAME tutorial_memoizing
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
+#    COMMAND wxmaxima --logtostderr --pipe  --batch memoizing.wxm)
 
 add_test(
     NAME tutorial_solvingEquations
