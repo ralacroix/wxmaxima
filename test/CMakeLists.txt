@@ -1,8 +1,9 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg *.png ../examples/*.wxm)
+file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg *.png)
 
-install(FILES ${TEST_FILES} DESTINATION share/wxMaxima)
+# Copy the .wxm files to the binary dir so they can be used as test case without
+# being afraid that we change the test cases somehow.
 file(
     COPY
     ${TEST_FILES}
