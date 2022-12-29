@@ -572,10 +572,10 @@ set_tests_properties(multiple_batch_files2 PROPERTIES WILL_FAIL true)
 
 # Maxima sometimes fails if this test is run in parallel,
 # see https://sourceforge.net/p/maxima/bugs/3699/
-#add_test(
-#    NAME multithreadtest
-#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
-#    COMMAND wxmaxima --logtostderr --pipe --single_process --batch threadtest.wxm threadtest2.wxm)
+add_test(
+    NAME multithreadtest
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND wxmaxima --logtostderr --pipe --single_process --batch threadtest.wxm threadtest2.wxm)
 # Maxima sometimes fails if this test is run in parallel,
 # see https://sourceforge.net/p/maxima/bugs/3699/
 #set_tests_properties(multithreadtest PROPERTIES RUN_SERIAL true)
@@ -589,6 +589,46 @@ set_tests_properties(multiple_batch_files2 PROPERTIES WILL_FAIL true)
 #    NAME ipc_copypaste_all-celltypes
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
 #    COMMAND wxmaxima --enableipc --batch ipc_copypaste_all-celltypes.wxm)
+
+add_test(
+    NAME tutorial_fastListAccess
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    COMMAND wxmaxima --logtostderr --pipe  --batch fastListAccess.wxm)
+
+add_test(
+    NAME tutorial_numberFormats
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    COMMAND wxmaxima --logtostderr --pipe  --batch numberFormats.wxm)
+
+add_test(
+    NAME tutorial_toleranceCalculations
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    COMMAND wxmaxima --logtostderr --pipe  --batch toleranceCalculations.wxm)
+
+add_test(
+    NAME tutorial_fittingEquations
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    COMMAND wxmaxima --logtostderr --pipe  --batch fittingEquations.wxm)
+
+add_test(
+    NAME tutorial_variableNames
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    COMMAND wxmaxima --logtostderr --pipe  --batch variableNames.wxm)
+
+add_test(
+    NAME tutorial_displaying3DCurves
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    COMMAND wxmaxima --logtostderr --pipe  --batch displaying3DCurves.wxm)
+
+add_test(
+    NAME tutorial_memoizing
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    COMMAND wxmaxima --logtostderr --pipe  --batch memoizing.wxm)
+
+add_test(
+    NAME tutorial_solvingEquations
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    COMMAND wxmaxima --logtostderr --pipe  --batch solvingEquations.wxm)
 
 find_program(DESKTOP_FILE_VALIDATE desktop-file-validate)
 if(DESKTOP_FILE_VALIDATE)
