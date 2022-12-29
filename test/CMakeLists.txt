@@ -1,6 +1,6 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg *.png)
+file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg *.png ../examples/*.wxm)
 
 install(FILES ${TEST_FILES} DESTINATION share/wxMaxima)
 file(
@@ -592,42 +592,42 @@ add_test(
 
 add_test(
     NAME tutorial_fastListAccess
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --logtostderr --pipe  --batch fastListAccess.wxm)
 
 add_test(
     NAME tutorial_numberFormats
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --logtostderr --pipe  --batch numberFormats.wxm)
 
 add_test(
     NAME tutorial_toleranceCalculations
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --logtostderr --pipe  --batch toleranceCalculations.wxm)
 
 add_test(
     NAME tutorial_fittingEquations
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --logtostderr --pipe  --batch fittingEquations.wxm)
 
 add_test(
     NAME tutorial_variableNames
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --logtostderr --pipe  --batch variableNames.wxm)
 
 add_test(
     NAME tutorial_displaying3DCurves
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --logtostderr --pipe  --batch displaying3DCurves.wxm)
 
 add_test(
     NAME tutorial_memoizing
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --logtostderr --pipe  --batch memoizing.wxm)
 
 add_test(
     NAME tutorial_solvingEquations
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../examples
     COMMAND wxmaxima --logtostderr --pipe  --batch solvingEquations.wxm)
 
 find_program(DESKTOP_FILE_VALIDATE desktop-file-validate)
