@@ -621,13 +621,11 @@ public:
   };
 
   using TextList = std::unordered_map<Style, std::vector<TextsnippetToDraw>>;
-  TextList m_textSnippetsToDraw;
   void AddTextSnippetToDraw(const wxPoint &pos, const Style &style,
                             const wxString &text, const wxColor color);
   void ClearTextSnippetsToDraw(){m_textSnippetsToDraw.clear();}
   TextList GetTextSnippetsToDraw() const {return m_textSnippetsToDraw;}
 
-  std::list<FileToSave> m_filesToSave;
   FileToSave PopFileToSave();
   void PushFileToSave(const wxString &filename, const wxMemoryBuffer &data)
     { m_filesToSave.emplace_front(FileToSave(filename, data)); }
@@ -950,6 +948,8 @@ public:
   wxTextCtrl *LastActiveTextCtrl() const { return m_lastActiveTextCtrl; }
   void LastActiveTextCtrl(wxTextCtrl *last);
 private:
+  TextList m_textSnippetsToDraw;
+  std::list<FileToSave> m_filesToSave;
   WX_DECLARE_STRING_HASH_MAP(wxString, RenderablecharsHash);
   RenderablecharsHash m_renderableChars;
   RenderablecharsHash m_nonRenderableChars;
