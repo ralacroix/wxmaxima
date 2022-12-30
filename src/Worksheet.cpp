@@ -445,6 +445,7 @@ Worksheet::~Worksheet() {
 
 void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   m_configuration->ClearAndEnableRedrawTracing();
+  m_configuration->ClearTextSnippetsToDraw();
   m_configuration->SetBackgroundBrush(*(wxTheBrushList->FindOrCreateBrush(
 									  m_configuration->DefaultBackgroundColor(), wxBRUSHSTYLE_SOLID)));
   wxAutoBufferedPaintDC dc(this);
@@ -681,20 +682,34 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
 	       MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
       m_configuration->GetDC()->DrawRectangle(cursor);
     }
-
-    if (GetTree() == NULL) {
-      m_configuration->SetContext(m_dc);
-      return;
-    }
-
-    m_configuration->SetContext(m_dc);
-    m_configuration->UnsetAntialiassingDC();
     m_lastTop = top;
     m_lastBottom = bottom;
-
     region++;
   }
 
+  /* What we didn't do until now is to actually draw the text our cells contain.
+   */
+  for(auto style : m_configuration->GetTextSnippetsToDraw())
+    {
+      wxColor lastColor;
+      for(auto snippet:style.second)
+	{
+	  m_configuration->GetDC()->SetFont(style.first.GetFont());
+	  if(snippet.Color() != lastColor)
+	    {
+	      lastColor = snippet.Color();
+	      m_configuration->GetDC()->SetTextForeground(lastColor);
+	    }
+	  m_configuration->GetDC()->DrawText(snippet.Text(), snippet.Pos());
+	}
+    }
+  if (GetTree() == NULL) {
+    m_configuration->SetContext(m_dc);
+    return;
+  }
+  
+  m_configuration->SetContext(m_dc);
+  m_configuration->UnsetAntialiassingDC();
   m_configuration->ReportMultipleRedraws();
 }
 

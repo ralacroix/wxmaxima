@@ -622,7 +622,7 @@ public:
 
   using TextList = std::unordered_map<Style, std::vector<TextsnippetToDraw>>;
   void AddTextSnippetToDraw(const wxPoint &pos, const Style &style,
-                            const wxString &text, const wxColor color);
+                            const wxString &text);
   void ClearTextSnippetsToDraw(){m_textSnippetsToDraw.clear();}
   TextList GetTextSnippetsToDraw() const {return m_textSnippetsToDraw;}
 

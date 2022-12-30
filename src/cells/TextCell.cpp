@@ -495,10 +495,25 @@ void TextCell::Draw(wxPoint point) {
     if (GetStyle() != TS_ASCIIMATHS)
       padding = MC_TEXT_PADDING;
 
-    SetForeground();
-    SetFont(m_fontSize_Scaled);
-    dc->DrawText(m_displayedText, point.x + padding,
-                 point.y - m_center + MC_TEXT_PADDING);
+    if(m_configuration->GetPrinting())
+      {
+	// Draw the text in the order it appears
+	SetForeground();
+	SetFont(m_fontSize_Scaled);
+	dc->DrawText(m_displayedText, point.x + padding,
+		     point.y - m_center + MC_TEXT_PADDING);
+      }
+    else
+      {
+	// Sort all text by font before the text snippers are actually drawn:
+	// This avoids calls to the extremely slow SetFont() routine.
+	m_configuration->AddTextSnippetToDraw(
+					      wxPoint(
+						      point.x + padding,
+						      point.y - m_center + MC_TEXT_PADDING),
+					      GetFont(m_fontSize_Scaled),
+					      m_displayedText);
+      }
   }
 }
 

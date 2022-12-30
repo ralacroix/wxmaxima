@@ -1257,9 +1257,9 @@ Configuration::FileToSave Configuration::PopFileToSave()
 }
 
 void Configuration::AddTextSnippetToDraw(const wxPoint &pos, const Style &style,
-					 const wxString &text, const wxColor color)
+					 const wxString &text)
 {
-  m_textSnippetsToDraw[style].push_back(TextsnippetToDraw(pos, text, color));
+  m_textSnippetsToDraw[style].push_back(TextsnippetToDraw(pos, text, style.GetColor()));
 }
 
 bool Configuration::InUpdateRegion(wxRect const rect) const {
