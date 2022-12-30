@@ -605,17 +605,27 @@ public:
   class TextsnippetToDraw
   {
   public:
-    TextsnippetToDraw(const wxString &text, const wxColor color):
+    TextsnippetToDraw(const wxPoint &pos, const wxString &text, const wxColor color):
+      m_pos(pos),
       m_text(text),
       m_color(color)
       {        
       }
+    const wxPoint  Pos() const{return m_pos;}
     const wxString Text() const{return m_text;}
-    const wxColor Color() const{return m_color;}
+    const wxColor  Color() const{return m_color;}
   private:
+    const wxPoint  m_pos;
     const wxString m_text;
-    const wxColor m_color;
+    const wxColor  m_color;
   };
+
+  using TextList = std::unordered_map<Style, std::vector<TextsnippetToDraw>>;
+  TextList m_textSnippetsToDraw;
+  void AddTextSnippetToDraw(const wxPoint &pos, const Style &style,
+                            const wxString &text, const wxColor color);
+  void ClearTextSnippetsToDraw(){m_textSnippetsToDraw.clear();}
+  TextList GetTextSnippetsToDraw() const {return m_textSnippetsToDraw;}
 
   std::list<FileToSave> m_filesToSave;
   FileToSave PopFileToSave();

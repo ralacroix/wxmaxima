@@ -324,27 +324,23 @@ did_change Style::SetFontFaceAndSizeFrom(const Style &o) {
   return SetFontFaceFrom(o) | SetFontSize(o.m.fontSize); //-V792
 }
 
-size_t Style::GetFontHash(const Style &st)  {
-  size_t hash_ = st.m.fontHash;
+size_t Style::GetFontHash() const {
+  size_t hash_ = m.fontHash;
   if (!hash_) {
-    hash_ = MixHash(hash_, st.m.family);
-    hash_ = MixHash(hash_, st.m.encoding);
-    hash_ = MixHash(hash_, st.m.weight);
-    hash_ = MixHash(hash_, st.m.fontStyle);
-    hash_ = MixHash(hash_, (st.m.underlined << 1) | (st.m.strikethrough << 3) |
-		    (st.m.isNotOK << 5));
-    hash_ = MixHash(hash_, st.m.fontName);
-    hash_ = MixHash(hash_, st.m.fontSize);
+    hash_ = MixHash(hash_, m.family);
+    hash_ = MixHash(hash_, m.encoding);
+    hash_ = MixHash(hash_, m.weight);
+    hash_ = MixHash(hash_, m.fontStyle);
+    hash_ = MixHash(hash_, (m.underlined << 1) | (m.strikethrough << 3) |
+		    (m.isNotOK << 5));
+    hash_ = MixHash(hash_, m.fontName);
+    hash_ = MixHash(hash_, m.fontSize);
     if (!hash_)
       hash_++;
-    st.m.fontHash = hash_;
-    st.m.font = 0;
+    m.fontHash = hash_;
+    m.font = 0;
   }
   return hash_;
-}
-
-size_t Style::GetFontHash() const {
-  return GetFontHash(*this);
 }
 
 bool Style::IsFontEqualTo(const Style &o_) const {
