@@ -691,10 +691,10 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event)) {
    */
   for(auto style : m_configuration->GetTextSnippetsToDraw())
     {
+      m_configuration->GetDC()->SetFont(style.first.GetFont());
       wxColor lastColor;
       for(auto snippet:style.second)
 	{
-	  m_configuration->GetDC()->SetFont(style.first.GetFont());
 	  if(snippet.Color() != lastColor)
 	    {
 	      lastColor = snippet.Color();
