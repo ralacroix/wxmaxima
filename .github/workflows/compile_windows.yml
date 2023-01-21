@@ -61,7 +61,6 @@ jobs:
                cd ..
                cd ..
             }
-
       - name: Configure wxMaxima
         run: |
             cd wxMaxima
@@ -81,8 +80,8 @@ jobs:
       - name: Install Maxima
         uses: egor-tensin/setup-cygwin@v4
         with:
-            packages: maxima gnuplot
-    - name: Test wxMaxima
+          packages: maxima gnuplot
+      - name: Test wxMaxima
         run: |
             cd wxMaxima
             cd build
