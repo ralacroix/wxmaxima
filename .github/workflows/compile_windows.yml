@@ -67,6 +67,7 @@ jobs:
       - name: Configure wxMaxima
         run: |
             cd wxMaxima
+            choco install maxima
             new-item build -itemtype directory
             new-item build\Release -itemtype directory
             cd build
@@ -78,6 +79,13 @@ jobs:
             cd wxMaxima
             cd build
             cmake --build .
+            cd ..
+            cd ..
+      - name: Test wxMaxima
+        run: |
+            cd wxMaxima
+            cd build
+            ctest .
             cd ..
             cd ..
       - name: Package wxMaxima
