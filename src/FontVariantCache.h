@@ -36,32 +36,32 @@
 
 class FontVariantCache final
 {
-  FontCache(const FontCache &) = delete;
-  FontCache &operator=(const FontCache &) = delete;
+  FontVariantCache(const FontVariantCache &) = delete;
+  FontVariantCache &operator=(const FontVariantCache &) = delete;
 public:
   FontVariantCache(wxString fontName);
-  ~FontVariantCache();
-  const wxFont &GetFont(const Style &style);
-  const Style &AddFont(const wxFont &font);
-  bool IsEnabled() const { return m_enabled; }
-  int GetHits() const { return m_hits; }
-  int GetMisses() const { return m_misses; }
-  void Clear();
-  static FontCache &Get()
+  wxFont GetFont (double size,
+                  bool isItalic,
+                  bool isBold,
+                  bool isUnderlined);
+private:
+  int GetIndex (
+    bool isItalic,
+    bool isBold,
+    bool isUnderlined) const
     {
-#ifdef _WIN32
-      static thread_local FontCache globalCache;
-      // Windows allows font access from multiple threads, as long as each font
-      // is built separately.
-#else
-      static FontCache globalCache;
-#endif // _WIN32
-      return globalCache;
+      int result =0;
+      if(isItalic)
+        result++;
+      if(isBold)
+        result += 2;
+      if(isUnderlined)
+        result +=4;
+      return result;
     }
-  static const std::pair<const Style, wxFont> &GetAStyleFont(const Style &style)
-    { return Get().GetStyleFont(style); }
-  static const wxFont &GetAFont(const Style &style) { return Get().GetFont(style); }
-  static const Style &AddAFont(const wxFont &font) { return Get().AddFont(font); }
+  std::unordered_map<double, wxFont> m_fontCaches;
+  
+  ~FontVariantCache();
 };
 
-#endif  // FONTCACHE_H
+#endif  // FONTVARIANTCACHE_H

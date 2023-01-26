@@ -37,6 +37,7 @@
 #include <cstdint>
 #include <functional>
 #include "FontAttribs.h"
+#include "FontVariantCache.h"
 
 /*! An interned font face name, very quick to compare and hash.
  *
